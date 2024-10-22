@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useLoaderStore } from './stores/isLoading';
 
+import NotFound from './views/handler/NotFound.vue';
 import Home from './views/Home.vue';
 import PostList from './views/PostList.vue';
 import FilmList from './views/FilmList.vue';
@@ -8,6 +10,14 @@ import GuestBook from './views/GuestBook.vue';
 const router = createRouter({ // 라우터 정의
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        { // 404 에러
+            path: '/:pathMatch(.*)*',
+            redirect: '/404'
+        },
+        {
+            path: '/404',
+            component: NotFound
+        },
         { // 홈 (Root)
             path: '/',
             name: 'Home',
@@ -85,7 +95,7 @@ const router = createRouter({ // 라우터 정의
                 ]
             }
         },
-        {
+        { // 관리자 설정
             path: '/settings',
             name: 'Settings',
             component: () => import('./views/admin/Dashboard.vue'),
@@ -99,6 +109,20 @@ const router = createRouter({ // 라우터 정의
     scrollBehavior(to, from, savedPosition) { // 라우트 이동시 페이지 최상단으로 이동
         return { top: 0 }
     }
+});
+
+router.beforeEach((from, to, next) => { // 네비게이션 가드 - 이동 전
+    const isLoading = useLoaderStore();
+
+    isLoading.setLoadTrue();
+
+    next();
+});
+
+router.afterEach((from, to, failure) => { // 네비게이션 가드 - 이동 후
+    const isLoading = useLoaderStore();
+
+    isLoading.setLoadFalse();
 });
 
 export default router;

@@ -1,6 +1,6 @@
 /* _keyframes.scss */
 
-@keyframes rotate-conic {
+@keyframes rotate-conic { // 회전하는 conic-gradient
     from {
         --conic-range: 0deg;
     }
@@ -10,7 +10,7 @@
     }
 }
 
-@keyframes blink {
+@keyframes blink { // 순서대로 깜빡이는 말줄임표
     from {
         opacity: 0;
     }
@@ -20,7 +20,7 @@
     }
 }
 
-@keyframes burger-toggle {
+@keyframes burger-toggle { // 햄버거 버튼
     40% {
         height: .1rem;
         inset-inline-start: var(--burger-self-start);

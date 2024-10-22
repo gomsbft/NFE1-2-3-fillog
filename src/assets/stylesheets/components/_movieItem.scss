@@ -1,0 +1,63 @@
+/* _movieItem.scss */
+
+.movie-item {
+    width: 12rem;
+}
+
+.movie-poster-container {
+    position: relative;
+    width: 12rem;
+    height: 16rem;
+    border-radius: .4rem;
+    background-color: #333;
+    overflow: hidden;
+
+    > .remix {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 2.4rem;
+    }
+}
+
+.movie-poster-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    pointer-events: none;
+}
+
+.movie-info-container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .4rem;
+    margin-block-start: .4rem;
+}
+
+.movie-info-title {
+    font-size: var(--fnt-xl);
+    line-height: 1.4;
+}
+
+.movie-info-release {
+    font-size: var(--fnt-sm);
+}
+
+.movie-info-genre {
+    display: flex;
+    gap: .2rem;
+
+    > span {
+        display: block;
+        padding: .2rem .4rem;
+        border-radius: .2rem;
+        background-color: rgb(var(--clr-theme) / .75);
+        color: rgb(var(--clr-if-0));
+        font-size: var(--fnt-sm);
+        user-select: none;
+    }
+}
+
+/* _movieItem.scss */
