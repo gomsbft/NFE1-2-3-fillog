@@ -61,29 +61,15 @@ const router = createRouter({ // 라우터 정의
                 }
             ]
         },
-        { // 포트폴리오
+        { // 리뷰한 영화
             path: '/movies',
-            children: [
-                {
-                    path: '',
-                    name: 'Movies',
-                    component: FilmList,
-                    meta: {
-                        breadcrumb: [
-                            { name: 'Movies' }
-                        ]
-                    }
-                },
-                {
-                    path: ':workID',
-                    component: () => import('./views/PortfolioDetail.vue'),
-                    meta: {
-                        breadcrumb: [
-                            { name: 'Work' }
-                        ]
-                    }
-                }
-            ]
+            name: 'Movies',
+            component: FilmList,
+            meta: {
+                breadcrumb: [
+                    { name: 'Movies' }
+                ]
+            }
         },
         { // 방명록
             path: '/guestbook',

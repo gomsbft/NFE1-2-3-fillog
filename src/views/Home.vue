@@ -1,34 +1,32 @@
 <template>
-    <Suspense>
-        <div id="landingPage">
-            <section id="secHero">
-                <div id="heroContent">
-                    <img :src="latestPost.images[latestPost.thumbIndex].imageURL" alt="">
+    <div id="landingPage">
+        <section id="secHero">
+            <div id="heroContent">
+                <img :src="latestPost.images[latestPost.thumbIndex].imageURL" alt="">
 
-                    <div>
-                        <p>
-                            {{ latestPost.title }}
-                        </p>
+                <div>
+                    <p>
+                        {{ latestPost.title }}
+                    </p>
 
-                        <UserNameTag :user-id="latestPost.author.userId" />
-                    </div>
-                </div> <!-- 아마도 슬라이더로 변경될 예정 -->
-            </section> <!-- #secHero -->
-
-            <section id="secLatestMovies">
-                <div class="section-title-bar">
-                    최근 리뷰한 영화
+                    <UserNameTag :user-id="latestPost.author.userId" />
                 </div>
+            </div> <!-- 아마도 슬라이더로 변경될 예정 -->
+        </section> <!-- #secHero -->
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); place-items: center; row-gap: 2.4rem;">
-                    <MovieItem :movie-id="381" />
-                    <MovieItem :movie-id="500" />
-                    <MovieItem :movie-id="550" />
-                    <MovieItem :movie-id="12" />
-                </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
-            </section> <!-- #secLatestMovies -->
-        </div> <!-- #landingPage -->
-    </Suspense>
+        <section id="secLatestMovies">
+            <div class="section-title-bar">
+                최근 리뷰한 영화
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); place-items: center; row-gap: 2.4rem;">
+                <MovieItem :movie-id="381" />
+                <MovieItem :movie-id="500" />
+                <MovieItem :movie-id="550" />
+                <MovieItem :movie-id="12" />
+            </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
+        </section> <!-- #secLatestMovies -->
+    </div> <!-- #landingPage -->
 </template> <!-- Template Ends -->
 
 <script setup>
