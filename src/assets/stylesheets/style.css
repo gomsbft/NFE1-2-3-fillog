@@ -1194,6 +1194,12 @@ a, a:visited {
   gap: 1.2rem;
 }
 
+.section-title-bar {
+  margin-block: 1.2rem;
+  font-size: var(--fnt-title-md);
+  font-weight: 700;
+}
+
 #heroContent {
   position: relative;
   padding: 1.2rem;

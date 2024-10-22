@@ -12,7 +12,7 @@
 
                         <UserNameTag :user-id="latestPost.author.userId" />
                     </div>
-                </div>
+                </div> <!-- 아마도 슬라이더로 변경될 예정 -->
             </section> <!-- #secHero -->
 
             <section id="secLatestMovies">
@@ -20,18 +20,18 @@
                     최근 리뷰한 영화
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); place-items: center;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); place-items: center; row-gap: 2.4rem;">
+                    <MovieItem :movie-id="381" />
                     <MovieItem :movie-id="500" />
                     <MovieItem :movie-id="550" />
                     <MovieItem :movie-id="12" />
-                </div>
+                </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
             </section> <!-- #secLatestMovies -->
         </div> <!-- #landingPage -->
     </Suspense>
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, watch } from 'vue';
     import axios from 'axios';
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 

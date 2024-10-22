@@ -13,7 +13,7 @@ export const getPostInfo = async (articleID) => { // 개별 포스트 가져오�
     }
 }
 
-export const getMovieInfo = async (movieID) => {
+export const getMovieInfo = async (movieID) => { // 특정 ID의 영화 정보 가져오기
     try {
         const { data: response } = await baseAPI({
             method: 'get',

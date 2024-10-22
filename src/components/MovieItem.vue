@@ -5,7 +5,7 @@
                 <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-line"></use>
             </svg>
 
-            <img class="movie-poster-image" :src="`https://image.tmdb.org/t/p/original/${ currentMovie.poster_path }` ?? null" alt="">
+            <img class="movie-poster-image" v-if="currentMovie.poster_path" :src="`https://image.tmdb.org/t/p/original/${ currentMovie.poster_path }` ?? null" :alt="`영화 <${ currentMovie.title }>의 포스터 이미지`">
         </div>
 
         <div class="movie-info-container">
