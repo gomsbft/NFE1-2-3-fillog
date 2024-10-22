@@ -1,33 +1,38 @@
 <template>
-    <div id="landingPage">
-        <section id="secHero">
-            <div id="heroContent">
-                <img :src="latestPost.images[latestPost.thumbIndex].imageURL" alt="">
+    <Suspense>
+        <div id="landingPage">
+            <section id="secHero">
+                <div id="heroContent">
+                    <img :src="latestPost.images[latestPost.thumbIndex].imageURL" alt="">
 
-                <div>
-                    <p>
-                        {{ latestPost.title }}
-                    </p>
+                    <div>
+                        <p>
+                            {{ latestPost.title }}
+                        </p>
 
-                    <UserNameTag :user-id="latestPost.author.userId" />
+                        <UserNameTag :user-id="latestPost.author.userId" />
+                    </div>
                 </div>
-            </div>
-        </section> <!-- #secHero -->
+            </section> <!-- #secHero -->
 
-        <section id="secLatestMovies">
-            <div class="section-title-bar">
-                최근 리뷰한 영화
-            </div>
+            <section id="secLatestMovies">
+                <div class="section-title-bar">
+                    최근 리뷰한 영화
+                </div>
 
-            <MovieItem :movie-object="getMovieInfo(500)" />
-            <MovieItem :movie-object="getMovieInfo(550)" />
-        </section> <!-- #secLatestMovies -->
-    </div> <!-- #landingPage -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); place-items: center;">
+                    <MovieItem :movie-id="500" />
+                    <MovieItem :movie-id="550" />
+                    <MovieItem :movie-id="12" />
+                </div>
+            </section> <!-- #secLatestMovies -->
+        </div> <!-- #landingPage -->
+    </Suspense>
 </template> <!-- Template Ends -->
 
 <script setup>
     import { ref, watch } from 'vue';
-    import { getMovieInfo } from '../utilities/dataQueries';
+    import axios from 'axios';
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(a.date) - new Date(b.date));

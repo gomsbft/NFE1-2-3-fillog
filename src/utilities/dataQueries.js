@@ -2,7 +2,7 @@ import baseAPI from './apiDefault';
 
 export const getPostInfo = async (articleID) => { // 개별 포스트 가져오기
     try {
-        const response = await baseAPI.get(`/post/${ articleID }`, {
+        const { data: response } = await baseAPI.get(`/post/${ articleID }`, {
             // get option
         });
 
@@ -27,10 +27,8 @@ export const getMovieInfo = async (movieID) => {
             responseType: 'json'
         });
 
-        console.log(response);
-
         return response;
     } catch(error) {
-        console.log(error);
+        console.error(error);
     }
 }
