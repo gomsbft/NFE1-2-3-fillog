@@ -1,0 +1,57 @@
+[
+    {
+        "id": 123125,
+        "type": "admin",
+        "account": "dsc0320@hotmail.com",
+        "password": "12345678",
+        "userName": "은빛늑대",
+        "userImage": "/images/1.gif",
+        "likedArticles": [],
+        "commentedArticles": [],
+        "dateCreated": "2024-09-13"
+    },
+    {
+        "id": 123127,
+        "type": "user",
+        "account": "dsc0320@naver.com",
+        "password": "12345678",
+        "userName": "암욜맨",
+        "userImage": "/images/2.jpg",
+        "likedArticles": [],
+        "commentedArticles": [],
+        "dateCreated": "2024-09-13"
+    },
+    {
+        "id": 823741,
+        "type": "user",
+        "account": "dsc0320@gmail.com",
+        "password": "12345678",
+        "userName": "장길동",
+        "userImage": "/images/3.jpg",
+        "likedArticles": [],
+        "commentedArticles": [],
+        "dateCreated": "2024-09-13"
+    },
+    {
+        "id": 471662,
+        "type": "user",
+        "account": "dsc0320@hanmail.net",
+        "password": "12345678",
+        "userName": "김길동",
+        "userImage": "/images/4.jpg",
+        "likedArticles": [],
+        "commentedArticles": [],
+        "dateCreated": "2024-09-13"
+    },
+    {
+        "id": 568241,
+        "type": "user",
+        "account": "dsc0320@email.com",
+        "password": "12345678",
+        "userName": "김건담",
+        "userImage": "/images/5.jpg",
+        "likedArticles": [],
+        "commentedArticles": [],
+        "dateCreated": "2024-09-13"
+    }
+]

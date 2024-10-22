@@ -1,0 +1,58 @@
+/* _floatingButton.scss */
+
+#floatButtonContainer {
+    position: fixed;
+    // inset-block-end: -200%;
+    inset-block-end: 1.2rem;
+    inset-inline-end: 1.2rem;
+    z-index: 49999;
+
+    &:focus-within {
+        .floating-opener {
+            border-color: rgb(var(--clr-max) / .25);
+            background-color: rgb(var(--clr-min));
+            scale: .75;
+        }
+
+        @for $i from 1 through 10 {
+            > .floating-button:nth-of-type(#{$i}) {
+                inset-block-end: calc(($i * 100%) + ($i * .4rem));
+                scale: 1;
+                transition-delay: ($i * .1s);
+            }
+        }
+    }
+}
+
+.floating-opener {
+    display: grid;
+    place-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border: 1px solid transparent;
+    border-radius: 25rem;
+    background-color: rgb(var(--clr-min));
+    transition: .25s;
+}
+
+.floating-button {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 25rem;
+    background-color: rgb(var(--clr-surface-20));
+    scale: .5;
+    transition: .25s;
+    z-index: -1;
+}
+
+@media screen and (max-width: 640px) {
+    #floatButtonContainer {
+        inset-block-end: 1.2rem;
+        transition: inset-block-end .5s;
+    }
+}
+
+/* _floatingButton.scss */

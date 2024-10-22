@@ -1,0 +1,69 @@
+/* _articleReply.scss */
+
+.reply-item {
+    padding: .8rem;
+    border: 1px solid transparent;
+    border-radius: .4rem;
+
+    & + & {
+        margin-block-start: .4rem;
+    }
+
+    &:hover {
+        border-color: rgb(var(--clr-tint-100) / .25);
+        background-color: rgb(var(--clr-min));
+
+        .reply-outer-container::before {
+            border-color: rgb(var(--clr-text) / .75);
+        }
+    }
+}
+
+.reply-info-container {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
+}
+
+.reply-date {
+    font-size: var(--fnt-sm);
+    opacity: .5;
+}
+
+.reply-outer-container {
+    display: flex;
+    align-items: flex-start;
+    gap: .4rem;
+    margin-block-start: .4rem;
+
+    &::before {
+        display: block;
+        margin-inline-start: .6rem;
+        width: .6rem;
+        height: .8rem;
+        border-inline-start: 1px solid rgb(var(--clr-text) / .25);
+        border-block-end: 1px solid rgb(var(--clr-text) / .25);
+        border-bottom-left-radius: .2rem;
+        content: '';
+    }
+}
+
+.reply-inner-container {
+
+}
+
+.reply-text {
+    font-size: var(--fnt-lg);
+    line-height: 1.8;
+}
+
+.reply-controls {
+    margin-block-start: .6rem;
+}
+
+/* _articleReply.scss */

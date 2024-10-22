@@ -1,0 +1,64 @@
+/* _landingPage.scss */
+
+#secHero {
+    position: relative;
+    padding: 1.2rem;
+    height: 16rem;
+    border-radius: .4rem;
+    background-color: rgb(var(--clr-min));
+    overflow: hidden;
+
+    &::before {
+        display: block;
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(120deg, rgb(0 0 0 / .5), rgb(0 0 0 / .75));
+        z-index: 1;
+        content: '';
+    }
+
+    &::after {
+        display: block;
+        position: absolute;
+        inset: 1.2rem 2.4rem;
+        margin-inline-start: auto;
+        padding: .4rem .8rem;
+        width: fit-content;
+        height: fit-content;
+        border: 1px solid currentColor;
+        border-radius: .2rem;
+        font-size: var(--fnt-sm);
+        font-weight: 900;
+        opacity: .5;
+        z-index: 1;
+        content: '최근 글';
+    }
+
+    > div {
+        position: absolute;
+        inset: 1.2rem 2.4rem;
+        margin-block-start: auto;
+        width: min(100% - 4.8rem, 24rem);
+        height: fit-content;
+        z-index: 2;
+
+        > p {
+            margin-block-end: .8rem;
+            font-size: 2.4ch;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+    }
+
+    > img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        user-select: none;
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+/* _landingPage.scss */
