@@ -12,8 +12,11 @@
             블로그 관리
         </button>
 
+        
         <button class="floating-button">
-            글쓰기
+            <RouterLink to="/write">
+                글쓰기
+            </RouterLink>
         </button>
 
         <button class="floating-button">
