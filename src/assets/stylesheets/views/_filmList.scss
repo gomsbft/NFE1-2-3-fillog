@@ -8,4 +8,23 @@
 
 }
 
+#filmItemList {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    row-gap: 2.4rem;
+
+    &:has(.movie-item:hover) {
+        .movie-item:not(:hover) {
+            opacity: .5;
+            scale: .95;
+        }
+    }
+}
+
+.movie-item {
+    transition: .25s;
+    transition-delay: .1s;
+}
+
 /* _filmList.scss */

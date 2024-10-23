@@ -1813,6 +1813,22 @@ a, a:visited {
 }
 /* _postDetail.scss */
 /* _filmList.scss */
+#filmItemList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: center;
+  row-gap: 2.4rem;
+}
+#filmItemList:has(.movie-item:hover) .movie-item:not(:hover) {
+  opacity: 0.5;
+  scale: 0.95;
+}
+
+.movie-item {
+  transition: 0.25s;
+  transition-delay: 0.1s;
+}
+
 /* _filmList.scss */
 /* _buttons.scss */
 button {

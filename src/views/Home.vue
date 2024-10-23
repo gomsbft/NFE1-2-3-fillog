@@ -19,7 +19,7 @@
                 최근 리뷰한 영화
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); place-items: center; row-gap: 2.4rem;">
+            <div id="filmItemList">
                 <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" />
             </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
         </section> <!-- #secLatestMovies -->
