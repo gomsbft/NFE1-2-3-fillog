@@ -1815,8 +1815,10 @@ a, a:visited {
 /* _filmList.scss */
 #filmItemList {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
   place-items: center;
+  -moz-column-gap: 1.2rem;
+       column-gap: 1.2rem;
   row-gap: 2.4rem;
 }
 #filmItemList:has(.movie-item:hover) .movie-item:not(:hover) {
@@ -2396,7 +2398,7 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 /* _movieItem.scss */
 .movie-item {
   align-self: start;
-  width: 9.6rem;
+  width: 100%;
 }
 
 .movie-poster-container {
