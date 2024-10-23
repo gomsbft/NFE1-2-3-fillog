@@ -1816,7 +1816,6 @@ a, a:visited {
 #filmItemList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  place-items: center;
   -moz-column-gap: 1.2rem;
        column-gap: 1.2rem;
   row-gap: 2.4rem;
@@ -2397,8 +2396,10 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 /* _articleReply.scss */
 /* _movieItem.scss */
 .movie-item {
+  justify-self: start;
   align-self: start;
   width: 100%;
+  max-width: 12rem;
 }
 
 .movie-poster-container {

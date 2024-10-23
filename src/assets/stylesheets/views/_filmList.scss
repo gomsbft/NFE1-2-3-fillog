@@ -11,7 +11,6 @@
 #filmItemList {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-    place-items: center;
     column-gap: 1.2rem;
     row-gap: 2.4rem;
 

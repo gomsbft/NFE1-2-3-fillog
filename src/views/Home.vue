@@ -5,9 +5,7 @@
                 <img :src="latestPost.images[latestPost.thumbIndex].imageURL" alt="">
 
                 <div>
-                    <p>
-                        {{ latestPost.title }}
-                    </p>
+                    <p>{{ latestPost.title }}</p>
 
                     <UserNameTag :user-id="latestPost.author.userId" />
                 </div>
