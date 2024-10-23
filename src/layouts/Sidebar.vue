@@ -69,26 +69,22 @@
             </button>
         </div> <!-- #sideBlogControls -->
 
-        <div class="rounded">
-            <h6 class="sidebar-hidden">포스트 카테고리</h6>
+        <div id="sideCategory" class="rounded">
+            <h6 class="sidebar-section-title">포스트 카테고리</h6>
 
-            <ul>
-                <li v-for="(menuItem, index) in articleCategory" :key="index">
-                    {{ menuItem }} [{{ postData.filter(post => post.category === parseInt(index)).length }}]
+            <ul class="sidebar-category-container">
+                <li class="sidebar-category-item" v-for="(menuItem, index) in articleCategory" :key="index">
+                    <span>{{ menuItem }}</span> <span>[{{ postData.filter(post => post.category === parseInt(index)).length }}]</span>
                 </li>
             </ul>
-        </div>
+        </div> <!-- #sideCategory -->
 
         <div class="rounded">
-            <h6 class="sidebar-hidden">최근 게시물</h6>
+            <h6 class="sidebar-section-title">최근 게시물</h6>
 
             <ul>
-                <li>ㅏㅓ</li>
+                <li></li>
             </ul>
-        </div>
-
-        <div class="rounded">
-            <p>Since {{ blogBirthday.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</p>
         </div>
     </aside> <!-- #sideBarMain -->
 </template> <!-- Template Ends -->
@@ -101,7 +97,6 @@
     import postData from '../datas/postData.json';
 
     const blogOwner = userData.find(user => user.id === parseInt(blogInfo.adminId) && user.type === 'admin');
-    const blogBirthday = new Date(blogInfo.createdDate);
 
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const thisUser = ref(123125); // 임시 로그인 유저 정보

@@ -82,6 +82,77 @@
     }
 }
 
+.page-title {
+    font-size: var(--fnt-title-md);
+    font-weight: 200;
+}
+
+.page-filter-container {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding-block: .8rem;
+}
+
+.page-filter-type-label {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+    font-size: var(--fnt-sm);
+    opacity: .5;
+
+    > .remix {
+        width: .8rem;
+    }
+}
+
+.page-filter-wrapper {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.button-filter-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: .8rem;
+    height: 1.6rem;
+    border: 1px solid rgb(var(--clr-max) / .15);
+    border-radius: 25rem;
+    background-color: rgb(var(--clr-min));
+    font-size: var(--fnt-sm);
+
+    &:hover {
+        background-color: rgb(var(--clr-max) / .1);
+        box-shadow:
+            inset .2rem .2rem .2rem rgb(255 255 255 / .05),
+            inset -.2rem -.2rem .2rem rgb(0 0 0 / .25);
+    }
+
+    &.active {
+        border-color: rgb(var(--clr-min) / .15);
+        background-color: rgb(var(--clr-max));
+        color: rgb(var(--clr-text-on-tint));
+        font-weight: 700;
+        pointer-events: none;
+    }
+}
+
+.empty-item-list {
+    display: grid;
+    place-items: center;
+    height: 4.8rem;
+    opacity: .5;
+    user-select: none;
+    pointer-events: none;
+
+    > .remix {
+        width: 2.4rem;
+        opacity: .5;
+    }
+}
+
 /* 반응형 쿼리 */
 
 @container main-container (max-width: 960px) {

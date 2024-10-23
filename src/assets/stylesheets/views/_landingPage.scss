@@ -1,6 +1,18 @@
 /* _landingPage.scss */
 
-#secHero {
+#landingPage {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1.2rem;
+}
+
+.section-title-bar {
+    margin-block: 1.2rem;
+    font-size: var(--fnt-title-md);
+    font-weight: 700;
+}
+
+#heroContent {
     position: relative;
     padding: 1.2rem;
     height: 16rem;
@@ -59,6 +71,10 @@
         pointer-events: none;
         z-index: 0;
     }
+}
+
+#secLatestMovies {
+
 }
 
 /* _landingPage.scss */

@@ -54,7 +54,7 @@
 
         <div id="articleText" v-dompurify-html="thisArticle.text"></div> <!-- #articleText -->
 
-        <MediaInfo :media-object="null" />
+        <MediaInfo v-if="thisArticle.movieID !== null" :movie-id="thisArticle.movieID" />
 
         <div id="postControls">
             <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);">
@@ -65,7 +65,7 @@
                 <span>좋아요</span>
             </button>
 
-            <button type="button" class="button-post-controls" title="미디어" style="--button-icon-color: var(--clr-clear);">
+            <button type="button" class="button-post-controls" title="영화 정보" style="--button-icon-color: var(--clr-clear);">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-line"></use>
                 </svg>
