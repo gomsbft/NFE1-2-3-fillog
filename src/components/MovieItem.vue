@@ -2,7 +2,7 @@
     <article class="movie-item">
         <div class="movie-poster-container">
             <svg class="remix">
-                <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-line"></use>
+                <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-fill"></use>
             </svg>
 
             <img class="movie-poster-image" v-if="currentMovie.poster_path" :src="`https://image.tmdb.org/t/p/original/${ currentMovie.poster_path }` ?? null" :alt="`영화 <${ currentMovie.title }>의 포스터 이미지`">
