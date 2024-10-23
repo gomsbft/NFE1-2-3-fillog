@@ -41,7 +41,7 @@ const router = createRouter({ // 라우터 정의
                     }
                 },
                 { // 포스트 작성
-                    path: 'write',
+                    path: '/write',
                     component: () => import('./views/require-auth/PostWrite.vue'),
                     meta: {
                         breadcrumb: [
