@@ -83,7 +83,10 @@
     <div id="articleText" v-dompurify-html="thisArticle.text"></div>
     <!-- #articleText -->
 
-    <MediaInfo :media-object="null" />
+    <MediaInfo
+      v-if="thisArticle.movieID !== null"
+      :movie-id="thisArticle.movieID"
+    />
 
     <div id="postControls">
       <button
@@ -103,7 +106,7 @@
       <button
         type="button"
         class="button-post-controls"
-        title="미디어"
+        title="영화 정보"
         style="--button-icon-color: var(--clr-clear)"
       >
         <svg class="remix">

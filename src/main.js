@@ -20,21 +20,25 @@ register(); // Swiper Element 등록
 import ButtonWithIcon from './components/elements/ButtonWithIcon.vue'; // 아이콘이 있는 버튼 (버튼 기본형)
 import UserNameTag from './components/elements/UserNameTag.vue'; // 사용자 네임 태그
 import SpinLoader from './components/commons/SpinLoader.vue'; // 로딩 표시기
+import EmptyList from './components/commons/EmptyList.vue'; // 빈 목록 표시기
 import CustomAlert from './components/CustomAlert.vue'; // 커스텀 얼럿
 import ImageViewer from './components/ImageViewer.vue'; // 슬라이더 이미지 뷰어
+import MovieItem from './components/MovieItem.vue'; // 영화 정보 카드 아이템
 
 // Import - Global Components (mount 이전에 선언되어야 함)
 
 myProject.component('ButtonWithIcon', ButtonWithIcon);
 myProject.component('UserNameTag', UserNameTag);
 myProject.component('SpinLoader', SpinLoader);
+myProject.component('EmptyList', EmptyList);
 myProject.component('CustomAlert', CustomAlert);
 myProject.component('ImageViewer', ImageViewer);
+myProject.component('MovieItem', MovieItem);
 
 // 앱 정의
 
 myProject
-    .use(router)
     .use(pinia)
+    .use(router)
     .use(VueDOMPurifyHTML)
     .mount('#app')

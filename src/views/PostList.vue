@@ -1,29 +1,33 @@
 <template>
     <div id="postList">
-        <div id="postFilter">
-            <label for="lstCategory">
+        <h1 class="page-title">포스트</h1>
+
+        <div id="postFilter" class="page-filter-container">
+            <label for="lstCategory" class="page-filter-type-label">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-equalizer-line"></use>
                 </svg>
 
-                <span>카테고리</span>
+                <span>검색 조건</span>
             </label>
 
-            <select name="list-category" id="lstCategory">
-                <option value="all">전체</option>
-                <option v-for="(catItem, index) in postCategory" :key="index" :value="index">{{ catItem }}</option>
-            </select>
+            <div class="page-filter-wrapper">
+                <select name="list-category" id="lstCategory">
+                    <option value="all">전체</option>
+                    <option v-for="(catItem, index) in postCategory" :key="index" :value="index">{{ catItem }}</option>
+                </select> <!-- #lstCategory -->
 
-            <div id="totalSearchContainer">
-                <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
+                <div id="totalSearchContainer">
+                    <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
 
-                <ButtonWithIcon element-id="btnTotalSearch" icon-position="only" icon-name="search-2-line" @click="console.log(searchKeyword)">
-                    검색
-                </ButtonWithIcon>
-            </div> <!-- #totalSearchContainer -->
+                    <ButtonWithIcon element-id="btnTotalSearch" icon-position="only" icon-name="search-2-line" @click="console.log(searchKeyword)">
+                        검색
+                    </ButtonWithIcon>
+                </div> <!-- #totalSearchContainer -->
+            </div>
         </div> <!-- #postFilter -->
 
-        <ul id="postItemList" v-if="postData">
+        <ul id="postItemList" v-if="postData.length > 0">
             <li class="article-item" v-for="article in postData" :key="article.id">
                 <div class="article-item-image-container">
                     <RouterLink :to="`/posts/${ article.id }`">
@@ -67,9 +71,7 @@
             </li>
         </ul> <!-- #postItemList -->
 
-        <div v-else>
-            게시물이 없습니다.
-        </div>
+        <EmptyList v-else />
     </div> <!-- #postList -->
 </template> <!-- Template Ends -->
 
