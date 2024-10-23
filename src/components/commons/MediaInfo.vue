@@ -12,7 +12,7 @@
             </dt>
 
             <dd class="media-info-point" data-media-info-label="평점">
-                <p>{{ currentMovie.vote_average }} 점 (총 {{ currentMovie.vote_count }} 건의 평가)</p>
+                <p>{{ currentMovie.vote_average }} 점 (총 {{ currentMovie.vote_count.toLocaleString('ko-KR') }} 건의 평가)</p>
             </dd>
 
             <dd class="media-info-directors" data-media-info-label="감독">
@@ -28,7 +28,7 @@
             </dd>
         </dl>
 
-        <img class="media-info-backdrop-image" :src="`https://image.tmdb.org/t/p/original/${ currentMovie.backdrop_path }` ?? null" :alt="`영화 <${ currentMovie.title }>의 주요 장면`">
+        <img class="media-info-backdrop-image" v-if="currentMovie.backdrop_path" :src="`https://image.tmdb.org/t/p/original/${ currentMovie.backdrop_path }` ?? null" :alt="`영화 <${ currentMovie.title }>의 주요 장면`">
     </div> <!-- #mediaInfoContainer -->
 </template> <!-- Template Ends -->
 
