@@ -13,7 +13,7 @@
                 {{ currentMovie.title ?? '(알 수 없음)' }}
             </p>
 
-            <p class="movie-info-release">{{ new Date(currentMovie.release_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) ?? '(알 수 없음)' }}</p>
+            <p class="movie-info-release">{{ new Date(currentMovie.release_date).getFullYear() + ' 년' ?? '(알 수 없음)' }}</p>
 
             <div class="movie-info-genre">
                 <span v-for="genre in currentMovie.genres" :key="genre.id">
@@ -32,5 +32,5 @@
     import { getMovieInfo } from '../utilities/dataQueries';
 
     const props = defineProps([ 'movieId' ]);
-    const currentMovie = await getMovieInfo(props.movieId); // API 요청이 Async일 때는 받는 쪽에서 Await로 받아야 한다.
+    const currentMovie = await getMovieInfo(props.movieId);
 </script> <!-- Logic Ends -->

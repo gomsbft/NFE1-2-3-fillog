@@ -8,27 +8,4 @@
 
 }
 
-.button-genre-selector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-inline: .8rem;
-    height: 1.6rem;
-    border: 1px solid rgb(var(--clr-max) / .15);
-    border-radius: 25rem;
-    background-color: rgb(var(--clr-min));
-    font-size: var(--fnt-sm);
-
-    &:hover {
-        background-color: rgb(var(--clr-max) / .1);
-    }
-
-    &.active {
-        border-color: rgb(var(--clr-min) / .15);
-        background-color: rgb(var(--clr-max));
-        color: rgb(var(--clr-text-on-tint));
-        font-weight: 700;
-    }
-}
-
 /* _filmList.scss */

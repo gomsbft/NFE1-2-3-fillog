@@ -8,7 +8,7 @@
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-equalizer-line"></use>
                 </svg>
 
-                <span>카테고리</span>
+                <span>검색 조건</span>
             </label>
 
             <div class="page-filter-wrapper">
@@ -27,7 +27,7 @@
             </div>
         </div> <!-- #postFilter -->
 
-        <ul id="postItemList" v-if="postData">
+        <ul id="postItemList" v-if="postData.length > 0">
             <li class="article-item" v-for="article in postData" :key="article.id">
                 <div class="article-item-image-container">
                     <RouterLink :to="`/posts/${ article.id }`">
@@ -71,9 +71,7 @@
             </li>
         </ul> <!-- #postItemList -->
 
-        <div v-else>
-            게시물이 없습니다.
-        </div>
+        <EmptyList v-else />
     </div> <!-- #postList -->
 </template> <!-- Template Ends -->
 

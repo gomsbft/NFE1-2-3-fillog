@@ -12,30 +12,30 @@
             </label>
 
             <div id="filmGenreContainer" class="page-filter-wrapper">
-                <button type="button" class="button-genre-selector active">
+                <button type="button" class="button-filter-selector active">
                     분류 없음
                 </button>
 
-                <button type="button" class="button-genre-selector">
+                <button type="button" class="button-filter-selector">
                     코미디
                 </button>
 
-                <button type="button" class="button-genre-selector">
+                <button type="button" class="button-filter-selector">
                     호러
                 </button>
             </div> <!-- #filmGenreContainer -->
         </div> <!-- #filmGenres -->
 
-        <div class="empty-item-list">
-            <svg class="remix">
-                <use xlink:href="/miscs/remixicon.symbol.svg#ri-ghost-line"></use>
-            </svg>
+        <ul id="filmItemList" v-if="myFilmList.length > 0">
 
-            <p>아직 게시물이 없어요.</p>
-        </div>
+        </ul> <!-- #filmItemList -->
+
+        <EmptyList v-else />
     </div> <!-- #filmList -->
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { getMovieInfo } from '../utilities/dataQueries';
 
+    const myFilmList = [];
 </script> <!-- Logic Ends -->

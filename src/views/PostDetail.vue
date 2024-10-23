@@ -54,7 +54,7 @@
 
         <div id="articleText" v-dompurify-html="thisArticle.text"></div> <!-- #articleText -->
 
-        <MediaInfo :media-object="null" />
+        <MediaInfo v-if="thisArticle.movieID !== null" :movie-id="thisArticle.movieID" />
 
         <div id="postControls">
             <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);">

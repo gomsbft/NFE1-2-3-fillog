@@ -22,7 +22,7 @@ export const getMovieInfo = async (movieID) => { // 특정 ID의 영화 정보 �
             params: {
                 api_key: import.meta.env.VITE_MOVIE_API_KEY, // 수정 필요 - .local 파일로 변경하여 커밋되지 않도록 해야 함
                 language: 'ko-KR',
-                append_to_response: 'videos,images'
+                append_to_response: 'videos,images,credits'
             },
             responseType: 'json'
         });

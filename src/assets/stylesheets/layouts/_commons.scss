@@ -112,6 +112,33 @@
     gap: .4rem;
 }
 
+.button-filter-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: .8rem;
+    height: 1.6rem;
+    border: 1px solid rgb(var(--clr-max) / .15);
+    border-radius: 25rem;
+    background-color: rgb(var(--clr-min));
+    font-size: var(--fnt-sm);
+
+    &:hover {
+        background-color: rgb(var(--clr-max) / .1);
+        box-shadow:
+            inset .2rem .2rem .2rem rgb(255 255 255 / .05),
+            inset -.2rem -.2rem .2rem rgb(0 0 0 / .25);
+    }
+
+    &.active {
+        border-color: rgb(var(--clr-min) / .15);
+        background-color: rgb(var(--clr-max));
+        color: rgb(var(--clr-text-on-tint));
+        font-weight: 700;
+        pointer-events: none;
+    }
+}
+
 .empty-item-list {
     display: grid;
     place-items: center;
