@@ -4,6 +4,8 @@ import Home from './views/Home.vue';
 import PostList from './views/PostList.vue';
 import FilmList from './views/FilmList.vue';
 import GuestBook from './views/GuestBook.vue';
+import Login from './views/require-auth/Login.vue'
+import Register from './views/require-auth/Register.vue'
 
 const router = createRouter({ // 라우터 정의
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +17,24 @@ const router = createRouter({ // 라우터 정의
             meta: {
                 breadcrumb: [
                     { name: 'Home' }
+                ]
+            }
+        },
+        { // 로그인
+            path: '/login',
+            component: Login,
+            meta: {
+                breadcrumb: [
+                    { name: 'Login' }
+                ]
+            }
+        },
+        { // 회원가입
+            path: '/register',
+            component: Register,
+            meta: {
+                breadcrumb: [
+                    { name: 'register' }
                 ]
             }
         },
