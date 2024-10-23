@@ -26,8 +26,10 @@
             </div> <!-- #filmGenreContainer -->
         </div> <!-- #filmGenres -->
 
-        <ul id="filmItemList" v-if="myFilmList.length > 0">
-
+        <ul id="filmItemList" v-if="featuredMovies.length > 0">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); place-items: center; row-gap: 2.4rem;">
+                <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" />
+            </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
         </ul> <!-- #filmItemList -->
 
         <EmptyList v-else />
@@ -35,7 +37,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { getMovieInfo } from '../utilities/dataQueries';
+    import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
-    const myFilmList = [];
+    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item.id } }).filter(item => !!item);
 </script> <!-- Logic Ends -->

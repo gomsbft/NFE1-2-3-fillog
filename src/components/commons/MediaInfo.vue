@@ -1,4 +1,6 @@
 <template>
+    <p class="media-info-container-label">이 포스트에서 리뷰한 영화</p>
+
     <div id="mediaInfoContainer">
         <div class="media-info-poster-container">
             <img class="media-info-poster-image" :src="`https://image.tmdb.org/t/p/original/${ currentMovie.poster_path }` ?? null" :alt="`영화 <${ currentMovie.title }>의 포스터 이미지`">
@@ -35,9 +37,7 @@
 
     const props = defineProps([ 'movieId' ]);
     const currentMovie = await getMovieInfo(props.movieId);
-
     const movieDirector = currentMovie.credits.crew.filter(({ job }) => job === 'Director');
 
-    console.log(movieDirector);
     console.log(currentMovie);
 </script> <!-- Logic Ends -->

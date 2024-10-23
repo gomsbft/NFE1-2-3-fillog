@@ -1,5 +1,39 @@
 /* _mediaInfo.scss */
 
+.media-info-container-label {
+    position: relative;
+    margin-inline: auto 1.2rem;
+    padding: .4rem .8rem;
+    width: fit-content;
+    background-color: rgb(var(--clr-surface-20));
+    color: rgb(var(--clr-max));
+    font-size: var(--fnt-sm);
+    user-select: none;
+
+    &::before,
+    &::after {
+        display: block;
+        position: absolute;
+        inset-block: 0;
+        width: .8rem;
+        background-color: inherit;
+        z-index: -1;
+        content: '';
+    }
+
+    &::before {
+        inset-inline-end: calc(100% - .4rem);
+        border-top-left-radius: .2rem;
+        transform: skewX(-15deg);
+    }
+
+    &::after {
+        inset-inline-start: calc(100% - .4rem);
+        border-top-right-radius: .2rem;
+        transform: skewX(15deg);
+    }
+}
+
 #mediaInfoContainer {
     display: flex;
     gap: 1.2rem;

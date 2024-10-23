@@ -19,22 +19,19 @@
                 최근 리뷰한 영화
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); place-items: center; row-gap: 2.4rem;">
-                <MovieItem :movie-id="381" />
-                <MovieItem :movie-id="500" />
-                <MovieItem :movie-id="550" />
-                <MovieItem :movie-id="12" />
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); place-items: center; row-gap: 2.4rem;">
+                <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" />
             </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
         </section> <!-- #secLatestMovies -->
     </div> <!-- #landingPage -->
 </template> <!-- Template Ends -->
 
 <script setup>
-    import axios from 'axios';
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     const latestPost = postData[postData.length - 1]; // 가장 최근 글
-    const searchUrl = 'https://api.themoviedb.org/3/search/movie?query=' // 검색 예시
+    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item.id } }).filter(item => !!item);
+    const searchUrl = 'https://api.themoviedb.org/3/search/movie?query=' // 영화 검색 API
 </script> <!-- Logic Ends -->
