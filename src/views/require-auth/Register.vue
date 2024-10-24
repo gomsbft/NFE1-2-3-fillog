@@ -18,17 +18,17 @@
       </div>
       <div>
         <label for="password">password:</label>
-        <input v-model="form.password" id="password" type="text" required />
+        <input v-model="form.password" id="password" type="password" required />
       </div>
       <div>
         <label for="userName">username:</label>
-        <input v-model="form.username" id="userName" type="text" required />
+        <input v-model="form.userName" id="userName" type="text" required />
       </div>
       <div>
         <label for="userImage">userImage:</label>
         <img src="" alt="">
         <input @change="imgUplod"  type="file" id="userImage" accept="image/jpeg, image/png, image/webp">
-        <img :src="previewImageUrl" alt="이미지 미리보기" />
+        <img :src="previewImageUrl || ''" alt="이미지 미리보기" />
       </div>
       <button type="submit">Register</button>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
@@ -91,9 +91,15 @@
       formData.append('password', form.password);
       formData.append('userName', form.userName);
       formData.append('userImage', form.userImage);
-  
+      formData.append('commentedArticles', form.commentedArticles);
+
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+
       // 서버로 회원가입 요청을 보냅니다.
-      const response = await axios.post('http://localhost:4000/user', formData, {
+      const response = await axios.post('http://localhost:3000/register', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // 파일 업로드 시 multipart/form-data 설정 필요
         },
