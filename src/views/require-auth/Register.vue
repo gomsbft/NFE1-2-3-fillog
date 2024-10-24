@@ -10,7 +10,7 @@
 
 
 <template>
-  <div>
+  <div class="container">
     <form @submit.prevent="register">
       <div>
         <label for="account">account:</label>
@@ -113,3 +113,8 @@
     }
   };
 </script>
+
+
+<style lang="scss" scoped>
+
+</style>
