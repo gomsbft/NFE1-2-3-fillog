@@ -27,7 +27,7 @@
         </div> <!-- #filmGenres -->
 
         <ul id="filmItemList" v-if="featuredMovies.length > 0">
-            <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" />
+            <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" :article-id="movie.articleID" />
         </ul> <!-- #filmItemList -->
 
         <EmptyList v-else />
