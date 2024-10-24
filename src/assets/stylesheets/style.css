@@ -1267,21 +1267,24 @@ a, a:visited {
   gap: 1.2rem;
 }
 
-.section-title-bar {
-  margin-block: 1.2rem;
-  font-size: var(--fnt-title-md);
-  font-weight: 700;
+#heroSliderContainer {
+  position: relative;
 }
 
-#heroContent {
+#heroSlider {
+  height: 16rem;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero-slide {
   position: relative;
   padding: 1.2rem;
-  height: 16rem;
   border-radius: 0.4rem;
   background-color: rgb(var(--clr-min));
   overflow: hidden;
 }
-#heroContent::before {
+.hero-slide::before {
   display: block;
   position: absolute;
   inset: 0;
@@ -1289,7 +1292,7 @@ a, a:visited {
   z-index: 1;
   content: "";
 }
-#heroContent::after {
+.hero-slide::after {
   display: block;
   position: absolute;
   inset: 1.2rem 2.4rem;
@@ -1307,7 +1310,7 @@ a, a:visited {
   z-index: 1;
   content: "최근 글";
 }
-#heroContent > div {
+.hero-slide > div {
   position: absolute;
   inset: 1.2rem 2.4rem;
   margin-block-start: auto;
@@ -1316,13 +1319,13 @@ a, a:visited {
   height: fit-content;
   z-index: 2;
 }
-#heroContent > div > p {
+.hero-slide > div > p {
   margin-block-end: 0.8rem;
   font-size: 2.4ch;
   font-weight: 700;
   line-height: 1.2;
 }
-#heroContent > img {
+.hero-slide > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1332,6 +1335,50 @@ a, a:visited {
           user-select: none;
   pointer-events: none;
   z-index: 0;
+}
+
+.hero-slider-pagination {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 0.4rem;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 1.2rem;
+  margin-block: auto;
+  height: -moz-fit-content;
+  height: fit-content;
+  z-index: 1;
+}
+.hero-slider-pagination > .swiper-pagination-bullet {
+  display: block;
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 25rem;
+  background-color: rgb(var(--clr-max)/0.5);
+  transition: 0.25s;
+}
+.hero-slider-pagination > .swiper-pagination-bullet-active {
+  width: 0.4rem;
+  height: 0.4rem;
+  background-color: rgb(var(--clr-theme));
+  outline: 0.2rem solid rgb(var(--clr-tint-0)/0.25);
+}
+
+.section-title-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-block-end: 1.2rem;
+  font-size: var(--fnt-xl);
+  font-weight: 700;
+}
+.section-title-bar::before {
+  width: 1.2rem;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.5;
+  content: "";
 }
 
 /* _landingPage.scss */

@@ -1,15 +1,25 @@
 <template>
     <div id="landingPage">
         <section id="secHero">
-            <div id="heroContent">
-                <img :src="latestPost.images[latestPost.thumbIndex].imageURL" alt="">
+            <div class="section-title-bar">
+                최근 작성한 포스트
+            </div>
 
-                <div>
-                    <p>{{ latestPost.title }}</p>
+            <div id="heroSliderContainer">
+                <swiper-container id="heroSlider" v-bind="swiperParams">
+                    <swiper-slide class="hero-slide" v-for="article in latestPosts">
+                        <img :src="article.images[article.thumbIndex].imageURL" alt="">
 
-                    <UserNameTag :user-id="latestPost.author.userId" />
-                </div>
-            </div> <!-- 아마도 슬라이더로 변경될 예정 -->
+                        <div>
+                            <p>{{ article.title }}</p>
+
+                            <UserNameTag :user-id="article.author.userId" />
+                        </div>
+                    </swiper-slide>
+                </swiper-container> <!-- #heroSlider -->
+
+                <div class="hero-slider-pagination"></div>
+            </div> <!-- #heroSliderContainer -->
         </section> <!-- #secHero -->
 
         <section id="secLatestMovies">
@@ -25,12 +35,26 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import StarPoints from '../components/elements/StarPoints.vue';
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
-    postData.sort((a, b) => new Date(a.date) - new Date(b.date));
+    postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    const latestPost = postData[postData.length - 1]; // 가장 최근 글
-    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item.id } }).filter(item => !!item);
-    const searchUrl = 'https://api.themoviedb.org/3/search/movie?query=' // 영화 검색 API
+    const latestPosts = postData.slice(0, 5); // 가장 최근 글
+    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item.id } }).filter(item => !!item).slice(0, 10);
+
+    const swiperParams = {
+        effect: 'coverflow',
+        direction: 'vertical',
+        spaceBetween: 24,
+        loop: true,
+        autoplay: {
+            speed: 250,
+            delay: 6000
+        },
+        pagination: {
+            enabled: true,
+            type: 'bullets',
+            el: '.hero-slider-pagination',
+        }
+    };
 </script> <!-- Logic Ends -->

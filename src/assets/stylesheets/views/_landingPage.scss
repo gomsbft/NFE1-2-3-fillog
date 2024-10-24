@@ -6,16 +6,23 @@
     gap: 1.2rem;
 }
 
-.section-title-bar {
-    margin-block: 1.2rem;
-    font-size: var(--fnt-title-md);
-    font-weight: 700;
+#secHero {
+
 }
 
-#heroContent {
+#heroSliderContainer {
+    position: relative;
+}
+
+#heroSlider {
+    height: 16rem;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.hero-slide {
     position: relative;
     padding: 1.2rem;
-    height: 16rem;
     border-radius: .4rem;
     background-color: rgb(var(--clr-min));
     overflow: hidden;
@@ -73,8 +80,54 @@
     }
 }
 
+.hero-slider-pagination {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: .4rem;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 1.2rem;
+    margin-block: auto;
+    height: fit-content;
+    z-index: 1;
+
+    > .swiper-pagination-bullet {
+        display: block;
+        width: .2rem;
+        height: .2rem;
+        border-radius: 25rem;
+        background-color: rgb(var(--clr-max) / .5);
+        transition: .25s;
+
+        &-active {
+            width: .4rem;
+            height: .4rem;
+            background-color: rgb(var(--clr-theme));
+            outline: .2rem solid rgb(var(--clr-tint-0) / .25);
+        }
+    }
+}
+
 #secLatestMovies {
 
+}
+
+.section-title-bar {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-block-end: 1.2rem;
+    font-size: var(--fnt-xl);
+    font-weight: 700;
+
+    &::before {
+        width: 1.2rem;
+        height: 1px;
+        background-color: currentColor;
+        opacity: .5;
+        content: '';
+    }
 }
 
 /* _landingPage.scss */

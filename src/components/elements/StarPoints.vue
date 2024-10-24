@@ -21,5 +21,5 @@
 <script setup>
     const props = defineProps([ 'averagePoint' ]);
 
-    const fixedPoint = props.averagePoint.toFixed(2);
+    const fixedPoint = props.averagePoint.toFixed(1);
 </script> <!-- Logic Ends -->

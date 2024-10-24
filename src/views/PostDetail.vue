@@ -37,7 +37,7 @@
                 <span>·</span>
 
                 <p class="article-info-date">
-                    {{ new Date(thisArticle.date).toLocaleDateString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" }) }}
+                    {{ new Date(thisArticle.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
                 </p>
 
                 <span>·</span>
@@ -160,15 +160,15 @@
         spaceBetween: 24,
         navigation: {
             enabled: true,
-            prevEl: ".slider-prev-el",
-            nextEl: ".slider-next-el",
+            prevEl: '.slider-prev-el',
+            nextEl: '.slider-next-el',
         },
         pagination: {
             enabled: true,
-            type: "bullets",
+            type: 'bullets',
             // dynamicBullets: true, // 이미지가 아주 많을 때, pagination bullet 컨테이너를 슬라이더처럼 작동시킴
             // dynamicMainBullets: 7,
-            el: ".slider-pagination",
+            el: '.slider-pagination',
         },
     };
 
@@ -185,6 +185,10 @@
         e.preventDefault();
         console.log(thisArticle.comments);
 
+        if (!!commentText.value === false) {
+            return console.log('댓글 내용 없음');
+        }
+
         thisArticle.comments.push({
             id: Math.floor(Math.random() * 1000000), // 임시 데이터
             userId: 1, // 임시 데이터, 유저 id로 변경 예정
@@ -195,6 +199,4 @@
 
         commentText.value = '';
     };
-
-    console.log(thisArticle.comments);
 </script> <!-- Logic Ends -->
