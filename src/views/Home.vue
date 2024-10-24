@@ -18,13 +18,14 @@
             </div>
 
             <div id="filmItemList">
-                <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" />
+                <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" :article-id="movie.articleID" />
             </div> <!-- 임시 영화 정보 아이템 컨테이너 -->
         </section> <!-- #secLatestMovies -->
     </div> <!-- #landingPage -->
 </template> <!-- Template Ends -->
 
 <script setup>
+    import StarPoints from '../components/elements/StarPoints.vue';
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(a.date) - new Date(b.date));

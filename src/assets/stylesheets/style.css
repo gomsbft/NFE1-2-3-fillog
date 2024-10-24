@@ -1825,11 +1825,6 @@ a, a:visited {
   scale: 0.95;
 }
 
-.movie-item {
-  transition: 0.25s;
-  transition-delay: 0.1s;
-}
-
 /* _filmList.scss */
 /* _buttons.scss */
 button {
@@ -2400,6 +2395,11 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   align-self: start;
   width: 100%;
   max-width: 12rem;
+  transition: 0.25s;
+  transition-delay: 0.1s;
+}
+.movie-item > a {
+  display: contents;
 }
 
 .movie-poster-container {
@@ -2439,6 +2439,16 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 .movie-info-title {
   font-size: var(--fnt-xl);
   line-height: 1.4;
+}
+
+.movie-info-minors {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.movie-info-minors > span {
+  font-weight: 900;
+  opacity: 0.5;
 }
 
 .movie-info-release {
@@ -2529,16 +2539,26 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 
 .media-info-poster-container {
   flex-shrink: 0;
+  position: relative;
   width: 9.6rem;
   height: -moz-fit-content;
   height: fit-content;
   aspect-ratio: 3/4;
   border-radius: 0.2rem;
+  background-color: #333;
   isolation: isolate;
   overflow: hidden;
 }
+.media-info-poster-container > .remix {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 2.4rem;
+}
 
 .media-info-poster-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 }
@@ -2599,3 +2619,57 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   }
 }
 /* _mediaInfo.scss */
+/* _starPoints.scss */
+.star-point-container {
+  --point-percentage: 0%;
+  --star-size: var(--fnt-md);
+  position: relative;
+  width: -moz-fit-content;
+  width: fit-content;
+  cursor: help;
+}
+.star-point-container::after {
+  display: none;
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(100% + 0.2rem);
+  margin-inline: auto;
+  padding: 0.2rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 0.2rem;
+  background-color: rgb(0, 0, 0);
+  font-size: var(--fnt-sm);
+  content: "평균 " attr(data-point) " 점";
+}
+.star-point-container:hover::after {
+  display: block;
+}
+
+.star-point-base {
+  display: flex;
+  flex-flow: row nowrap;
+  color: gray;
+  z-index: 0;
+}
+
+.star-point-progress {
+  display: flex;
+  flex-flow: row nowrap;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--point-percentage);
+  color: rgb(var(--clr-warn));
+  overflow: hidden;
+}
+
+.star-point {
+  display: block;
+  aspect-ratio: 1/1;
+}
+.star-point .remix {
+  width: var(--star-size);
+}
+
+/* _starPoints.scss */

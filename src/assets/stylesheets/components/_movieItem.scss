@@ -5,6 +5,12 @@
     align-self: start;
     width: 100%;
     max-width: 12rem;
+    transition: .25s;
+    transition-delay: .1s;
+
+    > a {
+        display: contents;
+    }
 }
 
 .movie-poster-container {
@@ -43,6 +49,17 @@
 .movie-info-title {
     font-size: var(--fnt-xl);
     line-height: 1.4;
+}
+
+.movie-info-minors {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
 }
 
 .movie-info-release {
