@@ -8,13 +8,17 @@
             <div id="heroSliderContainer">
                 <swiper-container id="heroSlider" v-bind="swiperParams">
                     <swiper-slide class="hero-slide" v-for="article in latestPosts">
-                        <img :src="article.images[article.thumbIndex].imageURL" alt="">
+                        <RouterLink :to="`posts/${ article.id }`">
+                            <img class="latest-article-thumbnail" v-if="article.images.length > 0" :src="article.images[article.thumbIndex].imageURL" alt="">
 
-                        <div>
-                            <p>{{ article.title }}</p>
+                            <div class="latest-article-thumbnail no-image" v-else></div>
 
-                            <UserNameTag :user-id="article.author.userId" />
-                        </div>
+                            <div class="latest-article-text">
+                                <p class="latest-article-title">{{ article.title }}</p>
+
+                                <UserNameTag :user-id="article.author.userId" />
+                            </div>
+                        </RouterLink>
                     </swiper-slide>
                 </swiper-container> <!-- #heroSlider -->
 
@@ -35,6 +39,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { RouterLink } from 'vue-router';
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(b.date) - new Date(a.date));
