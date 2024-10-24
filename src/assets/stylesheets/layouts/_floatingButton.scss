@@ -12,6 +12,10 @@
             background-color: rgb(var(--clr-min));
             color: rgb(var(--clr-max));
             scale: .75;
+
+            > .remix {
+                rotate: 360deg 0 0;
+            }
         }
 
         @for $i from 1 through 10 {
@@ -35,6 +39,11 @@
     box-shadow: 0 .8rem 1.2rem -.4rem rgb(0 0 0 / .5);
     color: rgb(var(--clr-if-0));
     transition: .25s;
+
+    > .remix {
+        rotate: 45deg 0 0;
+        transition: rotate .25s;
+    }
 }
 
 .floating-button {

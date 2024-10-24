@@ -6,10 +6,6 @@
     gap: 1.2rem;
 }
 
-#secHero {
-
-}
-
 #heroSliderContainer {
     position: relative;
 }
@@ -127,10 +123,6 @@
     }
 }
 
-#secLatestMovies {
-
-}
-
 .section-title-bar {
     display: flex;
     align-items: center;
@@ -149,10 +141,6 @@
 }
 
 /* 반응형 쿼리 */
-
-@container main-container (max-width: 960px) {
-
-}
 
 @container main-container (max-width: 640px) {
     .hero-slide {
