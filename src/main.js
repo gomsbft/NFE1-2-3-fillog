@@ -41,7 +41,7 @@ myProject.component('MovieItem', MovieItem);
 
 // 앱 정의
 
-if (JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme === true) {
+if (JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme === true) { // 다크 테마 체크
     document.querySelector('html').classList.add('dark');
 } else {
     document.querySelector('html').classList.add('light');
