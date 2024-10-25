@@ -2,8 +2,7 @@
 
 #floatButtonContainer {
     position: fixed;
-    // inset-block-end: -200%;
-    inset-block-end: 1.2rem;
+    inset-block-end: -200%;
     inset-inline-end: 1.2rem;
     z-index: 49999;
 
@@ -11,7 +10,12 @@
         .floating-opener {
             border-color: rgb(var(--clr-max) / .25);
             background-color: rgb(var(--clr-min));
+            color: rgb(var(--clr-max));
             scale: .75;
+
+            > .remix {
+                rotate: 360deg 0 0;
+            }
         }
 
         @for $i from 1 through 10 {
@@ -31,8 +35,15 @@
     height: 3.6rem;
     border: 1px solid transparent;
     border-radius: 25rem;
-    background-color: rgb(var(--clr-min));
+    background-color: rgb(var(--clr-tint-0));
+    box-shadow: 0 .8rem 1.2rem -.4rem rgb(0 0 0 / .5);
+    color: rgb(var(--clr-if-0));
     transition: .25s;
+
+    > .remix {
+        rotate: 45deg 0 0;
+        transition: rotate .25s;
+    }
 }
 
 .floating-button {
@@ -47,6 +58,8 @@
     transition: .25s;
     z-index: -1;
 }
+
+/* 반응형 쿼리 */
 
 @media screen and (max-width: 640px) {
     #floatButtonContainer {

@@ -1,16 +1,16 @@
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-export const useUserStore = defineStore('currentUser', {
-    state: () => {
-        return {
-            userName: '홍길동'
-        }
-    },
-    actions: {
-        setUser(userObject) {
-            this.userName = userObject.userName;
-        }
+export const useUserStore = defineStore('currentUser', () => {
+    const state = ref({
+        userName: '홍길동'
+    });
+
+    const setUser = (userObject) => {
+        state.value = userObject;
     }
+
+    return { state, setUser }
 });
 
 /**

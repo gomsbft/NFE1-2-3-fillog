@@ -1,0 +1,25 @@
+/* _filmList.scss */
+
+#filmGenres {
+
+}
+
+#filmGenreContainer {
+
+}
+
+#filmItemList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    column-gap: 1.2rem;
+    row-gap: 2.4rem;
+
+    &:has(.movie-item:hover) {
+        .movie-item:not(:hover) {
+            opacity: .5;
+            scale: .95;
+        }
+    }
+}
+
+/* _filmList.scss */
