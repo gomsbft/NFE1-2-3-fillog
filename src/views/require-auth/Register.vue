@@ -1,36 +1,30 @@
-<!-- <template>
-    <form id="frmRegister">
-
-    </form> #frmRegister
-</template> Template Ends
-
-<script setup>
-
-</script> Logic Ends -->
-
-
 <template>
   <div class="container">
-    <form @submit.prevent="register">
+    <h3>sign up</h3>
+    <form @submit.prevent="register" class="registerForm">
       <div>
-        <label for="account">account:</label>
+        <label for="account">account</label>
         <input v-model="form.account" id="account" type="email" required />
       </div>
       <div>
-        <label for="password">password:</label>
+        <label for="password">password</label>
         <input v-model="form.password" id="password" type="password" required />
       </div>
       <div>
-        <label for="userName">username:</label>
-        <input v-model="form.userName" id="userName" type="text" required />
+        <label for="verifyPassword">verify-password</label>
+        <input v-model="form.verifyPassword" id="verifyPassword" type="password" required />
       </div>
       <div>
-        <label for="userImage">userImage:</label>
-        <img src="" alt="">
-        <input @change="imgUplod"  type="file" id="userImage" accept="image/jpeg, image/png, image/webp">
-        <img :src="previewImageUrl || ''" alt="이미지 미리보기" />
+        <label for="userName">username</label>
+        <input v-model="form.userName" id="userName" type="text" required />
       </div>
-      <button type="submit">Register</button>
+      <div class="imgContainer">
+        <p class="imgText">userImage</p>
+        <label for="userImage" class="imgLabel"></label>
+        <input @change="imgUplod"  type="file" id="userImage" accept="image/jpeg, image/png, image/webp" class="imgInput">
+        <img v-if="previewImageUrl" :src="previewImageUrl || ''" alt="" class="imgView" />
+      </div>
+      <button type="submit" class="registerBtn">Register</button>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
       <div v-if="successMessage" class="success">{{ successMessage }}</div>
     </form>
@@ -40,12 +34,15 @@
 <script setup>
   import { reactive, ref } from 'vue';
   import axios from 'axios';
-  
+  import { useRouter } from 'vue-router';
+
+  const router = useRouter();
   
   // 상태 관리
   const form = reactive({
     account: '',
     password: '',
+    verifyPassword: '',
     userName: '',
     userImage: null,
     commentedArticles: [],
@@ -61,6 +58,11 @@
   const isValidPasswordLength = (password) => {
     return password.length >= 8 && password.length <= 12;
   };
+
+  // password 와 verifyPassword 일치하는지 확인
+  const passwordCheck = (password, verifyPassword) => {
+    return password == verifyPassword
+  }
   
   // 이미지 처리
   const imgUplod = (event) => {
@@ -81,6 +83,13 @@
     //비밀번호 길이 체크
     if (!isValidPasswordLength(form.password)) {
       errorMessage.value = '비밀번호는 8자 이상 12자 이하로 입력해 주세요.'; // 비밀번호 길이 오류 시 메시지 설정
+      successMessage.value = '';                                              
+      return;
+    }
+
+    // password 와 verifyPassword 일치하는지 확인
+    if (!passwordCheck(form.password, form.verifyPassword)) {
+      errorMessage.value = '비밀번호가 일치하지 않습니다.';
       successMessage.value = '';                                              
       return;
     }
@@ -105,7 +114,14 @@
         },
       });         
       const token = response.data.token;
-      localStorage.setItem('token', token);         
+      localStorage.setItem('token', token);  
+      successMessage.value = '회원가입에 성공했습니다!';
+
+      // 회원가입 성공이라는 메시지 볼 수 있게 2초뒤 로그인 페이지로 이동
+      setTimeout(() => {
+        router.push('/login');   // 회원가입 성공 -> 로그인 페이지로 이동
+      }, 2000)
+
     } catch (err) {
       // 서버 요청 중 에러 발생 시 처리
       errorMessage.value = err.response?.data?.message || '회원가입 중 오류가 발생했습니다.'; // 에러 메시지를 서버 응답에 따라 설정
@@ -116,5 +132,5 @@
 
 
 <style lang="scss" scoped>
-
+  @import "../../assets/stylesheets/views/_register"
 </style>

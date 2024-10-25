@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <form @submit.prevent="login">
+  <div class="container">
+    <h3>Login</h3>
+    <form @submit.prevent="login" class="loginForm">
       <div>
-        <label for="account">account:</label>
+        <label for="account">account</label>
         <input v-model="form.account" id="account" type="email" required>
       </div>
       <div>
-        <label for="password">password:</label>
+        <label for="password">password</label>
         <input v-model="form.password" id="password" type="password" required>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="loginBtn">Login</button>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
       <div v-if="successMessage" class="success">{{ successMessage }}</div>
     </form> 
@@ -19,7 +20,10 @@
 <script setup>
   import { reactive, ref } from 'vue';
   import axios from 'axios';
-  
+  import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
   const form = reactive({
     account: '',
     password: '',
@@ -41,6 +45,8 @@
       localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
       successMessage.value = '로그인 성공!';
       errorMessage.value = ''; // 에러 메시지 초기화
+
+      router.push('/'); 
     } catch (err) {
       // 실패 시 에러 메시지 처리
       errorMessage.value = err.response?.data?.message || '로그인 중 오류가 발생했습니다.';
@@ -48,3 +54,7 @@
     }
   };
 </script>
+
+<style lang="scss" scoped>
+  @import '../../assets/stylesheets/views/login'
+</style>
