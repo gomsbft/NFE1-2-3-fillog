@@ -41,6 +41,12 @@ myProject.component('MovieItem', MovieItem);
 
 // 앱 정의
 
+if (JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme === true) {
+    document.querySelector('html').classList.add('dark');
+} else {
+    document.querySelector('html').classList.add('light');
+}
+
 myProject
     .use(pinia)
     .use(router)

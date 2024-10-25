@@ -21,6 +21,7 @@
     padding: 1.2rem;
     border-radius: .4rem;
     background-color: rgb(var(--clr-min));
+    color: rgb(255 255 255);
     overflow: hidden;
 
     > a {
@@ -111,7 +112,7 @@
         width: .2rem;
         height: .2rem;
         border-radius: 25rem;
-        background-color: rgb(var(--clr-max) / .5);
+        background-color: rgb(255 255 255 / .5);
         transition: .25s;
 
         &-active {

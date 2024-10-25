@@ -170,7 +170,7 @@
             // dynamicMainBullets: 7,
             el: '.slider-pagination',
         },
-    };
+    }
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = () => {
@@ -178,7 +178,7 @@
         thisArticle.likes.push(Math.floor(Math.random() * 1000000)); // 임시 데이터, 유저 id로 변경 예정
         console.log(thisArticle.likes);
         console.log('버튼 클릭');
-    };
+    }
 
     // 댓글 등록 버튼 클릭 시 핸들러
     const commentBtnHandler = (e) => {
@@ -198,5 +198,5 @@
         });
 
         commentText.value = '';
-    };
+    }
 </script> <!-- Logic Ends -->
