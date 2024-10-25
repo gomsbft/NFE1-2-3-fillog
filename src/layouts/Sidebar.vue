@@ -52,14 +52,13 @@
                 <span>블로그 정보</span>
             </button>
 
-            <RouterLink to="/write" class="buttons-blog-control">
-                <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser">
-                    <svg class="remix">
-                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
-                    </svg>
-                    <span>글쓰기</span>
-                </button>
-            </RouterLink>
+            <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
+                </svg>
+
+                <span>글쓰기</span>
+            </button>
 
             <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser">
                 <svg class="remix">
@@ -74,8 +73,8 @@
             <h6 class="sidebar-hidden">포스트 카테고리</h6>
 
             <ul>
-                <li v-for="(menuItem, index) in movieCategory" :key="index">
-                    {{ menuItem }} [{{ postData.filter(post => post.category === index).length }}]
+                <li v-for="(menuItem, index) in articleCategory" :key="index">
+                    {{ menuItem }} [{{ postData.filter(post => post.category === parseInt(index)).length }}]
                 </li>
             </ul>
         </div>
@@ -95,27 +94,11 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import axios from 'axios';
+    import { ref } from 'vue';
     import blogInfo from '../datas/blogInfo.json';
     import userData from '../datas/userData.json';
-    import movieCategory from '../datas/movieCategory.json';
-
-    const postData = ref([]);
-
-    const postDatas = async() => {
-        try {
-            const response = await axios.get('http://localhost:3000/posts');
-            postData.value = response.data;
-            console.log(postData)
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    onMounted(() => {
-        postDatas();
-    })
+    import articleCategory from '../datas/articleCategory.json';
+    import postData from '../datas/postData.json';
 
     const blogOwner = userData.find(user => user.id === parseInt(blogInfo.adminId) && user.type === 'admin');
     const blogBirthday = new Date(blogInfo.createdDate);
