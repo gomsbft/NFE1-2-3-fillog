@@ -28,47 +28,7 @@
         </div> <!-- #postFilter -->
 
         <ul id="postItemList" v-if="postData.length > 0">
-            <li class="article-item" v-for="article in postData" :key="article.id">
-                <div class="article-item-image-container">
-                    <RouterLink :to="`/posts/${ article.id }`">
-                        <img class="article-item-thumbnail" v-if="article.thumbIndex" :src="article.images.find(item => item.index === article.thumbIndex)?.imageURL" alt="이미지 미리보기">
-                    </RouterLink>
-
-                    <svg class="remix">
-                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-gallery-line"></use>
-                    </svg>
-                </div>
-
-                <dl class="article-item-descriptions">
-                    <dt class="article-item-titlebar" :title="article.title">
-                        <p class="article-item-title">
-                            <RouterLink :to="`/posts/${ article.id }`">
-                                {{ article.title }}
-                            </RouterLink>
-                        </p>
-
-                        <span>[{{ article.comments.length }}]</span>
-                    </dt>
-
-                    <dd class="article-item-info">
-                        <RouterLink :to="`/posts/${ article.id }`">
-                            {{ postCategory[article.category] }}
-                        </RouterLink>
-
-                        <span>·</span>
-
-                        <RouterLink :to="`/posts/${ article.id }`">
-                            {{ new Date(article.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
-                        </RouterLink>
-                    </dd>
-
-                    <dd class="article-item-text-summary">
-                        <RouterLink :to="`/posts/${ article.id }`">
-                            {{ article.text.replace(/<[^>]*>?/g, ' ') }}
-                        </RouterLink>
-                    </dd>
-                </dl>
-            </li>
+            <PostItem v-for="article in postData" :key="article.id" :article-id="article.id" />
         </ul> <!-- #postItemList -->
 
         <EmptyList v-else />
