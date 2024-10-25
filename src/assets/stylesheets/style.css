@@ -456,20 +456,20 @@ a, a:visited {
   :root {
     --clr-min: 255 255 255;
     --clr-max: 0 0 0;
-    --clr-theme: var(--clr-tint-80);
-    --clr-background: var(--clr-surface-100);
+    --clr-theme: var(--clr-tint-20);
+    --clr-background: var(--clr-surface-0);
     --clr-tint-0: 100 242 180;
     --clr-tint-20: 123 244 188;
     --clr-tint-40: 143 246 196;
     --clr-tint-60: 161 248 205;
     --clr-tint-80: 178 249 213;
     --clr-tint-100: 195 251 221;
-    --clr-surface-100: 245 245 245;
-    --clr-surface-80: 230 230 230;
-    --clr-surface-60: 208 208 208;
-    --clr-surface-40: 184 184 184;
-    --clr-surface-20: 167 167 167;
-    --clr-surface-0: 133 133 133;
+    --clr-surface-0: 250 250 250;
+    --clr-surface-20: 238 238 238;
+    --clr-surface-40: 210 210 210;
+    --clr-surface-60: 196 196 196;
+    --clr-surface-80: 184 184 184;
+    --clr-surface-100: 167 167 167;
     --clr-if-0: 26 35 30;
     --clr-if-20: 47 56 51;
     --clr-if-40: 70 77 73;
@@ -492,20 +492,20 @@ a, a:visited {
 :root.light {
   --clr-min: 255 255 255;
   --clr-max: 0 0 0;
-  --clr-theme: var(--clr-tint-80);
-  --clr-background: var(--clr-surface-100);
+  --clr-theme: var(--clr-tint-20);
+  --clr-background: var(--clr-surface-0);
   --clr-tint-0: 100 242 180;
   --clr-tint-20: 123 244 188;
   --clr-tint-40: 143 246 196;
   --clr-tint-60: 161 248 205;
   --clr-tint-80: 178 249 213;
   --clr-tint-100: 195 251 221;
-  --clr-surface-100: 245 245 245;
-  --clr-surface-80: 230 230 230;
-  --clr-surface-60: 208 208 208;
-  --clr-surface-40: 184 184 184;
-  --clr-surface-20: 167 167 167;
-  --clr-surface-0: 133 133 133;
+  --clr-surface-0: 250 250 250;
+  --clr-surface-20: 238 238 238;
+  --clr-surface-40: 210 210 210;
+  --clr-surface-60: 196 196 196;
+  --clr-surface-80: 184 184 184;
+  --clr-surface-100: 167 167 167;
   --clr-if-0: 26 35 30;
   --clr-if-20: 47 56 51;
   --clr-if-40: 70 77 73;
@@ -759,12 +759,12 @@ a, a:visited {
 }
 .button-filter-selector:hover {
   background-color: rgb(var(--clr-max)/0.1);
-  box-shadow: inset 0.2rem 0.2rem 0.2rem rgba(255, 255, 255, 0.05), inset -0.2rem -0.2rem 0.2rem rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0.2rem 0.2rem 0.2rem rgba(255, 255, 255, 0.05), inset -0.1rem -0.1rem 0.1rem rgba(0, 0, 0, 0.05);
 }
 .button-filter-selector.active {
   border-color: rgb(var(--clr-min)/0.15);
   background-color: rgb(var(--clr-max));
-  color: rgb(var(--clr-text-on-tint));
+  color: rgb(var(--clr-min));
   font-weight: 700;
   pointer-events: none;
 }
@@ -2070,7 +2070,7 @@ select {
   transition: 0.25s;
   padding-inline-end: 1.6rem;
   min-width: 3.6rem;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"%3E%3C/path%3E%3C/svg%3E');
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray"%3E%3Cpath d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"%3E%3C/path%3E%3C/svg%3E');
   background-repeat: no-repeat;
   background-position: right 0.2rem center;
   background-size: 24px;
@@ -2099,7 +2099,7 @@ select:disabled {
   cursor: no-drop;
 }
 select:focus {
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 11.8284L9.17154 14.6569L7.75732 13.2426L12 9L16.2426 13.2426L14.8284 14.6569L12 11.8284Z"%3E%3C/path%3E%3C/svg%3E');
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray"%3E%3Cpath d="M12 11.8284L9.17154 14.6569L7.75732 13.2426L12 9L16.2426 13.2426L14.8284 14.6569L12 11.8284Z"%3E%3C/path%3E%3C/svg%3E');
 }
 
 input[type=radio] {
@@ -2261,11 +2261,11 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):is([data-switch-label=false
   display: none;
 }
 input[type=checkbox]:is([data-checkbox-type=toggle]) + label {
-  --switch-rail-false: 255 255 255;
+  --switch-rail-false: 184 238 255;
   --switch-rail-true: 59 38 136;
-  --switch-button-false: 255 102 0;
+  --switch-button-false: 255 251 0;
   --switch-button-true: 25 22 27;
-  --switch-icon-false: 255 251 0;
+  --switch-icon-false: 255 102 0;
   --switch-icon-true: 255 251 0;
   display: flex;
   align-items: center;
@@ -2278,7 +2278,7 @@ input[type=checkbox]:is([data-checkbox-type=toggle]) + label .switch-rail {
   height: 1.2rem;
   border-radius: 25rem;
   background-color: rgb(var(--switch-rail-false));
-  box-shadow: inset 0.1rem 0.1rem 0.2rem 0 rgba(0, 0, 0, 0.5);
+  box-shadow: inset 1px 1px 0.1rem 0 rgba(0, 0, 0, 0.25);
   outline: 1px solid rgba(255, 255, 255, 0.25);
   transition: background-color 0.5s;
 }

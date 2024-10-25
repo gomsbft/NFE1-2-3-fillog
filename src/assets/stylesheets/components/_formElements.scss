@@ -76,14 +76,14 @@ select {
 
     padding-inline-end: 1.6rem;
     min-width: 3.6rem;
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"%3E%3C/path%3E%3C/svg%3E');
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray"%3E%3Cpath d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"%3E%3C/path%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right .2rem center;
     background-size: 24px;
     appearance: none;
 
     &:focus {
-        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 11.8284L9.17154 14.6569L7.75732 13.2426L12 9L16.2426 13.2426L14.8284 14.6569L12 11.8284Z"%3E%3C/path%3E%3C/svg%3E');
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray"%3E%3Cpath d="M12 11.8284L9.17154 14.6569L7.75732 13.2426L12 9L16.2426 13.2426L14.8284 14.6569L12 11.8284Z"%3E%3C/path%3E%3C/svg%3E');
     }
 }
 
@@ -242,11 +242,11 @@ input[type="checkbox"]:is([data-checkbox-type="toggle"]) { // 토글형 스위�
     }
 
     & + label {
-        --switch-rail-false: 255 255 255;
+        --switch-rail-false: 184 238 255;
         --switch-rail-true: 59 38 136;
-        --switch-button-false: 255 102 0;
+        --switch-button-false: 255 251 0;
         --switch-button-true: 25 22 27;
-        --switch-icon-false: 255 251 0;
+        --switch-icon-false: 255 102 0;
         --switch-icon-true: 255 251 0;
 
         display: flex;
@@ -260,7 +260,7 @@ input[type="checkbox"]:is([data-checkbox-type="toggle"]) { // 토글형 스위�
             height: 1.2rem;
             border-radius: 25rem;
             background-color: rgb(var(--switch-rail-false));
-            box-shadow: inset .1rem .1rem .2rem 0 rgb(0 0 0 / .5);
+            box-shadow: inset 1px 1px .1rem 0 rgb(0 0 0 / .25);
             outline: 1px solid rgb(255 255 255 / .25);
             transition: background-color .5s;
         }

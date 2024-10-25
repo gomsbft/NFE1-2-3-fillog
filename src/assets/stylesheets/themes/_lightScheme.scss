@@ -4,8 +4,8 @@
     --clr-min: 255 255 255; // 최소 대비 (컬러 스키마에 대해)
     --clr-max: 0 0 0; // 최대 대비 (컬러 스키마에 대해)
 
-    --clr-theme: var(--clr-tint-80); // 메인 컬러
-    --clr-background: var(--clr-surface-100); // 배경
+    --clr-theme: var(--clr-tint-20); // 메인 컬러
+    --clr-background: var(--clr-surface-0); // 배경
 
     --clr-tint-0: 100 242 180; // 틴트 0
     --clr-tint-20: 123 244 188; // 틴트 20
@@ -14,12 +14,12 @@
     --clr-tint-80: 178 249 213; // 틴트 80
     --clr-tint-100: 195 251 221; // 틴트 100
 
-    --clr-surface-100: 245 245 245; // 표면 100
-    --clr-surface-80: 230 230 230; // 표면 80
-    --clr-surface-60: 208 208 208; // 표면 60
-    --clr-surface-40: 184 184 184; // 표면 40
-    --clr-surface-20: 167 167 167; // 표면 20
-    --clr-surface-0: 133 133 133; // 표면 0
+    --clr-surface-0: 250 250 250; // 표면 0
+    --clr-surface-20: 238 238 238; // 표면 20
+    --clr-surface-40: 210 210 210; // 표면 40
+    --clr-surface-60: 196 196 196; // 표면 60
+    --clr-surface-80: 184 184 184; // 표면 80
+    --clr-surface-100: 167 167 167; // 표면 100
 
     --clr-if-0: 26 35 30; // 인터페이스 0
     --clr-if-20: 47 56 51; // 인터페이스 20
