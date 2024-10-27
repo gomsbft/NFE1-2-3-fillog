@@ -3,7 +3,7 @@
         <div>
             <button class="floating-opener">
                 <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-more-2-line"></use>
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-close-large-line"></use>
                 </svg>
             </button>
         </div>
