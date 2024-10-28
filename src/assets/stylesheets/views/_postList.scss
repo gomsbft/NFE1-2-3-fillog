@@ -6,4 +6,12 @@
     gap: .4rem;
 }
 
+/* 반응형 쿼리 */
+
+@container main-container (max-width: 640px) {
+    #txtTotalSearch {
+        width: 8rem;
+    }
+}
+
 /* _postList.scss */

@@ -115,6 +115,7 @@
 
 .sidebar-section-title {
     padding: .8rem;
+    border-block-end: 1px dashed rgb(var(--clr-text) / .25);
     font-size: var(--fnt-lg);
     font-weight: 900;
     opacity: .5;
@@ -178,12 +179,12 @@
         }
     }
 
-    .blog-owner-image-container {
-        width: 3.6rem;
-    }
-
     .sidebar-hidden {
         display: none;
+    }
+
+    .blog-owner-image-container {
+        width: 3.6rem;
     }
 
     #sideBlogControls {
