@@ -1,194 +1,259 @@
 <template>
-    <article id="postDetail" v-if="Object.keys(thisArticle).length > 0">
-        <div id="postImageSlider" v-if="thisArticle.images && thisArticle.images.length > 0">
-            <swiper-container v-bind="swiperParams">
-                <swiper-slide class="article-image-slide" v-for="(imgItem, index) in thisArticle.images" :key="index">
-                    <img class="article-image" :src="imgItem.imageURL" :alt="imgItem.alt"/>
-                </swiper-slide>
-            </swiper-container>
+  <article id="postDetail" v-if="thisArticle">
+      <div id="postImageSlider" v-if="thisArticle.images && thisArticle.images.length > 0">
+          <swiper-container v-bind="swiperParams">
+              <swiper-slide class="article-image-slide" v-for="(imgItem, index) in thisArticle.images" :key="index">
+                  <img class="article-image" :src="imgItem" :alt="imgItem">
+              </swiper-slide>
+          </swiper-container>
 
-            <button type="button" class="slider-prev-el" title="이전 이미지">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-arrow-left-s-line"></use>
-                </svg>
-            </button>
+          <button type="button" class="slider-prev-el" title="이전 이미지">
+              <svg class="remix">
+                  <use xlink:href="/miscs/remixicon.symbol.svg#ri-arrow-left-s-line"></use>
+              </svg>
+          </button>
 
-            <button type="button" class="slider-next-el" title="다음 이미지">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-arrow-right-s-line"></use>
-                </svg>
-            </button>
+          <button type="button" class="slider-next-el" title="다음 이미지">
+              <svg class="remix">
+                  <use xlink:href="/miscs/remixicon.symbol.svg#ri-arrow-right-s-line"></use>
+              </svg>
+          </button>
 
-            <div class="slider-pagination"></div>
-        </div> <!-- #postImageSlider - 이미지가 존재할 때 -->
+          <div class="slider-pagination"></div>
+      </div> <!-- #postImageSlider - 이미지가 존재할 때 -->
 
-        <div id="postImageSlider" class="no-images" v-else></div> <!-- #postImageSlider - 이미지가 없을 때 -->
+      <div id="postImageSlider" class="no-images" v-else></div> <!-- #postImageSlider - 이미지가 없을 때 -->
 
-        <div id="postInformations">
-            <p class="article-info-category">
-                {{ postCategory[thisArticle.category] }}
-            </p>
+      <div id="postInformations">
+          <p class="article-info-category">{{ movieCategory[thisArticle.category] }}</p>
 
-            <h1 id="postTitle">{{ thisArticle.title }}</h1> <!-- postTitle -->
+          <h1 id="postTitle">{{ thisArticle.title }}</h1> <!-- postTitle -->
 
-            <div id="postSummaries">
-                <UserNameTag :user-id="thisArticle.author.userId" />
+          <div id="postSummaries">
+              <!-- <UserNameTag :user-id="thisArticle.author.userId" /> -->
 
-                <span>·</span>
+              <span>·</span>
 
-                <p class="article-info-date">
-                    {{ new Date(thisArticle.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
-                </p>
+              <p class="article-info-date">{{ new Date(thisArticle.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</p>
 
-                <span>·</span>
+              <span>·</span>
 
-                <p class="article-info-time">{{ thisArticle.time }}</p>
+              <p class="article-info-time">{{ thisArticle.time }}</p>
 
-                <span>·</span>
+              <span>·</span>
 
-                <p class="article-info-likes"> <!-- 게시물 좋아요 수 -->
-                    <svg class="remix">
-                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
-                    </svg>
+              <p class="article-info-likes">
+                  <svg class="remix">
+                      <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
+                  </svg>
+                  <span>{{ displayLikes }}</span>
+                  <!-- <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span> -->
+              </p>
+          </div> <!-- #postSummaries -->
+      </div>  <!-- #postInformations -->
 
-                    <span>{{ displayLikes }}</span>
-                </p>
-            </div> <!-- #postSummaries -->
-        </div> <!-- #postInformations -->
+      <div id="articleText" v-dompurify-html="thisArticle.text"></div> <!-- #articleText -->
 
-        <div id="articleText" v-dompurify-html="thisArticle.text"></div> <!-- #articleText -->
+      <MediaInfo :media-object="null" />
 
-        <MediaInfo v-if="thisArticle.movieID !== null" :movie-id="thisArticle.movieID" />
+      <div id="postControls">
+        <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);">
+            <svg class="remix">
+                <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-line"></use>
+            </svg>
 
-        <div id="postControls">
-            <button type="button" class="button-post-controls" @click="likeBtnHandler" title="좋아요" style="--button-icon-color: var(--clr-alert)">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-line"></use>
-                </svg>
+            <span>좋아요</span>
+        </button>
 
-                <span>좋아요</span>
-            </button>
+        <button type="button" class="button-post-controls" title="미디어" style="--button-icon-color: var(--clr-clear);">
+            <svg class="remix">
+                <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-line"></use>
+            </svg>
 
-            <button type="button" class="button-post-controls" title="영화 정보" style="--button-icon-color: var(--clr-clear)">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-line"></use>
-                </svg>
+            <span>작품 정보</span>
+        </button>
 
-                <span>작품 정보</span>
-            </button>
+        <button type="button" class="button-post-controls" title="공유" style="--button-icon-color: var(--clr-warn);">
+            <svg class="remix">
+                <use xlink:href="/miscs/remixicon.symbol.svg#ri-share-2-line"></use>
+            </svg>
 
-            <button type="button" class="button-post-controls" title="공유" style="--button-icon-color: var(--clr-warn)">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-share-2-line"></use>
-                </svg>
+            <span>공유</span>
+        </button>
 
-                <span>공유</span>
-            </button>
-        </div> <!-- #postControls -->
+        <!-- 이 버튼들은 자기가 쓴 게시물에만 표시 -->
+        <button
+          type="button"
+          class="button-post-controls"
+          title="수정"
+          style="--button-icon-color: var(--clr-info)"
+          @click="editArticle"
+        >
+        <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
+        </svg>
+          <span>수정</span>
+        </button>
 
-        <div id="postReplies">
-            <div class="post-replies-titlebar">
-                <div class="reply-bubble-animation">
-                    <svg class="remix">
-                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-chat-3-line"></use>
-                    </svg>
+        <button
+          type="button"
+          class="button-post-controls"
+          title="삭제"
+          style="--button-icon-color: var(--clr-alert)"
+          @click="deleteArticle"
+        >
+        <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
+        </svg>
 
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+          <span>삭제</span>
+        </button>
+      </div> <!-- #postControls -->
 
-                <p>
-                    댓글 <span>·</span> <span class="replies-counter">{{ thisArticle.comments.length.toLocaleString("ko-KR") }}</span>
-                </p>
-            </div>
+      <div id="postReplies">
+          <div class="post-replies-titlebar">
+              <div class="reply-bubble-animation">
+                  <svg class="remix">
+                      <use xlink:href="/miscs/remixicon.symbol.svg#ri-chat-3-line"></use>
+                  </svg>
 
-            <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-chat-delete-line"></use>
-                </svg>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+              </div>
 
-                <p>아직 댓글이 없어요.</p>
-            </div> <!-- #repliesContainer - 댓글이 없을 때 -->
+              <!-- <p>댓글 <span>·</span> <span class="replies-counter">{{ thisArticle.comments.length.toLocaleString('ko-KR') }}</span></p> -->
+          </div>
 
-            <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(commentItem, index) in thisArticle.comments" :key="index" :reply-object="commentItem" />
-            </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
+          <!-- <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
+              <svg class="remix">
+                  <use xlink:href="/miscs/remixicon.symbol.svg#ri-chat-delete-line"></use>
+              </svg>
 
-            <div id="replyEditor">
-                <div id="replyingUser">
-                    <UserNameTag />
-                </div> <!-- #replyingUser -->
+              <p>아직 댓글이 없어요.</p>
+          </div> #repliesContainer - 댓글이 없을 때 -->
 
-                <div id="replyingInput">
-                    <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
+          <!-- <div id="repliesContainer" v-else>
+              <ArticleReply v-for="(commentItem, index) in thisArticle.comments" :key="index" :reply-object="commentItem" />
+          </div> #repliesContainer - 댓글이 존재할 때 -->
 
-                    <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
-                        <svg class="remix">
-                            <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
-                        </svg>
+          <div id="replyEditor">
+              <div id="replyingUser">
+                  <UserNameTag />
+              </div> <!-- #replyingUser -->
 
-                        <span>등록</span>
-                    </button>
-                </div> <!-- #replyingInput -->
-            </div> <!-- #replyEditor -->
-        </div> <!-- #postReplies -->
+              <div id="replyingInput">
+                  <textarea name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
-        <div>
-            <button @click="router.go(-1)">뒤로</button>
-        </div>
-    </article> <!-- #postDetail -->
+                  <button type="button" id="btnSubmitReply">
+                      <svg class="remix">
+                          <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
+                      </svg>
+
+                      <span>등록</span>
+                  </button>
+              </div> <!-- #replyingInput -->
+          </div> <!-- #replyEditor -->
+      </div> <!-- #postReplies -->
+
+      <div>
+          <button @click="router.go(-1)">뒤로</button>
+      </div>
+  </article> <!-- #postDetail -->
 </template> <!-- Template Ends -->
 
 <script setup>
     import { computed, onMounted, reactive, ref } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
+    import axios from 'axios';
+    // import postData from '../datas/postData.json'; // 임시 데이터
     import postData from '../datas/postData.json'; // 임시 데이터
+    import movieCategory from '../datas/movieCategory.json'; 
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
     import ArticleReply from '../components/ArticleReply.vue';
-    import axios from "axios";
 
-    const router = useRouter();
-    const route = useRoute();
-    const thisArticle = reactive(postData.find(item => item.id === parseInt(route.params.postID)));
+  const router = useRouter();
+  const route = useRoute();
+  const thisArticle = ref(null);
+
+  const findArticle = async() => {
+      const postID = route.params.postID;
+      try {
+          const response = await axios.get(`http://localhost:3000/posts/${postID}`);
+          console.log(response.data)
+          thisArticle.value = response.data;
+      } catch (err) {
+          console.error(err);
+      }
+  }
+
+  // 게시물 수정
+  const editArticle = () => {
+        const postID = route.params.postID;
+        router.push(`/posts/edit/${postID}`); 
+    };
+
+    
+    // 게시물 삭제
+    const deleteArticle = async() => {
+      const postID = route.params.postID;
+      const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
+      
+      if(confirmDel) {
+        try {
+          await axios.delete(`http://localhost:3000/posts/${postID}`);
+          alert('게시물이 삭제되었습니다.');
+          router.push('/posts');
+        } catch (err) {
+          alert('게시물 삭제에 실패했습니다.')
+          console.error(err);
+        }
+      }
+    }
+
+  onMounted(() => {
+      findArticle();
+  })
+    
+    // const thisArticle = reactive(postData.find(item => item.id === parseInt(route.params.postID)));
     const ArticleInDB = reactive({likes: []});
     const commentText = ref('');
     const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
 
-    const getArticle = async () => {
-    try {
-        const response = await axios.get(`http://localhost:3000/posts/${route.params.postID}`)
-        if (response && response.data) {
-        Object.assign(ArticleInDB, response.data);
-        console.log('ArticleInDB:', ArticleInDB);
-            }
-    } catch (error) {
-        console.error('데이터 가져오는 중 오류 발생', error)
-    }
-    }
+    // const getArticle = async () => {
+    // try {
+    //     const response = await axios.get(`http://localhost:3000/posts/${route.params.postID}`)
+    //     if (response && response.data) {
+    //     Object.assign(ArticleInDB, response.data);
+    //     console.log('ArticleInDB:', ArticleInDB);
+    //         }
+    // } catch (error) {
+    //     console.error('데이터 가져오는 중 오류 발생', error)
+    // }
+    // }
 
-    // 마운트 시 데이터 요청하여 가져오기
-    onMounted(() => {
-    getArticle();
-    })
+    // // 마운트 시 데이터 요청하여 가져오기
+    // onMounted(() => {
+    // getArticle();
+    // })
 
-    const swiperParams = {
-        slidesPerView: 1,
-        spaceBetween: 24,
-        navigation: {
-            enabled: true,
-            prevEl: '.slider-prev-el',
-            nextEl: '.slider-next-el',
-        },
-        pagination: {
-            enabled: true,
-            type: 'bullets',
-            // dynamicBullets: true, // 이미지가 아주 많을 때, pagination bullet 컨테이너를 슬라이더처럼 작동시킴
-            // dynamicMainBullets: 7,
-            el: '.slider-pagination',
-        },
-    }
+  const swiperParams = {
+      slidesPerView: 1,
+      spaceBetween: 24,
+      navigation: {
+          enabled: true,
+          prevEl: '.slider-prev-el',
+          nextEl: '.slider-next-el'
+      },
+      pagination: {
+          enabled: true,
+          type: 'bullets',
+          // dynamicBullets: true, // 이미지가 아주 많을 때, pagination bullet 컨테이너를 슬라이더처럼 작동시킴
+          // dynamicMainBullets: 7,
+          el: '.slider-pagination'
+      }
+  }
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
@@ -239,3 +304,7 @@
         commentText.value = '';
     }
 </script> <!-- Logic Ends -->
+
+<style lang="scss" scoped>
+
+</style> <!-- Stylesheet Ends -->

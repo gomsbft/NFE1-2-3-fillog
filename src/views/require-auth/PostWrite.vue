@@ -1,8 +1,5 @@
 <template>
     <div id="frmPostWrite">
-        <input type="text" name="" id="">
-
-        글쓰기
         <div class="top_btn">
             <h2>Post</h2>
             <select name="category" id="category" v-model="selectedCategory">
@@ -34,53 +31,49 @@
 
 <script setup>
     import { ref } from 'vue';
-    import { useRouter } from 'vue-router';
     import axios from 'axios';
     import movieCategory from '../../datas/movieCategory.json';
-
-    const router = useRouter();
-    const title = ref([]);
-    const selectedCategory = ref([]);
-    const content = ref([]);
+    import { useRouter } from 'vue-router';
+    
     const previewImage = ref([]);
+    const title = ref([]);
+    const content = ref([]);
+    const selectedCategory = ref([]);
+    const router = useRouter();
 
     const changeImage = (e) => {
-        if (previewImage.value.length >= 3) {
+        if(previewImage.value.length >= 3) {
             alert('이미지는 최대 3장까지 업로드 가능합니다.');
-
             return;
         }
-
+        
         const file = e.target.files[0];
-
         if (!file) {
             return;
-        }
+        }        
         const reader = new FileReader();
-
         reader.onload = (e) => {
             previewImage.value.push(e.target.result);
         }
-
+        
         reader.readAsDataURL(file);
     }
-
+    
     const submitPost = async () => {
         const postData = {
             title: title.value,
             content: content.value,
             category: selectedCategory.value,
             images: previewImage.value
-        }
-
+        };
+        
         try {
             const response = await axios.post('http://localhost:3000/post', postData);
-
             alert('게시글이 등록되었습니다.');
             router.push('/posts');
         } catch (err) {
             console.error('Error post:', err);
             alert('게시글 등록에 실패했습니다.');
         }
-    }
+    };
 </script> <!-- Logic Ends -->

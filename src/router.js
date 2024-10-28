@@ -71,11 +71,20 @@ const router = createRouter({ // 라우터 정의
                     }
                 },
                 { // 포스트 작성
-                    path: 'write',
+                    path: '/write',
                     component: () => import('./views/require-auth/PostWrite.vue'),
                     meta: {
                         breadcrumb: [
                             { name: 'Write' }
+                        ]
+                    }
+                },
+                { // 포스트 수정
+                    path: 'edit/:postID',
+                    component: () => import('./views/PostEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { name: 'Edit' }
                         ]
                     }
                 }
