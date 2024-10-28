@@ -1,11 +1,15 @@
-/* _postWrite.scss */
+/* _postEdit.scss */
 
-#frmPostWrite {
-    .top_btn{
-        margin-bottom: 20px;
+#postEdit {
+    .top {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-bottom: 20px;
+
+        h1 {
+            font-size: 30px;
+        }
     }
 
     input {
@@ -19,11 +23,38 @@
         resize: none;
     }
 
-    .bot_btn {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+    .bot {
         margin-top: 20px;
+        display: flex;
+        align-items: center;
+
+        .image_area {
+            position: relative;
+            margin-right: 10px;
+
+            img {
+                width: 100px;
+                height: 100px;
+                border-radius: 20px;
+            }
+
+            .del_photo {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background-color: black;
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+        }
+    }
+
+    .btns {
+        margin-top: 20px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
 
         .file_box {
             #file {
@@ -49,7 +80,7 @@
             }
         }
 
-        .upload {
+        .edit_btn {
             width: 100px;
             border: 1px solid rgb(var(--clr-theme));
             border-radius: 0.4rem;
@@ -58,23 +89,9 @@
             margin-bottom: 5px;
             transition: all 0.15s;
         }
-        .upload:hover {
+        .edit_btn:hover {
             background-color: rgb(var(--clr-theme));
             color: rgb(var(--clr-text-on-tint));
         }
     }
-
-    .preview {
-        display: flex;
-        align-items: center;
-        margin-top: 20px;
-
-        img {
-            width: 150px;
-            height: 150px;
-            margin-right: 10px;
-        }
-    }
 }
-
-/* _postWrite.scss */
