@@ -70,22 +70,26 @@
             </button>
         </div> <!-- #sideBlogControls -->
 
-        <div id="sideCategory" class="rounded">
-            <h6 class="sidebar-section-title">포스트 카테고리</h6>
+        <div class="rounded">
+            <h6 class="sidebar-hidden">포스트 카테고리</h6>
 
             <ul>
                 <li v-for="(menuItem, index) in movieCategory" :key="index">
                     {{ menuItem }} [{{ postData.filter(post => post.category === index).length }}]
                 </li>
             </ul>
-        </div> <!-- #sideCategory -->
+        </div>
 
         <div class="rounded">
-            <h6 class="sidebar-section-title">최근 게시물</h6>
+            <h6 class="sidebar-hidden">최근 게시물</h6>
 
             <ul>
-                <li></li>
+                <li>ㅏㅓ</li>
             </ul>
+        </div>
+
+        <div class="rounded">
+            <p>Since {{ blogBirthday.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</p>
         </div>
     </aside> <!-- #sideBarMain -->
 </template> <!-- Template Ends -->
@@ -114,6 +118,7 @@
     })
 
     const blogOwner = userData.find(user => user.id === parseInt(blogInfo.adminId) && user.type === 'admin');
+    const blogBirthday = new Date(blogInfo.createdDate);
 
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const thisUser = ref(123125); // 임시 로그인 유저 정보

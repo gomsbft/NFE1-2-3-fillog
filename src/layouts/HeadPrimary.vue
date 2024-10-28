@@ -33,7 +33,7 @@
 
         <div id="menuElements" :class="mobileBurgerActive ? 'on' : null">
             <div class="mobile-menu-container">
-                <input type="checkbox" name="check-color-theme" id="chkTheme" data-checkbox-type="toggle" data-switch-label="false">
+                <input type="checkbox" name="check-color-theme" id="chkTheme" data-checkbox-type="toggle" data-switch-label="false" :checked="currentThemeSetting" @change="setLocalTheme">
 
                 <label for="chkTheme">
                     <div class="switch-rail">
@@ -117,6 +117,8 @@
     import { onMounted, ref } from 'vue';
     import UserControls from './UserControls.vue';
 
+    const doc = document.querySelector('html');
+    // const currentThemeSetting = JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme;
     const mobileBurgerActive = ref(false); // 모바일 네비게이션 표시를 위한 변수
 
     let timedSizing = null;
@@ -132,4 +134,16 @@
             }, 250);
         });
     });
+
+    function setLocalTheme(e) {
+        localStorage.setItem('fillogLocalSettings', JSON.stringify({ useDarkTheme: e.target.checked }));
+
+        if (e.target.checked) {
+            doc.classList.add('dark');
+            doc.classList.remove('light');
+        } else {
+            doc.classList.add('light');
+            doc.classList.remove('dark');
+        }
+    }
 </script> <!-- Logic Ends -->

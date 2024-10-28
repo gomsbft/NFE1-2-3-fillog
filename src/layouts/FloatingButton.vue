@@ -3,7 +3,7 @@
         <div>
             <button class="floating-opener">
                 <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-more-2-line"></use>
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-close-large-line"></use>
                 </svg>
             </button>
         </div>
@@ -12,11 +12,8 @@
             블로그 관리
         </button>
 
-        
         <button class="floating-button">
-            <RouterLink to="/write">
-                글쓰기
-            </RouterLink>
+            글쓰기
         </button>
 
         <button class="floating-button">
