@@ -21,8 +21,11 @@
   import { reactive, ref } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
+  import { userLogin } from '../../stores/isLogin';
 
-const router = useRouter();
+
+  const router = useRouter();
+  const log = userLogin();
 
   const form = reactive({
     account: '',
@@ -45,6 +48,8 @@ const router = useRouter();
       localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
       successMessage.value = '로그인 성공!';
       errorMessage.value = ''; // 에러 메시지 초기화
+
+      log.setLoginTrue();
 
       router.push('/'); 
     } catch (err) {
