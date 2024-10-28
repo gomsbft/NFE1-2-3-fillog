@@ -72,31 +72,52 @@
         <div id="sideCategory" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">포스트 카테고리</h6>
 
-            <ul class="sidebar-category-container">
-                <li class="sidebar-category-item" v-for="(menuItem, index) in articleCategory" :key="index">
-                    <span>{{ menuItem }}</span> <span>[{{ postData.filter(post => post.category === parseInt(index)).length }}]</span>
+            <ul>
+                <li v-for="(menuItem, index) in movieCategory" :key="index">
+                    {{ menuItem }} [{{ postData.filter(post => post.category === index).length }}]
                 </li>
             </ul>
-        </div> <!-- #sideCategory -->
+        </div>
 
         <div id="sideLatest" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">최근 게시물</h6>
 
             <ul>
-                <li></li>
+                <li>ㅏㅓ</li>
             </ul>
+        </div>
+
+        <div class="rounded">
+            <p>Since {{ blogBirthday.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</p>
         </div>
     </aside> <!-- #sideBarMain -->
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref, onMounted } from 'vue';
+    import axios from 'axios';
     import blogInfo from '../datas/blogInfo.json';
     import userData from '../datas/userData.json';
-    import articleCategory from '../datas/articleCategory.json';
-    import postData from '../datas/postData.json';
+    import movieCategory from '../datas/movieCategory.json';
+
+    const postData = ref([]);
+
+    const postDatas = async() => {
+        try {
+            const response = await axios.get('http://localhost:3000/posts');
+            postData.value = response.data;
+            console.log(postData)
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    onMounted(() => {
+        postDatas();
+    })
 
     const blogOwner = userData.find(user => user.id === parseInt(blogInfo.adminId) && user.type === 'admin');
+    const blogBirthday = new Date(blogInfo.createdDate);
 
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const thisUser = ref(123125); // 임시 로그인 유저 정보

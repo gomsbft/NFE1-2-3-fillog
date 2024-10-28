@@ -118,7 +118,7 @@
     import UserControls from './UserControls.vue';
 
     const doc = document.querySelector('html');
-    const currentThemeSetting = JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme;
+    // const currentThemeSetting = JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme;
     const mobileBurgerActive = ref(false); // 모바일 네비게이션 표시를 위한 변수
 
     let timedSizing = null;
