@@ -13,7 +13,8 @@
       <button type="submit" class="loginBtn">Login</button>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
       <div v-if="successMessage" class="success">{{ successMessage }}</div>
-    </form> 
+    </form>
+    <button class="joinBtn" @click="joinClick">Join</button>
   </div>
 </template>
 
@@ -34,6 +35,10 @@
   
   const errorMessage = ref('');
   const successMessage = ref('');
+
+  const joinClick = () => {
+    router.push('/register'); 
+  }
   
   const login = async () => {
     try {
@@ -49,7 +54,7 @@
       successMessage.value = '로그인 성공!';
       errorMessage.value = ''; // 에러 메시지 초기화
 
-      log.setLoginTrue();
+      log.setLoginTrue(); // 로그인 상태 true
 
       router.push('/'); 
     } catch (err) {
@@ -58,6 +63,7 @@
       successMessage.value = ''; // 성공 메시지 초기화
     }
   };
+
 </script>
 
 <style lang="scss" scoped>

@@ -27,6 +27,17 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { useRouter } from 'vue-router';
+    import { userLogin } from '../stores/isLogin';
+
+    const router = useRouter();
+    const log = userLogin();
+
+    if(!log.logins) {
+        router.push('/login'); 
+    }
+
+
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(a.date) - new Date(b.date));

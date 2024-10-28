@@ -25,10 +25,10 @@
     import { userLogin } from '../stores/isLogin';
 
     const router = useRouter();
-    const log = userLogin();
+    const log = userLogin();     // 로그인 상태
     const user = useUserStore(); // 로그인 사용자 스토어
 
-
+    // 로그인 아이콘 누르면 /login으로 이동
     const loginAction = () => {
         router.push('/login');
     };
@@ -37,5 +37,6 @@
     const logoutAction = () => {
         log.setLoginFalse(); // 로그아웃 상태로 전환하여 로그인 상태를 false로 설정
         localStorage.removeItem('token'); // 저장된 토큰 삭제
+        router.push('/login');
     };
 </script> <!-- Logic Ends -->
