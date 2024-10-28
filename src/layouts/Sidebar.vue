@@ -52,7 +52,7 @@
                 <span>블로그 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser">
+            <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser" @click="$router.push('/posts/write')">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
                 </svg>
@@ -79,7 +79,7 @@
             </ul>
         </div> <!-- #sideCategory -->
 
-        <div class="rounded">
+        <div id="sideLatest" class="rounded">
             <h6 class="sidebar-section-title">최근 게시물</h6>
 
             <ul>
