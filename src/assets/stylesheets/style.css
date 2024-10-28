@@ -1380,6 +1380,98 @@ a, a:visited {
   }
 }
 /* _floatingButton.scss */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 10%;
+}
+.container .registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.container .registerForm div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.container .registerForm .imgContainer {
+  width: 5rem;
+  height: 5rem;
+  position: relative;
+  text-align: center;
+  display: flex;
+  margin-left: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.container .registerForm .imgContainer .imgText {
+  position: absolute;
+  left: 1rem;
+  top: 2rem;
+}
+.container .registerForm .imgContainer .imgLabel {
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid #E3170A;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+}
+.container .registerForm .imgContainer .imgInput {
+  position: absolute;
+  visibility: hidden;
+}
+.container .registerForm .imgContainer .imgView {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+.container .registerBtn {
+  color: #E3170A;
+}
+.container .registerBtn:active {
+  color: #244838;
+}
+.container .success, .container .error {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 10%;
+}
+.container .loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.container div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.container .loginBtn {
+  color: #E3170A;
+}
+.container .loginBtn:active {
+  color: #244838;
+}
+.container .success, .container .error {
+  text-align: center;
+}
+.container .joinBtn {
+  color: #7BF4BC;
+}
+
 /* _landingPage.scss */
 #landingPage {
   display: flex;
