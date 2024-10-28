@@ -1,6 +1,6 @@
 <template>
-    <article id="postDetail">
-        <div id="postImageSlider" v-if="thisArticle.images.length > 0">
+    <article id="postDetail" v-if="Object.keys(thisArticle).length > 0">
+        <div id="postImageSlider" v-if="thisArticle.images && thisArticle.images.length > 0">
             <swiper-container v-bind="swiperParams">
                 <swiper-slide class="article-image-slide" v-for="(imgItem, index) in thisArticle.images" :key="index">
                     <img class="article-image" :src="imgItem.imageURL" :alt="imgItem.alt"/>
@@ -141,19 +141,37 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { computed, reactive, ref } from 'vue';
+    import { computed, onMounted, reactive, ref } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
     import ArticleReply from '../components/ArticleReply.vue';
+    import axios from "axios";
 
     const router = useRouter();
     const route = useRoute();
     const thisArticle = reactive(postData.find(item => item.id === parseInt(route.params.postID)));
+    const ArticleInDB = reactive({likes: []});
     const commentText = ref('');
-    const displayLikes12 = ref(thisArticle.likes.length.toLocaleString('ko-KR'));
-    const displayLikes = computed(() => { return thisArticle.likes.length.toLocaleString('ko-KR') });
+    const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
+
+    const getArticle = async () => {
+    try {
+        const response = await axios.get(`http://localhost:3000/posts/${route.params.postID}`)
+        if (response && response.data) {
+        Object.assign(ArticleInDB, response.data);
+        console.log('ArticleInDB:', ArticleInDB);
+            }
+    } catch (error) {
+        console.error('데이터 가져오는 중 오류 발생', error)
+    }
+    }
+
+    // 마운트 시 데이터 요청하여 가져오기
+    onMounted(() => {
+    getArticle();
+    })
 
     const swiperParams = {
         slidesPerView: 1,
@@ -173,12 +191,33 @@
     }
 
     // 좋아요 버튼 클릭 시 핸들러
-    const likeBtnHandler = () => {
-        console.log(thisArticle.likes);
-        thisArticle.likes.push(Math.floor(Math.random() * 1000000)); // 임시 데이터, 유저 id로 변경 예정
-        console.log(thisArticle.likes);
-        console.log('버튼 클릭');
+    const likeBtnHandler = async () => {
+    const postId = thisArticle.id;  // 포스트를 작성한 유저 id
+    const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
+    try {
+        const response = await axios.post(`http://localhost:3000/posts/${postId}/like`, { userId});
+        // console.log('좋아요 성공', response.data);
+        if (response.data.message === '좋아요 추가 성공') {
+                // 좋아요 추가된 경우
+                ArticleInDB.likes.push(userId);
+                console.log('좋아요 목록 업데이트:', ArticleInDB.likes);
+            }else if (response.data.message === '좋아요 취소 성공') {
+        // 좋아요 취소된 경우, ArticleInDB.likes 배열에서 유저 아이디 제거
+        const index = ArticleInDB.likes.indexOf(userId);
+        if (index > -1) {
+            ArticleInDB.likes.splice(index, 1);
+        }
+        console.log('좋아요 목록 업데이트(취소):', ArticleInDB.likes);
+        }
     }
+    catch (error) {
+        console.error('에러 발생', error.response ? error.response.data : error.message)
+    }
+    // 임시 데이터 사용 로직
+    // thisArticle.likes.push(Math.floor(Math.random() * 1000000)); // 임시 데이터, 유저 id로 변경 예정
+    // console.log(thisArticle.likes);
+    // console.log("버튼 클릭");
+    };
 
     // 댓글 등록 버튼 클릭 시 핸들러
     const commentBtnHandler = (e) => {
