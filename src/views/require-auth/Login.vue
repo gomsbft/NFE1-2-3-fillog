@@ -66,5 +66,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/stylesheets/views/login'
+  @use '../../assets/stylesheets/views/login'
 </style>

@@ -57,7 +57,7 @@
       <MediaInfo :media-object="null" />
 
       <div id="postControls">
-        <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);">
+        <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);" @click="likeBtnHandler">
             <svg class="remix">
                 <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-line"></use>
             </svg>
@@ -143,9 +143,9 @@
               </div> <!-- #replyingUser -->
 
               <div id="replyingInput">
-                  <textarea name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
+                  <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
-                  <button type="button" id="btnSubmitReply">
+                  <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
                       <svg class="remix">
                           <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
                       </svg>
@@ -167,7 +167,6 @@
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
     // import postData from '../datas/postData.json'; // 임시 데이터
-    import postData from '../datas/postData.json'; // 임시 데이터
     import movieCategory from '../datas/movieCategory.json'; 
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
@@ -176,13 +175,21 @@
   const router = useRouter();
   const route = useRoute();
   const thisArticle = ref(null);
+  const ArticleInDB = reactive({likes: []});              // DB에 존재하는 임시 포스트 데이터를 가져올 변수
+  const commentText = ref('');
+  const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
 
   const findArticle = async() => {
       const postID = route.params.postID;
       try {
           const response = await axios.get(`http://localhost:3000/posts/${postID}`);
-          console.log(response.data)
+        //   console.log('마운트시 응답 데이터 :',response.data)
           thisArticle.value = response.data;
+          console.log('thisArticle:',thisArticle)
+          if (response && response.data) {
+            Object.assign(ArticleInDB, response.data);
+            console.log('ArticleInDB:', ArticleInDB);
+            }
       } catch (err) {
           console.error(err);
       }
@@ -216,27 +223,6 @@
       findArticle();
   })
     
-    // const thisArticle = reactive(postData.find(item => item.id === parseInt(route.params.postID)));
-    const ArticleInDB = reactive({likes: []});
-    const commentText = ref('');
-    const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
-
-    // const getArticle = async () => {
-    // try {
-    //     const response = await axios.get(`http://localhost:3000/posts/${route.params.postID}`)
-    //     if (response && response.data) {
-    //     Object.assign(ArticleInDB, response.data);
-    //     console.log('ArticleInDB:', ArticleInDB);
-    //         }
-    // } catch (error) {
-    //     console.error('데이터 가져오는 중 오류 발생', error)
-    // }
-    // }
-
-    // // 마운트 시 데이터 요청하여 가져오기
-    // onMounted(() => {
-    // getArticle();
-    // })
 
   const swiperParams = {
       slidesPerView: 1,
@@ -257,11 +243,10 @@
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
-    const postId = thisArticle.id;  // 포스트를 작성한 유저 id
+    const postId = thisArticle.value.id;  // 포스트를 작성한 유저 id
     const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
     try {
-        const response = await axios.post(`http://localhost:3000/posts/${postId}/like`, { userId});
-        // console.log('좋아요 성공', response.data);
+        const response = await axios.post(`http://localhost:3000/posts/${postId}/like`, { userId });
         if (response.data.message === '좋아요 추가 성공') {
                 // 좋아요 추가된 경우
                 ArticleInDB.likes.push(userId);
@@ -287,13 +272,14 @@
     // 댓글 등록 버튼 클릭 시 핸들러
     const commentBtnHandler = (e) => {
         e.preventDefault();
-        console.log(thisArticle.comments);
+        console.log(thisArticle.value.comments);
 
         if (!!commentText.value === false) {
+            commentText.value = '';
             return console.log('댓글 내용 없음');
         }
 
-        thisArticle.comments.push({
+        thisArticle.value.comments.push({
             id: Math.floor(Math.random() * 1000000), // 임시 데이터
             userId: 1, // 임시 데이터, 유저 id로 변경 예정
             commentText: commentText.value,
