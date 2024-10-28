@@ -40,6 +40,7 @@
   
   // 상태 관리
   const form = reactive({
+    type: 'user',
     account: '',
     password: '',
     verifyPassword: '',
@@ -96,6 +97,7 @@
   
     try {
       const formData = new FormData();
+      formData.append('type', form.type);
       formData.append('account', form.account);
       formData.append('password', form.password);
       formData.append('userName', form.userName);

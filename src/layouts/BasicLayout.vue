@@ -2,7 +2,7 @@
     <HeadPrimary />
 
     <div id="mainContainer" class="inner-wrapper">
-        <Sidebar v-if="log.logins"/>
+        <Sidebar/>
 
         <main id="contentView">
             <slot></slot>
