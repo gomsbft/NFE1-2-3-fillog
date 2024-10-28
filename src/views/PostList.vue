@@ -1,12 +1,14 @@
 <template>
     <div id="postList">
-        <div id="postFilter">
-            <label for="lstCategory">
+        <h1 class="page-title">포스트</h1>
+
+        <div id="postFilter" class="page-filter-container">
+            <label for="lstCategory" class="page-filter-type-label">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-equalizer-line"></use>
                 </svg>
 
-                <span>카테고리</span>
+                <span>검색 조건</span>
             </label>
 
             <select name="list-category" id="lstCategory" v-model="selectedCategory">
@@ -14,8 +16,8 @@
                 <option v-for="(category, value) in movieCategory" :key="value" :value="value">{{ category }}</option>
             </select>
 
-            <div id="totalSearchContainer">
-                <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
+                <div id="totalSearchContainer">
+                    <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
 
                 <ButtonWithIcon element-id="btnTotalSearch" icon-position="only" icon-name="search-2-line" @click="searchPost">
                     검색
@@ -69,15 +71,11 @@
             </li>
         </ul> <!-- #postItemList -->
 
-        <div v-else>
-            게시물이 없습니다.
-        </div>
+        <EmptyList v-else />
     </div> <!-- #postList -->
 </template> <!-- Template Ends -->
 
 <script setup>
-    // import postData from '../datas/postData.json'; // 임시 데이터
-    // import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import movieCategory from '../datas/movieCategory.json';
     import {ref, onMounted, computed} from 'vue';
     import axios from 'axios';
