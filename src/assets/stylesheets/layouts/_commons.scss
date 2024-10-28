@@ -111,11 +111,55 @@
     display: flex;
     align-items: center;
     gap: .4rem;
+    position: relative;
+    width: 100%;
     overflow: hidden;
-}
 
-#pageFilterSlider {
-    flex: 1;
+    &::before,
+    &::after {
+        display: block;
+        position: absolute;
+        inset: 0;
+        width: 0;
+        height: 100%;
+        background-image: linear-gradient(var(--filter-overlay-direction), rgb(var(--clr-background)), transparent);
+        transition: width .25s;
+        z-index: 2;
+        pointer-events: none;
+        content: '';
+    }
+
+    &::before {
+        --filter-overlay-direction: to right;
+
+        margin-inline-end: auto;
+    }
+
+    &::after {
+        --filter-overlay-direction: to left;
+
+        margin-inline-start: auto;
+    }
+
+    &:has(.swiper-slide-prev) {
+        &::before {
+            width: 3.6rem;
+        }
+    }
+
+    &:has(.swiper-slide-next) {
+        &::after {
+            width: 3.6rem;
+        }
+    }
+
+    swiper-container {
+        width: 100%;
+
+        swiper-slide {
+            width: fit-content;
+        }
+    }
 }
 
 .button-filter-selector {

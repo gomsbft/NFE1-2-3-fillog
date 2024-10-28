@@ -1,5 +1,5 @@
 <template>
-    <article class="guestbook-item">
+    <li class="guestbook-item">
         <div>
             <p>작성자명</p>
             <p>작성일</p>
@@ -10,7 +10,7 @@
         <div>
             <slot></slot>
         </div>
-    </article>
+    </li>
 </template> <!-- Template Ends -->
 
 <script setup>

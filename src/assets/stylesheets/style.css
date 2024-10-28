@@ -745,11 +745,42 @@ a, a:visited {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  position: relative;
+  width: 100%;
   overflow: hidden;
 }
-
-#pageFilterSlider {
-  flex: 1;
+.page-filter-wrapper::before, .page-filter-wrapper::after {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 0;
+  height: 100%;
+  background-image: linear-gradient(var(--filter-overlay-direction), rgb(var(--clr-background)), transparent);
+  transition: width 0.25s;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+}
+.page-filter-wrapper::before {
+  --filter-overlay-direction: to right;
+  margin-inline-end: auto;
+}
+.page-filter-wrapper::after {
+  --filter-overlay-direction: to left;
+  margin-inline-start: auto;
+}
+.page-filter-wrapper:has(.swiper-slide-prev)::before {
+  width: 3.6rem;
+}
+.page-filter-wrapper:has(.swiper-slide-next)::after {
+  width: 3.6rem;
+}
+.page-filter-wrapper swiper-container {
+  width: 100%;
+}
+.page-filter-wrapper swiper-container swiper-slide {
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .button-filter-selector {
@@ -1931,6 +1962,8 @@ a, a:visited {
 }
 
 /* _filmList.scss */
+/* _guestbookList.scss */
+/* _guestbookList.scss */
 /* _buttons.scss */
 button {
   padding: 0;
