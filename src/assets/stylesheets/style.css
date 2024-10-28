@@ -2860,6 +2860,7 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   width: fit-content;
   border-radius: 0.2rem;
   background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-size: var(--fnt-sm);
   content: "평균 " attr(data-point) " 점";
 }
