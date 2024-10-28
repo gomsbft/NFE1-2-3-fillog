@@ -130,7 +130,6 @@
   };
 </script>
 
-
 <style lang="scss" scoped>
   @import "../../assets/stylesheets/views/_register"
 </style>

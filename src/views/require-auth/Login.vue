@@ -63,7 +63,6 @@
       successMessage.value = ''; // 성공 메시지 초기화
     }
   };
-
 </script>
 
 <style lang="scss" scoped>

@@ -1,0 +1,60 @@
+/* _starPoints.scss */
+
+.star-point-container {
+    --point-percentage: 0%;
+    --star-size: var(--fnt-md);
+
+    position: relative;
+    width: fit-content;
+    cursor: help;
+
+    &::after {
+        display: none;
+        position: absolute;
+        inset-inline: 0;
+        inset-block-end: calc(100% + .2rem);
+        margin-inline: auto;
+        padding: .2rem;
+        width: fit-content;
+        border-radius: .2rem;
+        background-color: rgb(0 0 0);
+        color: rgb(255 255 255);
+        font-size: var(--fnt-sm);
+        content: '평균 ' attr(data-point) ' 점';
+    }
+
+    &:hover {
+        &::after {
+            display: block;
+        }
+    }
+}
+
+.star-point-base {
+    display: flex;
+    flex-flow: row nowrap;
+    color: gray;
+    z-index: 0;
+}
+
+.star-point-progress {
+    display: flex;
+    flex-flow: row nowrap;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--point-percentage);
+    color: rgb(var(--clr-warn));
+    overflow: hidden;
+}
+
+.star-point {
+    display: block;
+    aspect-ratio: 1 / 1;
+
+    .remix {
+        width: var(--star-size);
+    }
+}
+
+/* _starPoints.scss */

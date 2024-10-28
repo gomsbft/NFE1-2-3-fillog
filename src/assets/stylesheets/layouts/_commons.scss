@@ -127,13 +127,13 @@
         background-color: rgb(var(--clr-max) / .1);
         box-shadow:
             inset .2rem .2rem .2rem rgb(255 255 255 / .05),
-            inset -.2rem -.2rem .2rem rgb(0 0 0 / .25);
+            inset -.1rem -.1rem .1rem rgb(0 0 0 / .05);
     }
 
     &.active {
         border-color: rgb(var(--clr-min) / .15);
         background-color: rgb(var(--clr-max));
-        color: rgb(var(--clr-text-on-tint));
+        color: rgb(var(--clr-min));
         font-weight: 700;
         pointer-events: none;
     }
