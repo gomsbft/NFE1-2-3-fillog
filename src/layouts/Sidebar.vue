@@ -52,14 +52,13 @@
                 <span>블로그 정보</span>
             </button>
 
-            <RouterLink to="/write" class="buttons-blog-control">
-                <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser">
-                    <svg class="remix">
-                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
-                    </svg>
-                    <span>글쓰기</span>
-                </button>
-            </RouterLink>
+            <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser" @click="$router.push('/posts/write')">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
+                </svg>
+
+                <span>글쓰기</span>
+            </button>
 
             <button type="button" class="buttons-blog-control" v-if="blogInfo.adminId === thisUser">
                 <svg class="remix">
@@ -80,8 +79,8 @@
             </ul>
         </div>
 
-        <div class="rounded">
-            <h6 class="sidebar-hidden">최근 게시물</h6>
+        <div id="sideLatest" class="rounded">
+            <h6 class="sidebar-section-title">최근 게시물</h6>
 
             <ul>
                 <li>ㅏㅓ</li>

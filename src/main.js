@@ -41,11 +41,15 @@ myProject.component('MovieItem', MovieItem);
 
 // 앱 정의
 
-// if (JSON.parse(localStorage.getItem('fillogLocalSettings')).useDarkTheme === true) {
-//     document.querySelector('html').classList.add('dark');
-// } else {
-//     document.querySelector('html').classList.add('light');
-// }
+if (!!localStorage.getItem('fillogLocalSettings') === false) localStorage.setItem('fillogLocalSettings', JSON.stringify({ useDarkTheme: true }));
+
+const fillogSettings = JSON.parse(localStorage.getItem('fillogLocalSettings'));
+
+if (!!fillogSettings === true && fillogSettings.useDarkTheme === true) { // 다크 테마 체크
+    document.querySelector('html').classList.add('dark');
+} else {
+    document.querySelector('html').classList.add('light');
+}
 
 myProject
     .use(pinia)

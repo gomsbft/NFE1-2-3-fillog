@@ -77,7 +77,3 @@
         }
     };
 </script> <!-- Logic Ends -->
-
-<style lang="scss" scoped>
-    @import 'src/assets/stylesheets/views/_postWrite.scss';
-</style> <!-- Stylesheet Ends -->
