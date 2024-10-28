@@ -69,7 +69,7 @@
             </button>
         </div> <!-- #sideBlogControls -->
 
-        <div id="sideCategory" class="rounded">
+        <div id="sideCategory" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">포스트 카테고리</h6>
 
             <ul class="sidebar-category-container">
@@ -79,7 +79,7 @@
             </ul>
         </div> <!-- #sideCategory -->
 
-        <div id="sideLatest" class="rounded">
+        <div id="sideLatest" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">최근 게시물</h6>
 
             <ul>

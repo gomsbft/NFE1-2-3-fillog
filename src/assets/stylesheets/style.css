@@ -730,6 +730,7 @@ a, a:visited {
 }
 
 .page-filter-type-label {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -744,6 +745,11 @@ a, a:visited {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  overflow: hidden;
+}
+
+#pageFilterSlider {
+  flex: 1;
 }
 
 .button-filter-selector {
@@ -1166,6 +1172,7 @@ a, a:visited {
 
 .sidebar-section-title {
   padding: 0.8rem;
+  border-block-end: 1px dashed rgb(var(--clr-text)/0.25);
   font-size: var(--fnt-lg);
   font-weight: 900;
   opacity: 0.5;
@@ -1212,11 +1219,11 @@ a, a:visited {
     -webkit-backdrop-filter: blur(0.4rem);
             backdrop-filter: blur(0.4rem);
   }
-  .blog-owner-image-container {
-    width: 3.6rem;
-  }
   .sidebar-hidden {
     display: none;
+  }
+  .blog-owner-image-container {
+    width: 3.6rem;
   }
   #sideBlogControls {
     flex-flow: column nowrap;
@@ -1498,6 +1505,12 @@ a, a:visited {
   gap: 0.4rem;
 }
 
+/* 반응형 쿼리 */
+@container main-container (max-width: 640px) {
+  #txtTotalSearch {
+    width: 8rem;
+  }
+}
 /* _postList.scss */
 /* _postDetail.scss */
 #postImageSlider {
@@ -2895,3 +2908,5 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 }
 
 /* _starPoints.scss */
+/* _guestbookItem.scss */
+/* _guestbookItem.scss */
