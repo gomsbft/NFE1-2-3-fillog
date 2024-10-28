@@ -1,10 +1,32 @@
 import baseAPI from './apiDefault';
 
+export const postArticle = async (articleData, forwardFunction) => { // 포스트 작성
+    try {
+        const response = await baseAPI.post('/post', articleData);
+
+        if (response.status === 200) {
+            alert('게시물이 등록되었습니다.');
+
+            forwardFunction();
+        }
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const getPosts = async () => { // 포스트 목록 가져오기
+    try {
+        const { data: response } = await baseAPI.get('/posts');
+
+        return response;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
 export const getPostInfo = async (articleID) => { // 개별 포스트 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/post/${ articleID }`, {
-            // get option
-        });
+        const { data: response } = await baseAPI.get(`/post/${ articleID }`);
 
         return response;
     } catch(error) {

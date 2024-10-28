@@ -43,6 +43,4 @@
     const props = defineProps([ 'movieId' ]);
     const currentMovie = await getMovieInfo(props.movieId);
     const movieDirector = currentMovie.credits.crew.filter(({ job }) => job === 'Director');
-
-    console.log(currentMovie);
 </script> <!-- Logic Ends -->
