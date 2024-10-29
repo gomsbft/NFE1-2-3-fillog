@@ -1,5 +1,65 @@
 /* _guestbookList.scss */
 
+#guestbookEditor {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .4rem;
+}
 
+#guestbookUser {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+#txtGuestName,
+#txtGuestPassword {
+    width: 6.4rem;
+    min-width: auto;
+}
+
+.guestbook-unknown-user {
+    position: relative;
+    width: 1.2rem;
+    height: 1.2rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 25rem;
+    background-color: rgb(128 128 128);
+    overflow: hidden;
+    user-select: none;
+
+    > .remix {
+        position: absolute;
+        inset: 0;
+        margin-block-start: auto;
+        margin-inline: auto;
+        width: 80%;
+        color: rgb(255 255 255 / .5);
+    }
+}
+
+#guestbookInput {
+    display: flex;
+    gap: .4rem;
+    padding-block-end: .4rem;
+
+    &::before {
+        display: block;
+        margin-inline-start: .6rem;
+        width: .6rem;
+        height: .8rem;
+        border-inline-start: 1px solid rgb(var(--clr-text) / .25);
+        border-block-end: 1px solid rgb(var(--clr-text) / .25);
+        border-bottom-left-radius: .2rem;
+        content: '';
+    }
+}
+
+#txtGuestbook {
+    width: 100%;
+    min-height: 4.2rem;
+    line-height: 1.4;
+    resize: vertical;
+}
 
 /* _guestbookList.scss */

@@ -695,10 +695,12 @@ a, a:visited {
   width: fit-content;
 }
 .user-name-tag > .user-profile-image {
+  position: relative;
   width: 1.2rem;
   height: 1.2rem;
   aspect-ratio: 1/1;
   border-radius: 25rem;
+  background-color: rgb(128, 128, 128);
   overflow: hidden;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -708,6 +710,14 @@ a, a:visited {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+.user-name-tag > .user-profile-image > .remix {
+  position: absolute;
+  inset: 0;
+  margin-block-start: auto;
+  margin-inline: auto;
+  width: 80%;
+  color: rgba(255, 255, 255, 0.5);
 }
 .user-name-tag > .user-name::after {
   opacity: 0.75;
@@ -809,6 +819,7 @@ a, a:visited {
 .empty-item-list {
   display: grid;
   place-items: center;
+  margin-block: 3.2rem;
   height: 4.8rem;
   opacity: 0.5;
   -webkit-user-select: none;
@@ -1212,8 +1223,6 @@ a, a:visited {
 .sidebar-category-container {
   display: flex;
   flex-flow: column nowrap;
-  gap: 0.4rem;
-  padding: 0.8rem;
 }
 
 .rounded {
@@ -1927,31 +1936,6 @@ a, a:visited {
   resize: vertical;
 }
 
-#btnSubmitReply {
-  flex-shrink: 0;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem;
-  width: 4.2rem;
-  border: 1px solid rgb(var(--clr-tint-60)/0.5);
-  border-radius: 0.2rem;
-  background-color: rgb(var(--clr-theme)/0.1);
-  color: rgb(var(--clr-tint-60));
-  font-weight: 700;
-}
-#btnSubmitReply:hover {
-  background-color: rgb(var(--clr-tint-60));
-  color: rgb(var(--clr-if-0));
-}
-#btnSubmitReply:active {
-  background-color: rgb(var(--clr-tint-0));
-}
-#btnSubmitReply:focus {
-  border-color: rgb(var(--clr-tint-100));
-}
-
 /* 반응형 쿼리 */
 @container main-container (max-width: 640px) {
   .slider-prev-el,
@@ -2055,6 +2039,68 @@ a, a:visited {
 
 /* _filmList.scss */
 /* _guestbookList.scss */
+#guestbookEditor {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.4rem;
+}
+
+#guestbookUser {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#txtGuestName,
+#txtGuestPassword {
+  width: 6.4rem;
+  min-width: auto;
+}
+
+.guestbook-unknown-user {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  aspect-ratio: 1/1;
+  border-radius: 25rem;
+  background-color: rgb(128, 128, 128);
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.guestbook-unknown-user > .remix {
+  position: absolute;
+  inset: 0;
+  margin-block-start: auto;
+  margin-inline: auto;
+  width: 80%;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#guestbookInput {
+  display: flex;
+  gap: 0.4rem;
+  padding-block-end: 0.4rem;
+}
+#guestbookInput::before {
+  display: block;
+  margin-inline-start: 0.6rem;
+  width: 0.6rem;
+  height: 0.8rem;
+  border-inline-start: 1px solid rgb(var(--clr-text)/0.25);
+  border-block-end: 1px solid rgb(var(--clr-text)/0.25);
+  border-bottom-left-radius: 0.2rem;
+  content: "";
+}
+
+#txtGuestbook {
+  width: 100%;
+  min-height: 4.2rem;
+  line-height: 1.4;
+  resize: vertical;
+}
+
 /* _guestbookList.scss */
 /* _buttons.scss */
 button {
@@ -2161,6 +2207,35 @@ button {
 .button-post-controls:hover > span, .button-post-controls:focus > span {
   inset-block-start: calc(50% + 0.2rem);
   opacity: 1;
+}
+
+#btnSubmitReply,
+#btnSubmitGuestbook {
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  width: 4.2rem;
+  border: 1px solid rgb(var(--clr-tint-60)/0.5);
+  border-radius: 0.2rem;
+  background-color: rgb(var(--clr-theme)/0.1);
+  color: rgb(var(--clr-tint-60));
+  font-weight: 700;
+}
+#btnSubmitReply:hover,
+#btnSubmitGuestbook:hover {
+  background-color: rgb(var(--clr-tint-60));
+  color: rgb(var(--clr-if-0));
+}
+#btnSubmitReply:active,
+#btnSubmitGuestbook:active {
+  background-color: rgb(var(--clr-tint-0));
+}
+#btnSubmitReply:focus,
+#btnSubmitGuestbook:focus {
+  border-color: rgb(var(--clr-tint-100));
 }
 
 .buttons-blog-control {
