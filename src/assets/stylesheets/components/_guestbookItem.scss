@@ -1,7 +1,13 @@
 /* _guestbookItem.scss */
 
 .guestbook-item {
+    padding: .8rem;
+    border: 1px solid transparent;
+    border-radius: .4rem;
 
+    &:hover {
+        border-color: rgb(var(--clr-max));
+    }
 }
 
 /* _guestbookItem.scss */

@@ -3109,4 +3109,13 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 
 /* _starPoints.scss */
 /* _guestbookItem.scss */
+.guestbook-item {
+  padding: 0.8rem;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+}
+.guestbook-item:hover {
+  border-color: rgb(var(--clr-max));
+}
+
 /* _guestbookItem.scss */

@@ -30,7 +30,7 @@
             <h1 id="postTitle">{{ thisArticle.title }}</h1> <!-- postTitle -->
 
             <div id="postSummaries">
-                <!-- <UserNameTag :user-id="thisArticle.author.userId" /> -->
+                <UserNameTag :user-id="thisArticle.author.userId" />
 
                 <span>·</span>
 
@@ -47,7 +47,7 @@
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
 
-                    <!-- <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span> -->
+                    <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span>
                 </p>
             </div> <!-- #postSummaries -->
         </div>  <!-- #postInformations -->
@@ -82,31 +82,20 @@
             </button>
 
             <!-- 이 버튼들은 자기가 쓴 게시물에만 표시 -->
-            <button
-            type="button"
-            class="button-post-controls"
-            title="수정"
-            style="--button-icon-color: var(--clr-info)"
-            @click="editArticle"
-            >
-            <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
-            </svg>
-            <span>수정</span>
+            <button type="button" class="button-post-controls" title="수정" style="--button-icon-color: var(--clr-info)" @click="editPost(thisArticle.id)">
+                <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
+                </svg>
+
+                <span>수정</span>
             </button>
 
-            <button
-            type="button"
-            class="button-post-controls"
-            title="삭제"
-            style="--button-icon-color: var(--clr-alert)"
-            @click="deleteArticle"
-            >
-            <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
-            </svg>
+            <button type="button" class="button-post-controls" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deletePost(thisArticle.id)">
+                <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
+                </svg>
 
-            <span>삭제</span>
+                <span>삭제</span>
             </button>
         </div> <!-- #postControls -->
 
@@ -163,59 +152,17 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, onMounted } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
-    import axios from 'axios';
-    import postData from '../datas/postData.json'; // 임시 데이터
+    import { getPostInfo, editPost, deletePost } from '../utilities/dataQueries';
+
     import movieCategory from '../datas/movieCategory.json';
     import MediaInfo from '../components/commons/MediaInfo.vue';
     import ArticleReply from '../components/ArticleReply.vue';
 
     const router = useRouter();
     const route = useRoute();
-    const thisArticle = ref(null);
-
-    const findArticle = async() => {
-        const postID = route.params.postID;
-
-        try {
-            const response = await axios.get(`http://localhost:3000/posts/${postID}`);
-
-            console.log(response.data)
-            thisArticle.value = response.data;
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    // 게시물 수정
-    const editArticle = () => {
-        const postID = route.params.postID;
-
-        router.push(`/posts/edit/${postID}`);
-    };
-
-        // 게시물 삭제
-    const deleteArticle = async() => {
-        const postID = route.params.postID;
-        const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
-
-        if(confirmDel) {
-            try {
-                await axios.delete(`http://localhost:3000/posts/${postID}`);
-
-                alert('게시물이 삭제되었습니다.');
-                router.push('/posts');
-            } catch(err) {
-                alert('게시물 삭제에 실패했습니다.')
-                console.error(err);
-            }
-        }
-    }
-
-    onMounted(() => {
-        findArticle();
-    });
+    const postID = route.params.postID;
+    const thisArticle = await getPostInfo(postID);
 
     const swiperParams = {
         slidesPerView: 1,

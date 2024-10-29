@@ -1,11 +1,18 @@
 <template>
     <li class="guestbook-item">
         <div>
-            <p>작성자명</p>
-            <p>작성일</p>
+            <p class="guest-user-name">작성자명</p>
+
+            <span>·</span>
+
+            <p class="guest-written-date">작성일</p>
         </div>
 
         <div>내용</div>
+
+        <div>
+            삭제
+        </div>
 
         <div>
             <slot></slot>

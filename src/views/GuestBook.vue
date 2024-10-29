@@ -35,7 +35,7 @@
 
         <ul id="guestItemList">
             <GuestbookItem :guest-id="1">
-                <GuestbookItem :guest-id="2" />
+                방명록 글의 답글
             </GuestbookItem>
         </ul> <!-- #guestItemList -->
 
