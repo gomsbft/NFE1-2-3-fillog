@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 export const userLogin = defineStore('isLogin', () => {
     const logins = ref(false);
 
-    // 로그인 상태 true 
+    // 로그인 상태 true
     const setLoginTrue = () => {
         logins.value = true;
     }

@@ -2,7 +2,7 @@
     <HeadPrimary />
 
     <div id="mainContainer" class="inner-wrapper">
-        <Sidebar/>
+        <Sidebar />
 
         <main id="contentView">
             <slot></slot>
@@ -17,7 +17,7 @@
 
 <script setup>
     import { useLoaderStore } from '../stores/isLoading';
-    import { userLogin } from '../stores/isLogin';
+
     import HeadPrimary from './HeadPrimary.vue';
     import FootPrimary from './FootPrimary.vue';
     import Sidebar from './Sidebar.vue';
@@ -25,5 +25,4 @@
     import FloatingButton from './FloatingButton.vue';
 
     const isLoading = useLoaderStore();
-    const log = userLogin();
 </script> <!-- Logic Ends -->
