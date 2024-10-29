@@ -140,3 +140,7 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+  @use "../../assets/stylesheets/views/_register"
+</style>
