@@ -730,6 +730,7 @@ a, a:visited {
 }
 
 .page-filter-type-label {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -744,6 +745,42 @@ a, a:visited {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.page-filter-wrapper::before, .page-filter-wrapper::after {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 0;
+  height: 100%;
+  background-image: linear-gradient(var(--filter-overlay-direction), rgb(var(--clr-background)), transparent);
+  transition: width 0.25s;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+}
+.page-filter-wrapper::before {
+  --filter-overlay-direction: to right;
+  margin-inline-end: auto;
+}
+.page-filter-wrapper::after {
+  --filter-overlay-direction: to left;
+  margin-inline-start: auto;
+}
+.page-filter-wrapper:has(.swiper-slide-prev)::before {
+  width: 3.6rem;
+}
+.page-filter-wrapper:has(.swiper-slide-next)::after {
+  width: 3.6rem;
+}
+.page-filter-wrapper swiper-container {
+  width: 100%;
+}
+.page-filter-wrapper swiper-container swiper-slide {
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .button-filter-selector {
@@ -1166,6 +1203,7 @@ a, a:visited {
 
 .sidebar-section-title {
   padding: 0.8rem;
+  border-block-end: 1px dashed rgb(var(--clr-text)/0.25);
   font-size: var(--fnt-lg);
   font-weight: 900;
   opacity: 0.5;
@@ -1212,11 +1250,11 @@ a, a:visited {
     -webkit-backdrop-filter: blur(0.4rem);
             backdrop-filter: blur(0.4rem);
   }
-  .blog-owner-image-container {
-    width: 3.6rem;
-  }
   .sidebar-hidden {
     display: none;
+  }
+  .blog-owner-image-container {
+    width: 3.6rem;
   }
   #sideBlogControls {
     flex-flow: column nowrap;
@@ -1342,6 +1380,98 @@ a, a:visited {
   }
 }
 /* _floatingButton.scss */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 10%;
+}
+.container .registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.container .registerForm div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.container .registerForm .imgContainer {
+  width: 5rem;
+  height: 5rem;
+  position: relative;
+  text-align: center;
+  display: flex;
+  margin-left: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.container .registerForm .imgContainer .imgText {
+  position: absolute;
+  left: 1rem;
+  top: 2rem;
+}
+.container .registerForm .imgContainer .imgLabel {
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid #E3170A;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+}
+.container .registerForm .imgContainer .imgInput {
+  position: absolute;
+  visibility: hidden;
+}
+.container .registerForm .imgContainer .imgView {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+.container .registerBtn {
+  color: #E3170A;
+}
+.container .registerBtn:active {
+  color: #244838;
+}
+.container .success, .container .error {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 10%;
+}
+.container .loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.container div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.container .loginBtn {
+  color: #E3170A;
+}
+.container .loginBtn:active {
+  color: #244838;
+}
+.container .success, .container .error {
+  text-align: center;
+}
+.container .joinBtn {
+  color: #7BF4BC;
+}
+
 /* _landingPage.scss */
 #landingPage {
   display: flex;
@@ -1498,6 +1628,12 @@ a, a:visited {
   gap: 0.4rem;
 }
 
+/* 반응형 쿼리 */
+@container main-container (max-width: 640px) {
+  #txtTotalSearch {
+    width: 8rem;
+  }
+}
 /* _postList.scss */
 /* _postDetail.scss */
 #postImageSlider {
@@ -1918,6 +2054,8 @@ a, a:visited {
 }
 
 /* _filmList.scss */
+/* _guestbookList.scss */
+/* _guestbookList.scss */
 /* _buttons.scss */
 button {
   padding: 0;
@@ -2895,3 +3033,5 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 }
 
 /* _starPoints.scss */
+/* _guestbookItem.scss */
+/* _guestbookItem.scss */

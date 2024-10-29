@@ -1,9 +1,9 @@
 <template>
   <article id="postDetail" v-if="thisArticle">
-      <div id="postImageSlider" v-if="thisArticle.images && thisArticle.images.length > 0">
+      <div id="postImageSlider" v-if="thisArticle.images.length > 0">
           <swiper-container v-bind="swiperParams">
               <swiper-slide class="article-image-slide" v-for="(imgItem, index) in thisArticle.images" :key="index">
-                  <img class="article-image" :src="imgItem" :alt="imgItem">
+                  <img class="article-image" :src="imgItem.imageURL" :alt="imgItem.alt">
               </swiper-slide>
           </swiper-container>
 
@@ -46,7 +46,9 @@
                   <svg class="remix">
                       <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                   </svg>
+
                   <span>{{ displayLikes }}</span>
+
                   <!-- <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span> -->
               </p>
           </div> <!-- #postSummaries -->
@@ -57,7 +59,9 @@
       <MediaInfo :media-object="null" />
 
       <div id="postControls">
+
         <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);" @click="likeBtnHandler">
+
             <svg class="remix">
                 <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-line"></use>
             </svg>
@@ -143,9 +147,11 @@
               </div> <!-- #replyingUser -->
 
               <div id="replyingInput">
+
                   <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
                   <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
+
                       <svg class="remix">
                           <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
                       </svg>
@@ -162,22 +168,25 @@
   </article> <!-- #postDetail -->
 </template> <!-- Template Ends -->
 
-<script setup>
-    import { computed, onMounted, reactive, ref } from 'vue';
-    import { useRouter, useRoute } from 'vue-router';
-    import axios from 'axios';
-    // import postData from '../datas/postData.json'; // 임시 데이터
-    import movieCategory from '../datas/movieCategory.json'; 
-    import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
-    import MediaInfo from '../components/commons/MediaInfo.vue';
-    import ArticleReply from '../components/ArticleReply.vue';
+
+  import { ref, onMounted, computed, reactive } from 'vue';
+  import { useRouter, useRoute } from 'vue-router';
+  import axios from 'axios';
+  // import postData from '../datas/postData.json'; // 임시 데이터
+  import movieCategory from '../datas/movieCategory.json'; 
+  import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
+  import MediaInfo from '../components/commons/MediaInfo.vue';
+  import ArticleReply from '../components/ArticleReply.vue';
+
 
   const router = useRouter();
   const route = useRoute();
   const thisArticle = ref(null);
+
   const ArticleInDB = reactive({likes: []});              // DB에 존재하는 임시 포스트 데이터를 가져올 변수
   const commentText = ref('');
   const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
+
 
   const findArticle = async() => {
       const postID = route.params.postID;
@@ -190,6 +199,7 @@
             Object.assign(ArticleInDB, response.data);
             console.log('ArticleInDB:', ArticleInDB);
             }
+
       } catch (err) {
           console.error(err);
       }
@@ -215,6 +225,7 @@
         } catch (err) {
           alert('게시물 삭제에 실패했습니다.')
           console.error(err);
+
         }
       }
     }
@@ -289,6 +300,7 @@
 
         commentText.value = '';
     }
+
 </script> <!-- Logic Ends -->
 
 <style lang="scss" scoped>

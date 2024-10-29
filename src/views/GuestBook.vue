@@ -2,36 +2,28 @@
     <div id="guestBook">
         <h1 class="page-title">방명록</h1>
 
-        <div id="guestFilter" class="page-filter-container">
-            <label class="page-filter-type-label">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-right-line"></use>
-                </svg>
+        <PageFilter id="guestFilter" label-icon="corner-down-right-line" label-text="답글 여부" :filter-array="guestFilterArray" :origin-value="'all'" />
 
-                <span>답글 여부</span>
-            </label>
+        <div>
+            방명록 작성기 들어갈 자리
 
-            <div class="page-filter-wrapper">
-                <button type="button" class="button-filter-selector active">
-                    전체
-                </button>
-
-                <button type="button" class="button-filter-selector">
-                    답글 있음
-                </button>
-
-                <button type="button" class="button-filter-selector">
-                    답글 없음
-                </button>
-            </div>
+            <textarea name="" id="" placeholder="방명록"></textarea>
         </div>
 
-        <ul></ul>
+        <ul id="guestItemList">
+            <GuestbookItem :guest-id="1" />
+        </ul> <!-- #guestItemList -->
 
         <EmptyList />
     </div> <!-- #guestBook -->
 </template> <!-- Template Ends -->
 
 <script setup>
+    import GuestbookItem from '../components/GuestbookItem.vue';
 
+    const guestFilterArray = [ // 임시 필터 리스트 데이터
+        { name: '전체', value: 'all' },
+        { name: '답글 있음', value: 'reply-exist' },
+        { name: '답글 없음', value: 'no-reply' }
+    ]
 </script> <!-- Logic Ends -->

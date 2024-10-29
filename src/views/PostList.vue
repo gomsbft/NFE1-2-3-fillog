@@ -16,8 +16,9 @@
                 <option v-for="(category, value) in movieCategory" :key="value" :value="value">{{ category }}</option>
             </select>
 
-                <div id="totalSearchContainer">
-                    <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
+
+            <div id="totalSearchContainer">
+                <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
 
                 <ButtonWithIcon element-id="btnTotalSearch" icon-position="only" icon-name="search-2-line" @click="searchPost">
                     검색
@@ -35,7 +36,6 @@
                         </svg>
                     </RouterLink>
 
-                    
                 </div>
 
                 <dl class="article-item-descriptions">
@@ -89,6 +89,7 @@
     const postDatas = async() => {
         try {
             const response = await axios.get('http://localhost:3000/posts');
+
             postData.value = response.data;
         } catch (err) {
             console.error(err);
@@ -97,7 +98,8 @@
 
     onMounted(() => {
         postDatas();
-    })
+    });
+
 
     const filterPost = computed(() => {
         return postData.value.filter(article => {

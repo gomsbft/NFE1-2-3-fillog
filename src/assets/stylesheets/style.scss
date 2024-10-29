@@ -44,11 +44,14 @@
 
 // 6. Views
 @import
+    'views/register',
+    'views/login',
     'views/landingPage',
     'views/postList',
     'views/postDetail',
     'views/postWrite',
-    'views/filmList'
+    'views/filmList',
+    'views/guestbookList'
 ;
 
 // 7. Components
@@ -60,5 +63,6 @@
     'components/mediaInfo',
     'components/articleReply',
     'components/movieItem',
-    'components/starPoints'
+    'components/starPoints',
+    'components/guestbookItem'
 ;

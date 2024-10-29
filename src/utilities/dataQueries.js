@@ -74,3 +74,23 @@ export const searchMovies = async (searchQuery) => { // 영화 정보 검색
         console.error(error);
     }
 }
+
+export const writeGuestbook = async (guestbookObj) => { // 방명록 작성
+    try {
+        const response = await baseAPI.post('/guestbooks/write', guestbookObj);
+
+        if (response.status === 200) return alert('방명록 작성 완료');
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const getGuestbookInfo = async (guestbookID) => { // 개별 방명록 글 가져오기
+    try {
+        const { data: response } = await baseAPI.get(`/guestbooks/${ guestbookID }`);
+
+        return response;
+    } catch(error) {
+        console.error(error);
+    }
+}
