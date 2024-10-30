@@ -127,9 +127,20 @@
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
-                <div id="replyingUser">
+                <div v-if="tempUserID" id="replyingUser">
                     <UserNameTag />
-                </div> <!-- #replyingUser -->
+                </div> <!-- #replyingUser - 사용자가 로그인 된 상태일 때 -->
+
+                <div v-else id="replyingUser">
+                    <div class="replying-unknown-user">
+                        <svg class="remix">
+                            <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-fill"></use>
+                        </svg>
+                    </div>
+
+                    <input type="text" name="replying-name" id="txtReplyingName" minlength="2" maxlength="12" placeholder="별명">
+                    <input type="password" name="replying-password" id="txtReplyingPassword" minlength="8" maxlength="16" placeholder="비밀번호">
+                </div> <!-- #replyingUser - 사용자가 로그인하지 않았을 때 -->
 
                 <div id="replyingInput">
                     <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
@@ -164,6 +175,8 @@
     const router = useRouter();
     const route = useRoute();
     const thisArticle = ref(null);
+
+    const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
 
     const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
     const commentText = ref('');

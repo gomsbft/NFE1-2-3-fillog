@@ -1922,6 +1922,39 @@ a, a:visited {
   gap: 0.4rem;
 }
 
+#replyingUser {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#txtReplyingName,
+#txtReplyingPassword {
+  width: 6.4rem;
+  min-width: auto;
+}
+
+.replying-unknown-user {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  aspect-ratio: 1/1;
+  border-radius: 25rem;
+  background-color: rgb(128, 128, 128);
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.replying-unknown-user > .remix {
+  position: absolute;
+  inset: 0;
+  margin-block-start: auto;
+  margin-inline: auto;
+  width: 80%;
+  color: rgba(255, 255, 255, 0.5);
+}
+
 #replyingInput {
   display: flex;
   gap: 0.4rem;
@@ -2310,7 +2343,7 @@ button {
   outline: 0;
 }
 
-input[type=text], input[type=number], input[type=email], input[type=tel], input[type=email], input[type=url], input[type=password], input[type=datetime-local], input[type=date], input[type=month], input[type=week], input[type=time], input[type=search] {
+input:not(.exclude)[type=text], input:not(.exclude)[type=number], input:not(.exclude)[type=email], input:not(.exclude)[type=tel], input:not(.exclude)[type=email], input:not(.exclude)[type=url], input:not(.exclude)[type=password], input:not(.exclude)[type=datetime-local], input:not(.exclude)[type=date], input:not(.exclude)[type=month], input:not(.exclude)[type=week], input:not(.exclude)[type=time], input:not(.exclude)[type=search] {
   padding-inline: 0.4rem;
   height: 1.6rem;
   border: 1px solid rgb(var(--clr-theme)/0.25);
@@ -2321,20 +2354,24 @@ input[type=text], input[type=number], input[type=email], input[type=tel], input[
   color: rgb(var(--clr-text));
   transition: 0.25s;
 }
-input[type=text]:hover, input[type=number]:hover, input[type=email]:hover, input[type=tel]:hover, input[type=email]:hover, input[type=url]:hover, input[type=password]:hover, input[type=datetime-local]:hover, input[type=date]:hover, input[type=month]:hover, input[type=week]:hover, input[type=time]:hover, input[type=search]:hover {
+input:not(.exclude)[type=text]:hover, input:not(.exclude)[type=number]:hover, input:not(.exclude)[type=email]:hover, input:not(.exclude)[type=tel]:hover, input:not(.exclude)[type=email]:hover, input:not(.exclude)[type=url]:hover, input:not(.exclude)[type=password]:hover, input:not(.exclude)[type=datetime-local]:hover, input:not(.exclude)[type=date]:hover, input:not(.exclude)[type=month]:hover, input:not(.exclude)[type=week]:hover, input:not(.exclude)[type=time]:hover, input:not(.exclude)[type=search]:hover {
   border-color: rgb(var(--clr-theme)/0.6);
   background-color: rgb(var(--clr-min)/0.5);
 }
-input[type=text]:focus, input[type=number]:focus, input[type=email]:focus, input[type=tel]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=datetime-local]:focus, input[type=date]:focus, input[type=month]:focus, input[type=week]:focus, input[type=time]:focus, input[type=search]:focus {
+input:not(.exclude)[type=text]:focus, input:not(.exclude)[type=number]:focus, input:not(.exclude)[type=email]:focus, input:not(.exclude)[type=tel]:focus, input:not(.exclude)[type=email]:focus, input:not(.exclude)[type=url]:focus, input:not(.exclude)[type=password]:focus, input:not(.exclude)[type=datetime-local]:focus, input:not(.exclude)[type=date]:focus, input:not(.exclude)[type=month]:focus, input:not(.exclude)[type=week]:focus, input:not(.exclude)[type=time]:focus, input:not(.exclude)[type=search]:focus {
   border-color: rgb(var(--clr-theme)/0.75);
   background-color: rgb(var(--clr-min));
   outline: 0.2rem solid rgb(var(--clr-tint-0)/0.25);
 }
-input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid, input[type=tel]:invalid, input[type=email]:invalid, input[type=url]:invalid, input[type=password]:invalid, input[type=datetime-local]:invalid, input[type=date]:invalid, input[type=month]:invalid, input[type=week]:invalid, input[type=time]:invalid, input[type=search]:invalid {
+input:not(.exclude)[type=text].need-recognize:valid, input:not(.exclude)[type=number].need-recognize:valid, input:not(.exclude)[type=email].need-recognize:valid, input:not(.exclude)[type=tel].need-recognize:valid, input:not(.exclude)[type=email].need-recognize:valid, input:not(.exclude)[type=url].need-recognize:valid, input:not(.exclude)[type=password].need-recognize:valid, input:not(.exclude)[type=datetime-local].need-recognize:valid, input:not(.exclude)[type=date].need-recognize:valid, input:not(.exclude)[type=month].need-recognize:valid, input:not(.exclude)[type=week].need-recognize:valid, input:not(.exclude)[type=time].need-recognize:valid, input:not(.exclude)[type=search].need-recognize:valid {
+  border-color: rgb(var(--clr-clear)/0.75);
+  background-color: rgb(var(--clr-clear)/0.5);
+}
+input:not(.exclude)[type=text]:invalid, input:not(.exclude)[type=number]:invalid, input:not(.exclude)[type=email]:invalid, input:not(.exclude)[type=tel]:invalid, input:not(.exclude)[type=email]:invalid, input:not(.exclude)[type=url]:invalid, input:not(.exclude)[type=password]:invalid, input:not(.exclude)[type=datetime-local]:invalid, input:not(.exclude)[type=date]:invalid, input:not(.exclude)[type=month]:invalid, input:not(.exclude)[type=week]:invalid, input:not(.exclude)[type=time]:invalid, input:not(.exclude)[type=search]:invalid {
   border-color: rgb(var(--clr-alert));
   outline: 0.2rem solid rgb(var(--clr-alert)/0.25);
 }
-input[type=text]:disabled, input[type=number]:disabled, input[type=email]:disabled, input[type=tel]:disabled, input[type=email]:disabled, input[type=url]:disabled, input[type=password]:disabled, input[type=datetime-local]:disabled, input[type=date]:disabled, input[type=month]:disabled, input[type=week]:disabled, input[type=time]:disabled, input[type=search]:disabled {
+input:not(.exclude)[type=text]:disabled, input:not(.exclude)[type=number]:disabled, input:not(.exclude)[type=email]:disabled, input:not(.exclude)[type=tel]:disabled, input:not(.exclude)[type=email]:disabled, input:not(.exclude)[type=url]:disabled, input:not(.exclude)[type=password]:disabled, input:not(.exclude)[type=datetime-local]:disabled, input:not(.exclude)[type=date]:disabled, input:not(.exclude)[type=month]:disabled, input:not(.exclude)[type=week]:disabled, input:not(.exclude)[type=time]:disabled, input:not(.exclude)[type=search]:disabled {
   border-color: rgb(var(--clr-surface-60));
   background-color: rgb(var(--clr-surface-0));
   color: rgb(var(--clr-surface-60));
@@ -2362,6 +2399,10 @@ textarea:focus {
   border-color: rgb(var(--clr-theme)/0.75);
   background-color: rgb(var(--clr-min));
   outline: 0.2rem solid rgb(var(--clr-tint-0)/0.25);
+}
+textarea.need-recognize:valid {
+  border-color: rgb(var(--clr-clear)/0.75);
+  background-color: rgb(var(--clr-clear)/0.5);
 }
 textarea:invalid {
   border-color: rgb(var(--clr-alert));
@@ -2403,6 +2444,10 @@ select:focus {
   border-color: rgb(var(--clr-theme)/0.75);
   background-color: rgb(var(--clr-min));
   outline: 0.2rem solid rgb(var(--clr-tint-0)/0.25);
+}
+select.need-recognize:valid {
+  border-color: rgb(var(--clr-clear)/0.75);
+  background-color: rgb(var(--clr-clear)/0.5);
 }
 select:invalid {
   border-color: rgb(var(--clr-alert));
@@ -2572,6 +2617,31 @@ input[type=checkbox]:not([data-checkbox-type=toggle]):checked + label > .toggles
 }
 
 input[type=checkbox]:is([data-checkbox-type=toggle]) {
+  /*
+      <input type="checkbox" name="check-color-theme" id="chkTheme" data-checkbox-type="toggle" data-switch-label="false" :checked="currentThemeSetting" @change="setLocalTheme">
+
+      <label for="chkTheme">
+          <div class="switch-rail">
+              <div class="switch-button">
+                  <div class="switch-icon-container">
+                      <div class="switch-false">
+                          <svg class="remix">
+                              <use xlink:href="/miscs/remixicon.symbol.svg#ri-sun-fill"></use>
+                          </svg>
+                      </div>
+
+                      <div class="switch-true">
+                          <svg class="remix">
+                              <use xlink:href="/miscs/remixicon.symbol.svg#ri-moon-clear-fill"></use>
+                          </svg>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <span class="switch-label">색상 테마 설정</span>
+      </label>
+  */
   display: none;
 }
 input[type=checkbox]:is([data-checkbox-type=toggle]):is([data-switch-label=false]) + label .switch-label {
