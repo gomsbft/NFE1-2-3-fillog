@@ -189,14 +189,15 @@
             const response = await axios.get(`http://localhost:3000/posts/${postID}`);
             //   console.log('마운트시 응답 데이터 :',response.data)
             thisArticle.value = response.data;
-            console.log('thisArticle:',thisArticle)
+            console.log('thisArticle:',thisArticle);
+
             if (response && response.data) {
                 Object.assign(ArticleInDB, response.data);
                 console.log('ArticleInDB:', ArticleInDB);
             }
 
-        } catch(err) {
-            console.error(err);
+        } catch(error) {
+            console.error(error);
         }
     }
 
@@ -215,11 +216,12 @@
         if (confirmDel) {
             try {
                 await axios.delete(`http://localhost:3000/posts/${postID}`);
+
                 alert('게시물이 삭제되었습니다.');
                 router.push('/posts');
-            } catch (err) {
-                alert('게시물 삭제에 실패했습니다.')
-                console.error(err);
+            } catch(error) {
+                alert('게시물 삭제에 실패했습니다.');
+                console.error(error);
             }
         }
     }

@@ -33,7 +33,7 @@
         spaceBetween: 8
     };
 
-    const sendThis = (e) => { // 이후 emit으로 선택된 filter를 상위 컴포넌트로 전달시키는 내용이 필요하다.
+    const sendThis = (e) => { // 선택한 필터를 상위 컴포넌트에서 @current-filter 메소드로 전송한다.
         currentValue.value = e.target.value;
 
         emits('current-filter', currentValue.value);

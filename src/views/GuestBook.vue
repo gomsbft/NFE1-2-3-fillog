@@ -34,7 +34,7 @@
         </div> <!-- #guestbookEditor -->
 
         <ul v-if="guestData.length > 0" id="guestItemList">
-            <GuestbookItem v-for="guestItem in guestData" :key="guestItem.id" :guest-object="guestItem">
+            <GuestbookItem v-for="guestItem in filteredData" :key="guestItem.id" :guest-object="guestItem">
                 <GuestbookReplyItem v-for="replyItem in guestItem.replies" :key="replyItem.id" :reply-object="replyItem" />
             </GuestbookItem>
         </ul> <!-- #guestItemList -->
@@ -44,8 +44,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import GuestbookItem from '../components/GuestbookItem.vue';
-    import GuestbookReplyItem from '../components/GuestbookReplyItem.vue';
+    import { ref } from 'vue';
     import guestData from '../datas/guestData.json';
 
     const guestFilterArray = [ // 임시 필터 리스트 데이터
@@ -54,9 +53,12 @@
         { name: '답글 없음', value: 'no-reply' }
     ]
 
+    const filteredData = ref(guestData);
     const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
 
     const getCurrentFilter = (data) => {
-        console.log('현재 선택한 필터 :', data);
+        if (data === 'reply-exist') filteredData.value = guestData.filter(item => item.replies.length > 0);
+        if (data === 'no-reply') filteredData.value = guestData.filter(item => item.replies.length === 0);
+        if (data === 'all') filteredData.value = guestData;
     }
 </script> <!-- Logic Ends -->

@@ -100,12 +100,11 @@
 
     const postData = ref([]);
 
-    const postDatas = async() => {
+    const postDatas = async () => {
         try {
             const response = await axios.get('http://localhost:3000/posts');
 
             postData.value = response.data;
-            console.log(postData)
         } catch(error) {
             console.error(error);
         }
