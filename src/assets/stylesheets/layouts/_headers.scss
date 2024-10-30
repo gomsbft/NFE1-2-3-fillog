@@ -112,7 +112,12 @@
 
 #chkTheme {
     & + label {
-
+        --switch-rail-false: 184 238 255;
+        --switch-rail-true: 59 38 136;
+        --switch-button-false: 255 251 0;
+        --switch-button-true: 25 22 27;
+        --switch-icon-false: 255 102 0;
+        --switch-icon-true: 255 251 0;
     }
 }
 

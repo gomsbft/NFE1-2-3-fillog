@@ -73,7 +73,7 @@
         <div id="sideCategory" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">포스트 카테고리</h6>
 
-            <ul>
+            <ul class="sidebar-category-container">
                 <li v-for="(menuItem, index) in movieCategory" :key="index">
                     {{ menuItem }} [{{ postData.filter(post => post.category === index).length }}]
                 </li>
@@ -83,13 +83,9 @@
         <div id="sideLatest" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">최근 게시물</h6>
 
-            <ul>
-                <li>ㅏㅓ</li>
+            <ul class="sidebar-category-container">
+                <li></li>
             </ul>
-        </div>
-
-        <div class="rounded">
-            <p>Since {{ blogBirthday.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</p>
         </div>
     </aside> <!-- #sideBarMain -->
 </template> <!-- Template Ends -->
@@ -104,13 +100,13 @@
 
     const postData = ref([]);
 
-    const postDatas = async() => {
+    const postDatas = async () => {
         try {
             const response = await axios.get('http://localhost:3000/posts');
+
             postData.value = response.data;
-            console.log(postData)
-        } catch (err) {
-            console.error(err);
+        } catch(error) {
+            console.error(error);
         }
     };
 
@@ -119,9 +115,8 @@
     });
 
     const blogOwner = userData.find(user => user.id === parseInt(blogInfo.adminId) && user.type === 'admin');
-    const blogBirthday = new Date(blogInfo.createdDate);
 
     const loggedUser = userLogin(); // 로그인 유저 store
     const didIFollowed = ref(true); // 임시 팔로우 정보
-    const thisUser = ref(123124); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
+    const thisUser = ref(123125); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
 </script> <!-- Logic Ends -->
