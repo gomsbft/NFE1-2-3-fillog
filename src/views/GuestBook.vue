@@ -16,8 +16,8 @@
                     </svg>
                 </div>
 
-                <input type="text" name="guest-name" id="txtGuestName" maxlength="8" placeholder="별명">
-                <input type="password" name="guest-password" id="txtGuestPassword" maxlength="16" placeholder="비밀번호">
+                <input type="text" name="guest-name" id="txtGuestName" minlength="2" maxlength="12" placeholder="별명">
+                <input type="password" name="guest-password" id="txtGuestPassword" minlength="8" maxlength="16" placeholder="비밀번호">
             </div> <!-- #guestbookUser - 사용자가 로그인하지 않았을 때 -->
 
             <div id="guestbookInput">
