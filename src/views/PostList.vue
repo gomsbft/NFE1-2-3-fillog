@@ -55,7 +55,7 @@
     const filterPost = computed(() => {
         return postData.value.filter(article => {
             const matchKeyword = article.title.includes(searchKeyword.value) || article.text.includes(searchKeyword.value);
-            const matchCategory = selectedCategory.value === "all" || article.category === selectedCategory.value;
+            const matchCategory = selectedCategory.value === 'all' || article.category === selectedCategory.value;
 
             return matchKeyword && matchCategory;
         });

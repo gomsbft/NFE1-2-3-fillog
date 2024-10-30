@@ -125,7 +125,8 @@ button { // 기본값 초기화
 }
 
 #btnSubmitReply,
-#btnSubmitGuestbook { // 댓글, 방명록 등록 버튼
+#btnSubmitGuestbook,
+.button-guestbook-reply { // 댓글, 방명록 등록 버튼
     flex-shrink: 0;
     display: flex;
     flex-flow: column nowrap;
@@ -194,6 +195,7 @@ button { // 기본값 초기화
 
     &:hover {
         text-decoration: 1px solid underline;
+        text-underline-offset: .2rem;
     }
 }
 

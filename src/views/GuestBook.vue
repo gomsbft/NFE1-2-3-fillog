@@ -2,7 +2,7 @@
     <div id="guestBook">
         <h1 class="page-title">방명록</h1>
 
-        <PageFilter id="guestFilter" label-icon="corner-down-right-line" label-text="답글 여부" :filter-array="guestFilterArray" :origin-value="'all'" />
+        <PageFilter id="guestFilter" label-icon="corner-down-right-line" label-text="답글 여부" :filter-array="guestFilterArray" :origin-value="'all'" @current-filter="getCurrentFilter" />
 
         <div id="guestbookEditor">
             <div v-if="tempUserID !== null" id="guestbookUser">
@@ -55,4 +55,8 @@
     ]
 
     const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
+
+    const getCurrentFilter = (data) => {
+        console.log('현재 선택한 필터 :', data);
+    }
 </script> <!-- Logic Ends -->

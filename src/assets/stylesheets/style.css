@@ -929,6 +929,15 @@ a, a:visited {
   gap: 0.8rem;
 }
 
+#chkTheme + label {
+  --switch-rail-false: 184 238 255;
+  --switch-rail-true: 59 38 136;
+  --switch-button-false: 255 251 0;
+  --switch-button-true: 25 22 27;
+  --switch-icon-false: 255 102 0;
+  --switch-icon-true: 255 251 0;
+}
+
 .mobile-menu-container.mobile-navigation {
   padding: 0;
 }
@@ -2219,7 +2228,8 @@ button {
 }
 
 #btnSubmitReply,
-#btnSubmitGuestbook {
+#btnSubmitGuestbook,
+.button-guestbook-reply {
   flex-shrink: 0;
   display: flex;
   flex-flow: column nowrap;
@@ -2234,16 +2244,19 @@ button {
   font-weight: 700;
 }
 #btnSubmitReply:hover,
-#btnSubmitGuestbook:hover {
+#btnSubmitGuestbook:hover,
+.button-guestbook-reply:hover {
   background-color: rgb(var(--clr-tint-60));
   color: rgb(var(--clr-if-0));
 }
 #btnSubmitReply:active,
-#btnSubmitGuestbook:active {
+#btnSubmitGuestbook:active,
+.button-guestbook-reply:active {
   background-color: rgb(var(--clr-tint-0));
 }
 #btnSubmitReply:focus,
-#btnSubmitGuestbook:focus {
+#btnSubmitGuestbook:focus,
+.button-guestbook-reply:focus {
   border-color: rgb(var(--clr-tint-100));
 }
 
@@ -2284,6 +2297,7 @@ button {
 .button-guestbook-controls:hover {
   -webkit-text-decoration: 1px solid underline;
           text-decoration: 1px solid underline;
+  text-underline-offset: 0.2rem;
 }
 
 /* _buttons.scss */
@@ -3197,10 +3211,11 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 
 .guestbook-reply-input {
   display: none;
+  gap: 0.4rem;
   margin-block-start: 0.8rem;
 }
 .guestbook-reply-input.show {
-  display: block;
+  display: flex;
 }
 .guestbook-reply-input > textarea {
   resize: none;

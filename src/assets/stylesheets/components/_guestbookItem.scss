@@ -64,10 +64,11 @@
 
 .guestbook-reply-input {
     display: none;
+    gap: .4rem;
     margin-block-start: .8rem;
 
     &.show {
-        display: block;
+        display: flex;
     }
 
     > textarea {

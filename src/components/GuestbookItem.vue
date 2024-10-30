@@ -25,6 +25,10 @@
 
             <div class="guestbook-reply-input" :class="setReplyStatus ? 'show' : null">
                 <textarea :id="`txtReplyTo${ guestObject.id }`" rows="5" :placeholder="isUser ? '답글 입력...' : '먼저 로그인해 주세요.'" :disabled="!isUser"></textarea>
+
+                <button type="button" class="button-guestbook-reply" title="답글 입력 완료">
+                    <span>입력완료</span>
+                </button>
             </div>
 
             <div class="guestbook-control">
