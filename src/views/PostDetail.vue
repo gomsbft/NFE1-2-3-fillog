@@ -47,9 +47,7 @@
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
 
-                    <span>{{ displayLikes }}</span>
-
-                    <!-- <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span> -->
+                    <span>{{ displayLikes.toLocaleString('ko-KR') }}</span>
                 </p>
             </div> <!-- #postSummaries -->
         </div>  <!-- #postInformations -->
@@ -182,7 +180,7 @@
             if (response && response.data) {
                 Object.assign(ArticleInDB, response.data);
                 console.log('ArticleInDB:', ArticleInDB);
-                }
+            }
 
         } catch(err) {
             console.error(err);
@@ -193,11 +191,11 @@
     const editArticle = () => {
         const postID = route.params.postID;
 
-        router.push(`/posts/edit/${postID}`);
+        router.push(`/posts/edit/${ postID }`);
     };
 
     // 게시물 삭제
-    const deleteArticle = async() => {
+    const deleteArticle = async () => {
         const postID = route.params.postID;
         const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
 
