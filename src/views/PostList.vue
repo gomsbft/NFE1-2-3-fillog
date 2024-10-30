@@ -16,6 +16,7 @@
                 <option v-for="(category, value) in movieCategory" :key="value" :value="value">{{ category }}</option>
             </select>
 
+
             <div id="totalSearchContainer">
                 <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
 
@@ -51,6 +52,7 @@
     const postData = ref(await postDatas());
     const searchKeyword = ref('');
     const selectedCategory = ref('all');
+
 
     const filterPost = computed(() => {
         return postData.value.filter(article => {

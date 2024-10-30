@@ -69,6 +69,7 @@
             </button>
         </div> <!-- #sideBlogControls -->
 
+
         <div id="sideCategory" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">포스트 카테고리</h6>
 

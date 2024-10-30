@@ -47,7 +47,9 @@
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
 
-                    <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span>
+                    <span>{{ displayLikes }}</span>
+
+                    <!-- <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span> -->
                 </p>
             </div> <!-- #postSummaries -->
         </div>  <!-- #postInformations -->
@@ -57,7 +59,7 @@
         <MediaInfo :media-object="null" />
 
         <div id="postControls">
-            <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);">
+            <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);" @click="likeBtnHandler">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-line"></use>
                 </svg>
@@ -132,7 +134,7 @@
                 </div> <!-- #replyingUser -->
 
                 <div id="replyingInput">
-                    <textarea name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
+                    <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
                     <button type="button" id="btnSubmitReply">
                         <svg class="remix">
@@ -152,17 +154,68 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { ref, onMounted, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
-    import { getPostInfo, editPost, deletePost } from '../utilities/dataQueries';
-
+    import axios from 'axios';
+    // import postData from '../datas/postData.json'; // 임시 데이터
     import movieCategory from '../datas/movieCategory.json';
+    import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
     import ArticleReply from '../components/ArticleReply.vue';
 
     const router = useRouter();
     const route = useRoute();
-    const postID = route.params.postID;
-    const thisArticle = await getPostInfo(postID);
+    const thisArticle = ref(null);
+
+    const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
+    const commentText = ref('');
+    const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
+
+    const findArticle = async () => {
+        const postID = route.params.postID;
+
+        try {
+            const response = await axios.get(`http://localhost:3000/posts/${postID}`);
+            //   console.log('마운트시 응답 데이터 :',response.data)
+            thisArticle.value = response.data;
+            console.log('thisArticle:',thisArticle)
+            if (response && response.data) {
+                Object.assign(ArticleInDB, response.data);
+                console.log('ArticleInDB:', ArticleInDB);
+                }
+
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    // 게시물 수정
+    const editArticle = () => {
+        const postID = route.params.postID;
+
+        router.push(`/posts/edit/${postID}`);
+    };
+
+    // 게시물 삭제
+    const deleteArticle = async() => {
+        const postID = route.params.postID;
+        const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
+
+        if (confirmDel) {
+            try {
+                await axios.delete(`http://localhost:3000/posts/${postID}`);
+                alert('게시물이 삭제되었습니다.');
+                router.push('/posts');
+            } catch (err) {
+                alert('게시물 삭제에 실패했습니다.')
+                console.error(err);
+            }
+        }
+    }
+
+    onMounted(() => {
+        findArticle();
+    });
 
     const swiperParams = {
         slidesPerView: 1,
@@ -179,5 +232,56 @@
             // dynamicMainBullets: 7,
             el: '.slider-pagination'
         }
+    }
+
+    // 좋아요 버튼 클릭 시 핸들러
+    const likeBtnHandler = async () => {
+        const postId = thisArticle.value.id;  // 포스트를 작성한 유저 id
+        const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
+
+        try {
+            const response = await axios.post(`http://localhost:3000/posts/${postId}/like`, { userId });
+
+            if (response.data.message === '좋아요 추가 성공') {
+                // 좋아요 추가된 경우
+                ArticleInDB.likes.push(userId);
+                console.log('좋아요 목록 업데이트:', ArticleInDB.likes);
+            } else if (response.data.message === '좋아요 취소 성공') { // 좋아요 취소된 경우, ArticleInDB.likes 배열에서 유저 아이디 제거
+                const index = ArticleInDB.likes.indexOf(userId);
+
+                if (index > -1) {
+                    ArticleInDB.likes.splice(index, 1);
+                }
+
+                console.log('좋아요 목록 업데이트(취소):', ArticleInDB.likes);
+            }
+        } catch(error) {
+            console.error('에러 발생', error.response ? error.response.data : error.message)
+        }
+        // 임시 데이터 사용 로직
+        // thisArticle.likes.push(Math.floor(Math.random() * 1000000)); // 임시 데이터, 유저 id로 변경 예정
+        // console.log(thisArticle.likes);
+        // console.log("버튼 클릭");
+    }
+
+    // 댓글 등록 버튼 클릭 시 핸들러
+    const commentBtnHandler = (e) => {
+        e.preventDefault();
+        console.log(thisArticle.value.comments);
+
+        if (!!commentText.value === false) {
+            commentText.value = '';
+            return console.log('댓글 내용 없음');
+        }
+
+        thisArticle.value.comments.push({
+            id: Math.floor(Math.random() * 1000000), // 임시 데이터
+            userId: 1, // 임시 데이터, 유저 id로 변경 예정
+            commentText: commentText.value,
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString(),
+        });
+
+        commentText.value = '';
     }
 </script> <!-- Logic Ends -->
