@@ -181,10 +181,11 @@ button { // 기본값 초기화
     }
 }
 
-.button-guestbook-controls {
+.button-guestbook-controls { // 방명록 글 / 답글 컨트롤러 버튼
     display: flex;
     align-items: center;
     gap: .2rem;
+    font-size: var(--fnt-sm);
 
     > .remix {
         width: .7rem;

@@ -2,7 +2,8 @@
 
 .guestbook-item {
     display: flex;
-    gap: .8rem
+    gap: .8rem;
+    margin-inline: .4rem;
 }
 
 .guest-user-image-container {
@@ -81,7 +82,6 @@
     align-items: center;
     gap: .4rem;
     margin-block: .8rem;
-    font-size: var(--fnt-sm);
 
     > span {
         font-weight: 900;
@@ -103,6 +103,27 @@
     & + & {
         border-block-start: 1px solid rgb(var(--clr-max) / .15);
     }
+}
+
+.guestbook-reply-info {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
+}
+
+.guestbook-reply-date {
+    font-size: var(--fnt-sm);
+    opacity: .5;
+}
+
+.guestbook-reply-text {
+    margin-block: .8rem;
+    font-size: var(--fnt-lg);
 }
 
 /* _guestbookItem.scss */

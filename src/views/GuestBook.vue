@@ -23,7 +23,7 @@
             <div id="guestbookInput">
                 <textarea name="guestbook-input" id="txtGuestbook" placeholder="방명록 글 입력..."></textarea>
 
-                <button type="button" id="btnSubmitGuestbook">
+                <button type="button" id="btnSubmitGuestbook" title="방명록 글 등록">
                     <svg class="remix">
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
                     </svg>

@@ -2106,7 +2106,7 @@ a, a:visited {
 #guestItemList {
   display: flex;
   flex-flow: column nowrap;
-  gap: 1.8rem;
+  gap: 1.2rem;
   margin-block: 1.2rem;
 }
 
@@ -2275,6 +2275,7 @@ button {
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  font-size: var(--fnt-sm);
 }
 .button-guestbook-controls > .remix {
   width: 0.7rem;
@@ -3135,6 +3136,7 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 .guestbook-item {
   display: flex;
   gap: 0.8rem;
+  margin-inline: 0.4rem;
 }
 
 .guest-user-image-container {
@@ -3211,7 +3213,6 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   align-items: center;
   gap: 0.4rem;
   margin-block: 0.8rem;
-  font-size: var(--fnt-sm);
 }
 .guestbook-control > span {
   font-weight: 900;
@@ -3230,6 +3231,26 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 }
 .guestbook-reply-item + .guestbook-reply-item {
   border-block-start: 1px solid rgb(var(--clr-max)/0.15);
+}
+
+.guestbook-reply-info {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.guestbook-reply-info > span {
+  font-weight: 900;
+  opacity: 0.5;
+}
+
+.guestbook-reply-date {
+  font-size: var(--fnt-sm);
+  opacity: 0.5;
+}
+
+.guestbook-reply-text {
+  margin-block: 0.8rem;
+  font-size: var(--fnt-lg);
 }
 
 /* _guestbookItem.scss */
