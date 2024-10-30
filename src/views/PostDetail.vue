@@ -168,7 +168,7 @@
   </article> <!-- #postDetail -->
 </template> <!-- Template Ends -->
 
-
+<script setup>
   import { ref, onMounted, computed, reactive } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import axios from 'axios';
