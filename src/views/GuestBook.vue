@@ -33,18 +33,20 @@
             </div>
         </div> <!-- #guestbookEditor -->
 
-        <ul id="guestItemList">
-            <GuestbookItem :guest-id="1">
-                방명록 글의 답글
+        <ul v-if="guestData.length > 0" id="guestItemList">
+            <GuestbookItem v-for="guestItem in guestData" :key="guestItem.id" :guest-object="guestItem">
+                <GuestbookReplyItem v-for="replyItem in guestItem.replies" :key="replyItem.id" :reply-object="replyItem" />
             </GuestbookItem>
         </ul> <!-- #guestItemList -->
 
-        <EmptyList />
+        <EmptyList v-else />
     </div> <!-- #guestBook -->
 </template> <!-- Template Ends -->
 
 <script setup>
     import GuestbookItem from '../components/GuestbookItem.vue';
+    import GuestbookReplyItem from '../components/GuestbookReplyItem.vue';
+    import guestData from '../datas/guestData.json';
 
     const guestFilterArray = [ // 임시 필터 리스트 데이터
         { name: '전체', value: 'all' },

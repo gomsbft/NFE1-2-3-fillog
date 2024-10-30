@@ -44,6 +44,7 @@
     padding-block-end: .4rem;
 
     &::before {
+        flex-shrink: 0;
         display: block;
         margin-inline-start: .6rem;
         width: .6rem;
@@ -60,6 +61,13 @@
     min-height: 4.2rem;
     line-height: 1.4;
     resize: vertical;
+}
+
+#guestItemList {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1.8rem;
+    margin-block: 1.2rem;
 }
 
 /* _guestbookList.scss */

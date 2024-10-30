@@ -181,4 +181,19 @@ button { // 기본값 초기화
     }
 }
 
+.button-guestbook-controls {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+
+    > .remix {
+        width: .7rem;
+        opacity: .5;
+    }
+
+    &:hover {
+        text-decoration: 1px solid underline;
+    }
+}
+
 /* _buttons.scss */

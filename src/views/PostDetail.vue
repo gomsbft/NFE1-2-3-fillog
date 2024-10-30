@@ -3,7 +3,7 @@
         <div id="postImageSlider" v-if="thisArticle.images.length > 0">
             <swiper-container v-bind="swiperParams">
                 <swiper-slide class="article-image-slide" v-for="(imgItem, index) in thisArticle.images" :key="index">
-                    <img class="article-image" :src="imgItem" :alt="imgItem">
+                    <img class="article-image" :src="imgItem.imageURL" :alt="imgItem.alt">
                 </swiper-slide>
             </swiper-container>
 
@@ -25,7 +25,7 @@
         <div id="postImageSlider" class="no-images" v-else></div> <!-- #postImageSlider - 이미지가 없을 때 -->
 
         <div id="postInformations">
-            <p class="article-info-category">{{ movieCategory[thisArticle.category] }}</p>
+            <p class="article-info-category">{{ postCategory[thisArticle.category] }}</p>
 
             <h1 id="postTitle">{{ thisArticle.title }}</h1> <!-- postTitle -->
 

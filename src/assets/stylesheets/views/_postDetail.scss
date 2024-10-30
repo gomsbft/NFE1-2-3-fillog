@@ -288,6 +288,7 @@
     padding-block-end: .4rem;
 
     &::before {
+        flex-shrink: 0;
         display: block;
         margin-inline-start: .6rem;
         width: .6rem;
