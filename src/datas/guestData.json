@@ -1,0 +1,40 @@
+[
+    {
+        "id": 341235,
+        "writtenUser": {
+            "isUser": false,
+            "userID": null,
+            "userName": "김방명록",
+            "userImage": null,
+            "password": "23815712"
+        },
+        "writtenDate": "2024-10-30",
+        "text": "방명록 글 테스트",
+        "replies": []
+    },
+    {
+        "writtenUser": {
+            "isUser": true,
+            "userID": 568241,
+            "userName": null,
+            "userImage": null,
+            "password": null
+        },
+        "writtenDate": "2024-10-30",
+        "text": "회원이 작성한 방명록 글",
+        "replies": [
+            {
+                "id": 941832,
+                "replyUserID": 123125,
+                "replyText": "방명록 글에 답글 달기",
+                "replyDate": "2024-10-30"
+            },
+            {
+                "id": 941833,
+                "replyUserID": 123125,
+                "replyText": "답글답글",
+                "replyDate": "2024-10-30"
+            }
+        ]
+    }
+]

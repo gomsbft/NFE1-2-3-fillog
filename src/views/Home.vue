@@ -41,6 +41,19 @@
 <script setup>
     import { useRouter } from 'vue-router';
     import { userLogin } from '../stores/isLogin';
+    import axios from 'axios';
+
+    const userData = async() => {
+        try {
+            const response = await axios.get('http://localhost:3000/users');
+
+            userData.value = response.data;
+            console.log(userData.value)
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    userData()
 
     const router = useRouter();
     const log = userLogin();

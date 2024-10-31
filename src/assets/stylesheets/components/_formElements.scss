@@ -21,8 +21,12 @@
         outline: .2rem solid rgb(var(--clr-tint-0) / .25);
     }
 
-    &:valid {
+    &.need-recognize:valid {
+        // 특정 형식의 입력 요소에서 입력 값이 올바를 때의 조건
+        // 일반 입력 요소에 모두 통일되어 적용되므로, 반드시 필요한 경우에만 .need-recognize 클래스를 붙여 사용한다.
 
+        border-color: rgb(var(--clr-clear) / .75);
+        background-color: rgb(var(--clr-clear) / .5);
     }
 
     &:invalid {
@@ -47,7 +51,7 @@ button {
     outline: 0;
 }
 
-input { // 폼 입력 요소 공통
+input:not(.exclude) { // 폼 입력 요소 공통 - .exclude 클래스가 있을 경우 모든 조건 무시 (개별 스타일링이 필요한 경우를 위해)
     &[type="text"],
     &[type="number"],
     &[type="email"],
@@ -231,6 +235,32 @@ input[type="checkbox"]:not([data-checkbox-type="toggle"]) { // 체크박스 - �
 }
 
 input[type="checkbox"]:is([data-checkbox-type="toggle"]) { // 토글형 스위치 - 반드시 label과 짝을 이루어야 함
+    /*
+        <input type="checkbox" name="check-color-theme" id="chkTheme" data-checkbox-type="toggle" data-switch-label="false" :checked="currentThemeSetting" @change="setLocalTheme">
+
+        <label for="chkTheme">
+            <div class="switch-rail">
+                <div class="switch-button">
+                    <div class="switch-icon-container">
+                        <div class="switch-false">
+                            <svg class="remix">
+                                <use xlink:href="/miscs/remixicon.symbol.svg#ri-sun-fill"></use>
+                            </svg>
+                        </div>
+
+                        <div class="switch-true">
+                            <svg class="remix">
+                                <use xlink:href="/miscs/remixicon.symbol.svg#ri-moon-clear-fill"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <span class="switch-label">색상 테마 설정</span>
+        </label>
+    */
+
     display: none;
 
     &:is([data-switch-label="false"]) {
