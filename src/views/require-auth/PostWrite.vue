@@ -1,45 +1,61 @@
 <template>
     <div id="frmPostWrite">
-        <div class="top_btn">
-            <h2>Post</h2>
-            <select name="category" id="category" v-model="selectedCategory">
-                <option value="all" selected>==카테고리==</option>
-                <option v-for="(category, value) in movieCategory" :key="value" :value="value">
+        <h1 class="page-title">포스트 작성</h1>
+
+        <div id="writeUpperArea">
+            <select name="category" id="slctCategory" class="exclude write-form-inputs" v-model="selectedCategory">
+                <option value="" disabled>카테고리 선택</option>
+
+                <option v-for="(category, value) in articleCategory" :key="value" :value="value">
                     {{ category }}
                 </option>
             </select>
+
+            <ButtonWithIcon element-id="btnUploadPost" icon-position="front" icon-name="upload-line" tool-tip="포스트 업로드" @click="submitPost">
+                작성 완료
+            </ButtonWithIcon>
         </div>
-        <input type="text" name="title" id="title" placeholder="제목을 입력해주세요." v-model="title"><br>
-        <textarea name="content" id="content" placeholder="내용을 입력해주세요." v-model="content"></textarea>
+
+        <input type="text" name="title" id="txtArticleTitle" class="exclude write-form-inputs" placeholder="포스트 제목" v-model="title">
+
+        <textarea name="content" id="txtArticleContent" class="exclude" placeholder="포스트 내용 입력..." v-model="content"></textarea>
+
         <div class="bot_btn">
             <div class="file_box">
-                <label for="file">
-                    <div class="file_upload">이미지 업로드</div>
-                </label>
+                <ButtonWithIcon element-id="btnUploadImages" icon-position="front" icon-name="image-add-line" tool-tip="이미지 업로드" @click="fileUploader.click()">
+                    이미지 업로드
+                </ButtonWithIcon>
+
                 <span> * 최대 3장까지 가능합니다.</span>
-                <input type="file" name="file" id="file" @change="changeImage">
+
+                <input type="file" name="file-post-image-uploader" id="filePostImages" ref="file-uploader" @change="changeImage">
             </div>
-            <button class="upload" @click="submitPost">작성</button>
+
         </div>
+
         <div class="preview">
             <div v-for="(img, idx) in previewImage" :key="idx">
                 <img :src="img"/>
             </div>
         </div>
+
+        <MovieFinder />
     </div> <!-- #frmPostWrite -->
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref } from 'vue';
-    import axios from 'axios';
-    import movieCategory from '../../datas/movieCategory.json';
+    import { ref, useTemplateRef } from 'vue';
     import { useRouter } from 'vue-router';
+    import axios from 'axios';
+    import MovieFinder from '../../components/commons/MovieFinder.vue';
+    import articleCategory from '../../datas/articleCategory.json';
 
+    const router = useRouter();
+    const fileUploader = useTemplateRef('file-uploader'); // input:file 이벤트 추가를 위한 템플릿 레퍼런스
     const previewImage = ref([]);
     const title = ref();
     const content = ref();
-    const selectedCategory = ref();
-    const router = useRouter();
+    const selectedCategory = ref('');
 
     const changeImage = (e) => {
         if (previewImage.value.length >= 3) {

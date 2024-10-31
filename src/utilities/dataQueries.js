@@ -105,16 +105,35 @@ export const getMovieInfo = async (movieID) => { // 특정 ID의 영화 정보 �
     }
 }
 
+export const movieCategories = async () => {
+    try {
+        const { data: response } = await baseAPI({
+            method: 'get',
+            url: 'https://api.themoviedb.org/3/genre/movie/list',
+            header: { 'X-Requested-With': 'XMLHttpRequest' },
+            params: {
+                api_key: import.meta.env.VITE_MOVIE_API_KEY, // 수정 필요 - .local 파일로 변경하여 커밋되지 않도록 해야 함
+                language: 'ko-KR'
+            },
+            responseType: 'json'
+        });
+
+        return response.genres;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 export const searchMovies = async (searchQuery) => { // 영화 정보 검색
     try {
         const { data: response } = await baseAPI({
             method: 'get',
-            url: `https://api.themoviedb.org/3/search/movie?query=${ searchQuery }`,
+            url: `https://api.themoviedb.org/3/search/movie?query=${ searchQuery }&include_adult=true&language=ko-KR`,
             header: { 'X-Requested-With': 'XMLHttpRequest' },
             params: {
                 api_key: import.meta.env.VITE_MOVIE_API_KEY, // 수정 필요 - .local 파일로 변경하여 커밋되지 않도록 해야 함
                 language: 'ko-KR',
-                append_to_response: 'videos,images,credits'
+                append_to_response: 'images,credits'
             },
             responseType: 'json'
         });

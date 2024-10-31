@@ -186,7 +186,7 @@
         const postID = route.params.postID;
 
         try {
-            const response = await axios.get(`http://localhost:3000/posts/${postID}`);
+            const response = await axios.get(`http://localhost:3000/posts/${ postID }`);
             //   console.log('마운트시 응답 데이터 :',response.data)
             thisArticle.value = response.data;
             console.log('thisArticle:',thisArticle);
@@ -253,7 +253,7 @@
         const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
 
         try {
-            const response = await axios.post(`http://localhost:3000/posts/${postId}/like`, { userId });
+            const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
 
             if (response.data.message === '좋아요 추가 성공') {
                 // 좋아요 추가된 경우

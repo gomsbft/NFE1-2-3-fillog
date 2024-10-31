@@ -1,0 +1,141 @@
+/* _movieFinder.scss */
+
+#movieFinderInput {
+    position: relative;
+
+    > span {
+        position: absolute;
+        inset: 0;
+        margin-block: auto;
+        margin-inline-start: auto;
+        padding: .2rem .4rem;
+        width: fit-content;
+        height: fit-content;
+        border-radius: .2rem;
+        background-color: rgb(var(--clr-max));
+        color: rgb(var(--clr-min));
+        font-size: var(--fnt-xs);
+        font-weight: 700;
+        opacity: .5;
+        z-index: 2;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    &:focus-within {
+        > span {
+            opacity: 1;
+        }
+    }
+}
+
+#txtSearchMovie {
+    padding-inline: .4rem;
+    width: 100%;
+    height: 2.4rem;
+    border-block-end: .1rem solid rgb(var(--clr-text) / .25);
+    background-color: transparent;
+    color: inherit;
+    font-size: var(--fnt-lg);
+    font-weight: 700;
+
+    &:focus {
+        border-color: rgb(var(--clr-text));
+    }
+}
+
+#movieFinderList {
+    margin-block: .4rem;
+}
+
+.movie-search-item {
+    display: flex;
+    gap: .4rem;
+    padding: .4rem;
+    border: 1px solid transparent;
+    border-radius: .4rem;
+    cursor: pointer;
+
+    & + & {
+        margin-block-start: .4rem;
+    }
+
+    &:hover {
+        border-color: rgb(var(--clr-max) / .15);
+        background-color: rgb(var(--clr-surface-20));
+    }
+
+    &.selected {
+        border-color: rgb(var(--clr-theme) / .5);
+        background-color: rgb(var(--clr-tint-80) / .25);
+        cursor: default;
+    }
+}
+
+.movie-search-poster-container {
+    position: relative;
+    flex-shrink: 0;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: 1px solid rgb(var(--clr-max) / .15);
+    border-radius: .2rem;
+    background-color: rgb(128 128 128);
+    overflow: hidden;
+
+    > .remix {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        opacity: .5;
+    }
+}
+
+.movie-search-poster-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.movie-search-main-container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .4rem;
+}
+
+.movie-search-title {
+    width: 100%;
+    font-size: var(--fnt-xl);
+    font-weight: 700;
+    line-height: 1.6;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.movie-search-info-container {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: var(--fnt-sm);
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
+}
+
+.movie-search-genre-container {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+}
+
+.movie-search-genre {
+    padding: .2rem .4rem;
+    border-radius: .2rem;
+    background-color: rgb(var(--clr-theme) / .75);
+    color: rgb(var(--clr-if-0));
+}
+
+/* _movieFinder.scss */
