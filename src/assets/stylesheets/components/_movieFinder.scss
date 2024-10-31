@@ -125,8 +125,13 @@
     }
 }
 
+.movie-search-release {
+    flex-shrink: 0;
+}
+
 .movie-search-genre-container {
     display: flex;
+    flex-flow: row wrap;
     align-items: center;
     gap: .2rem;
 }
