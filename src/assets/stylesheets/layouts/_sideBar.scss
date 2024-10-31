@@ -126,13 +126,23 @@
 }
 
 .sidebar-category-container {
-    display: flex;
-    flex-flow: column nowrap;
+
 }
 
 .sidebar-category-item {
-    > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .8rem;
 
+    > span {
+        font-size: var(--fnt-xs);
+        font-weight: 700;
+        opacity: .5;
+    }
+
+    &.active {
+        border-inline-end: .2rem solid red;
     }
 }
 

@@ -1229,9 +1229,19 @@ a, a:visited {
   opacity: 0.5;
 }
 
-.sidebar-category-container {
+.sidebar-category-item {
   display: flex;
-  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+}
+.sidebar-category-item > span {
+  font-size: var(--fnt-xs);
+  font-weight: 700;
+  opacity: 0.5;
+}
+.sidebar-category-item.active {
+  border-inline-end: 0.2rem solid red;
 }
 
 .rounded {
