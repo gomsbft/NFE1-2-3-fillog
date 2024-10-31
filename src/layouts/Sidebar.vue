@@ -97,7 +97,6 @@
 <script setup>
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
-    import { userLogin } from '../stores/isLogin';
     import blogInfo from '../datas/blogInfo.json';
     import userData from '../datas/userData.json';
     import movieCategory from '../datas/movieCategory.json';
@@ -121,7 +120,7 @@
     const blogOwner = userData.find(user => user.id === parseInt(blogInfo.adminId) && user.type === 'admin');
     const blogBirthday = new Date(blogInfo.createdDate);
 
-    const loggedUser = userLogin(); // 로그인 유저 store
+
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const thisUser = ref(123125); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
 </script> <!-- Logic Ends -->
