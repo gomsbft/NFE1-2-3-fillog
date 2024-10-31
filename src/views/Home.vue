@@ -39,6 +39,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(b.date) - new Date(a.date));

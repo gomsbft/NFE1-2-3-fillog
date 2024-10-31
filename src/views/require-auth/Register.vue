@@ -43,6 +43,17 @@
     import { useRouter } from 'vue-router';
     import axios from 'axios';
 
+  
+  // 에러 메시지, 성공 메시지 저장
+  const errorMessage = ref('');
+  const successMessage = ref('');
+  
+  const previewImageUrl = ref(null);
+  
+  // 비밀번호가 8자 이상 12자 이하인지 확인
+  const isValidPasswordLength = (password) => {
+    return password.length >= 8 && password.length <= 12;
+  };
     const router = useRouter();
 
     // 상태 관리
@@ -55,16 +66,6 @@
         commentedArticles: [],
     });
 
-    // 에러 메시지, 성공 메시지 저장
-    const errorMessage = ref('');
-    const successMessage = ref('');
-
-    const previewImageUrl = ref(null);
-
-    // 비밀번호가 8자 이상 12자 이하인지 확인
-    const isValidPasswordLength = (password) => {
-        return password.length >= 8 && password.length <= 12;
-    }
 
     // password 와 verifyPassword 일치하는지 확인
     const passwordCheck = (password, verifyPassword) => {
@@ -97,21 +98,20 @@
             return;
         }
 
-        // password 와 verifyPassword 일치하는지 확인
-        if (!passwordCheck(form.password, form.verifyPassword)) {
-            errorMessage.value = '비밀번호가 일치하지 않습니다.';
-            successMessage.value = '';
-
-            return;
-        }
-
-        try {
-            const formData = new FormData();
-            formData.append('account', form.account);
-            formData.append('password', form.password);
-            formData.append('userName', form.userName);
-            formData.append('userImage', form.userImage);
-            formData.append('commentedArticles', form.commentedArticles);
+    // password 와 verifyPassword 일치하는지 확인
+    if (!passwordCheck(form.password, form.verifyPassword)) {
+      errorMessage.value = '비밀번호가 일치하지 않습니다.';
+      successMessage.value = '';                                              
+      return;
+    }
+  
+    try {
+      const formData = new FormData();
+      formData.append('account', form.account);
+      formData.append('password', form.password);
+      formData.append('userName', form.userName);
+      formData.append('userImage', form.userImage);
+      formData.append('commentedArticles', form.commentedArticles);
 
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
