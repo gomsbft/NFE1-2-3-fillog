@@ -13,9 +13,7 @@
             <div class="blog-info-container sidebar-hidden">
                 <h6 class="blog-info-blog-name">{{ blogOwner.blogName }}</h6>
 
-
                 <p>{{ blogOwner.adminName }}</p>
-
 
                 <div class="blog-info-tag-container">
                     <p class="blog-info-tags" v-for="tag in blogOwner.tags">{{ tag }}</p>
@@ -32,7 +30,7 @@
                 <span>글쓴이 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="didIFollowed && !isAdmin" @click="didIFollowed = !didIFollowed">
+            <button type="button" class="buttons-blog-control" v-if="didIFollowed && blogInfo.adminId !== thisUser" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-add-fill"></use>
                 </svg>
@@ -40,7 +38,7 @@
                 <span>팔로우</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && !isAdmin" @click="didIFollowed = !didIFollowed">
+            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && blogInfo.adminId !== thisUser" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-dislike-fill"></use>
                 </svg>
@@ -73,7 +71,6 @@
             </button>
         </div> <!-- #sideBlogControls -->
 
-
         <div id="sideCategory" class="rounded sidebar-hidden">
             <h6 class="sidebar-section-title">포스트 카테고리</h6>
 
@@ -104,7 +101,6 @@
     const postData = ref([]);
     const log = userLogin();
 
-
     // 관리자(admin)의 이미지와 이름을 저장하는 ref
     const blogOwner = ref({
         adminImage: null,
@@ -113,7 +109,6 @@
         tags: [],
     });
 
-
     const thisUser = ref({
         userId: null,
         userImage: "",
@@ -121,7 +116,6 @@
     });
 
     const isAdmin = ref(false); // 사용자 권한 체크
-
 
     const postDatas = async () => {
         try {
@@ -133,14 +127,11 @@
         }
     };
 
-
     watch(log, (newValue) => {
         if (newValue.logins) {
         getUserProfile(); // 로그인 시 사용자 프로필 다시 가져오기
         }
     });
-
-
 
     // 서버에서 사용자 정보 가져옴
     const getUserProfile = async () => {
@@ -163,35 +154,30 @@
 
             // type이 "admin"인지 확인
             isAdmin.value = userData.type === "admin";
-
-            
         } catch (error) {
             console.error("사용자 정보 가져오기 실패:", error);
         }
     };
-    
-    
 
     const fetchAdminInfo = async () => {
-    try {
-        // 서버에서 관리자 정보를 가져옵니다.
-        const response = await axios.get("http://localhost:3000/admin-info");
+        try {
+            // 서버에서 관리자 정보를 가져옵니다.
+            const response = await axios.get("http://localhost:3000/admin-info");
 
-        // 응답에서 관리자 정보 데이터를 구조 분해 할당을 통해 추출합니다.
-        const { adminImage, userName, blogName, tags } = response.data;
+            // 응답에서 관리자 정보 데이터를 구조 분해 할당을 통해 추출합니다.
+            const { adminImage, userName, blogName, tags } = response.data;
 
-        // 가져온 데이터를 blogOwner의 속성에 각각 할당합니다.
-        blogOwner.value.adminImage = adminImage;
-        blogOwner.value.adminName = userName;
-        blogOwner.value.blogName = blogName;
-        blogOwner.value.tags = tags;
+            // 가져온 데이터를 blogOwner의 속성에 각각 할당합니다.
+            blogOwner.value.adminImage = adminImage;
+            blogOwner.value.adminName = userName;
+            blogOwner.value.blogName = blogName;
+            blogOwner.value.tags = tags;
+        } catch (error) {
+            console.error("관리자 정보 가져오기 실패(클라이언트):", error);
+        }
+    };
 
-    } catch (error) {
-        console.error("관리자 정보 가져오기 실패(클라이언트):", error);
-    }
-};
-
-console.log("내가 오너", blogOwner)
+    console.log("내가 오너", blogOwner)
 
     onMounted(() => {
         postDatas();
@@ -199,5 +185,23 @@ console.log("내가 오너", blogOwner)
         fetchAdminInfo(); 
     });
 
+    const loggedUser = userLogin(); // 로그인 유저 store
+    const didIFollowed = ref(true); // 임시 팔로우 정보
+    const thisUser = ref(''); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
+    
+    // 팔로우 기능
+    const followFn = async() => {
+        const url = didIFollowed.value 
+            ? `http://localhost:3000/users/${blogInfo.adminId}/follow` 
+            : `http://localhost:3000/users/${blogInfo.adminId}/unfollow`;
 
+
+        try {
+            await axios.post(url, { followerId: thisUser.value });
+            didIFollowed.value = !didIFollowed.value;
+            console.log(!didIFollowed.value ? "팔로우 성공" : "언팔 성공")
+        } catch (err) {
+            console.error(err);
+        }
+    }
 </script> <!-- Logic Ends -->
