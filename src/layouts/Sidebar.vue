@@ -29,7 +29,7 @@
                 <span>글쓴이 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="didIFollowed && !isAdmin" @click="didIFollowed = !didIFollowed">
+            <button type="button" class="buttons-blog-control" v-if="didIFollowed && blogInfo.adminId !== thisUser" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-add-fill"></use>
                 </svg>
@@ -37,7 +37,7 @@
                 <span>팔로우</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && !isAdmin" @click="didIFollowed = !didIFollowed">
+            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && blogInfo.adminId !== thisUser" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-dislike-fill"></use>
                 </svg>
@@ -100,7 +100,6 @@
     const postData = ref([]);
     const log = userLogin();
 
-
     // 관리자(admin)의 이미지와 이름을 저장하는 ref
     const blogOwner = ref({
         adminImage: null,
@@ -156,7 +155,6 @@
 
             // type이 "admin"인지 확인
             isAdmin.value = userData.type === "admin";
-
         } catch (error) {
             console.error("사용자 정보 가져오기 실패:", error);
         }
@@ -175,7 +173,6 @@
             blogOwner.value.adminName = userName;
             blogOwner.value.blogName = blogName;
             blogOwner.value.tags = tags;
-
         } catch (error) {
             console.error("관리자 정보 가져오기 실패(클라이언트):", error);
         }
@@ -188,4 +185,23 @@
         getUserProfile();
         fetchAdminInfo();
     });
+
+    const loggedUser = userLogin(); // 로그인 유저 store
+    const didIFollowed = ref(true); // 임시 팔로우 정보
+    const thisUser = ref(''); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
+
+    // 팔로우 기능
+    const followFn = async() => {
+        const url = didIFollowed.value
+            ? `http://localhost:3000/users/${blogInfo.adminId}/follow`
+            : `http://localhost:3000/users/${blogInfo.adminId}/unfollow`;
+
+        try {
+            await axios.post(url, { followerId: thisUser.value });
+            didIFollowed.value = !didIFollowed.value;
+            console.log(!didIFollowed.value ? "팔로우 성공" : "언팔 성공")
+        } catch (err) {
+            console.error(err);
+        }
+    }
 </script> <!-- Logic Ends -->
