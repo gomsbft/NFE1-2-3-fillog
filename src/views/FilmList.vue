@@ -2,7 +2,7 @@
     <div id="filmList">
         <h1 class="page-title">리뷰한 영화</h1>
 
-        <PageFilter id="filmGenres" label-icon="movie-2-fill" label-text="영화 장르" :filter-array="genresFilterArray" :origin-value="'all'" />
+        <PageFilter id="filmGenres" label-icon="movie-2-fill" label-text="영화 장르" :filter-array="genresFilterArray" :origin-value="'all'" @current-filter="getCurrentFilter" />
 
         <ul id="filmItemList" v-if="featuredMovies.length > 0">
             <MovieItem v-for="(movie, index) in featuredMovies" :key="index" :movie-id="movie.movieID" :article-id="movie.articleID" />
@@ -24,4 +24,8 @@
     ]
 
     const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item.id } }).filter(item => !!item);
+
+    const getCurrentFilter = (data) => {
+        console.log('현재 선택한 필터 :', data);
+    }
 </script> <!-- Logic Ends -->
