@@ -28,7 +28,7 @@
                 <span>글쓴이 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="didIFollowed && blogInfo.adminId !== thisUser" @click="didIFollowed = !didIFollowed">
+            <button type="button" class="buttons-blog-control" v-if="didIFollowed && blogInfo.adminId !== thisUser" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-add-fill"></use>
                 </svg>
@@ -36,7 +36,7 @@
                 <span>팔로우</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && blogInfo.adminId !== thisUser" @click="didIFollowed = !didIFollowed">
+            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && blogInfo.adminId !== thisUser" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-dislike-fill"></use>
                 </svg>
@@ -107,7 +107,6 @@
         try {
             const response = await axios.get('http://localhost:3000/posts');
             postData.value = response.data;
-            console.log(postData)
         } catch (err) {
             console.error(err);
         }
@@ -122,5 +121,22 @@
 
     const loggedUser = userLogin(); // 로그인 유저 store
     const didIFollowed = ref(true); // 임시 팔로우 정보
-    const thisUser = ref(123124); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
+    const thisUser = ref(''); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
+    
+    // 팔로우 기능
+    const followFn = async() => {
+
+        const url = didIFollowed.value 
+            ? `http://localhost:3000/users/${blogInfo.adminId}/follow` 
+            : `http://localhost:3000/users/${blogInfo.adminId}/unfollow`;
+
+
+        try {
+            await axios.post(url, { followerId: thisUser.value });
+            didIFollowed.value = !didIFollowed.value;
+            console.log(!didIFollowed.value ? "팔로우 성공" : "언팔 성공")
+        } catch (err) {
+            console.error(err);
+        }
+    }
 </script> <!-- Logic Ends -->
