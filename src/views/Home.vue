@@ -39,7 +39,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { getTotalPosts, movieCategories } from '../utilities/dataQueries';
+    import { getTotalPosts } from '../utilities/dataQueries';
 
     const postData = await getTotalPosts();
 
