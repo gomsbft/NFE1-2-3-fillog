@@ -46,23 +46,6 @@
     // if (!log.logins) { // 홈 화면 리디렉션하지 말아주세요... 로그인 해야만 볼 수 있는 블로그는 없잖아요
     //     router.push('/login');
     // }
-    const userData = async() => {
-        try {
-            const response = await axios.get('http://localhost:3000/users');
-
-            userData.value = response.data;
-            console.log(userData.value)
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    userData()
-
-    const router = useRouter();
-    const log = userLogin();
-
-
-    import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
     postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 

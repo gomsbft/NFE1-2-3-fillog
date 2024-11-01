@@ -14,12 +14,12 @@
             </div>
 
             <div class="blog-info-container sidebar-hidden">
-                <h6 class="blog-info-blog-name">{{ blogAdmin.blogInfo.blogName }}</h6>
+                <h6 class="blog-info-blog-name">{{ blogAdmin.blogName }}</h6>
 
                 <p>{{ blogAdmin.adminName }}</p>
 
-                <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo.favoriteGenres?.length > 0">
-                    <p class="blog-info-tags" v-for="genre in blogAdmin.blogInfo.favoriteGenres">{{ genre }}</p>
+                <div class="blog-info-tag-container" v-if="blogAdmin.favoriteGenres?.length > 0">
+                    <p class="blog-info-tags" v-for="genre in blogAdmin.favoriteGenres">{{ genre }}</p>
                 </div>
             </div>
         </div> <!-- #sideBlogInfoContainer -->
