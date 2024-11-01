@@ -117,20 +117,11 @@
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const blogAdmin = ref({ // 블로그 기본값
         adminID: null,
-        adminName: '블로그 주인',
-    const postData = ref([]);
-    const log = userLogin();
+        adminName: '블로그 주인',})
+
     const router = useRouter();
 
-    // 관리자(admin)의 이미지와 이름을 저장하는 ref
-    const blogOwner = ref({
-        adminImage: null,
-        blogInfo: {
-            blogName: '블로그',
-            favoriteGenres: [],
-            blogCategories: []
-        }
-    });
+
 
     const thisUser = ref({ // 현재 사용자 기본값
         userId: null,
@@ -138,9 +129,6 @@
         userName: '사용자명'
     });
 
-    const userInfo = () => {
-        router.push('/userinfo'); 
-    }
 
     const userInfo = () => {
         router.push('/userinfo'); 
