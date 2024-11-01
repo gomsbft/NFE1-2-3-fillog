@@ -58,12 +58,12 @@
 
     // 상태 관리
     const form = reactive({
+        type:'user',
         account: '',
         password: '',
         verifyPassword: '',
         userName: '',
         userImage: null,
-        commentedArticles: [],
     });
 
 
@@ -107,11 +107,11 @@
   
     try {
       const formData = new FormData();
+      formData.append('type', form.type);
       formData.append('account', form.account);
       formData.append('password', form.password);
       formData.append('userName', form.userName);
       formData.append('userImage', form.userImage);
-      formData.append('commentedArticles', form.commentedArticles);
 
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
@@ -135,6 +135,7 @@
 
         } catch (err) {
             // 서버 요청 중 에러 발생 시 처리
+            console.error("Error response:", err.response); 
             errorMessage.value = err.response?.data?.message || '회원가입 중 오류가 발생했습니다.'; // 에러 메시지를 서버 응답에 따라 설정
             successMessage.value = '';
         }
@@ -142,5 +143,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @use "../../assets/stylesheets/views/_register"
+    @use "../../assets/stylesheets/views/_register"
 </style>

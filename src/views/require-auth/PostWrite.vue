@@ -147,7 +147,7 @@
             category: selectedCategory.value,
             images: previewImage.value,
             author: {
-                userID: 123125 // 임시 값
+                userID: "671ae48150f0899c1d43f17c" // 임시 값
             }
         };
 

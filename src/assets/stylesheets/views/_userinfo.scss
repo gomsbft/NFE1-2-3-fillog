@@ -1,0 +1,16 @@
+#viewUserInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  gap: 2rem;
+
+  .title {
+    color: #7BF4BC;
+  }
+
+  .text {
+    color: #E2180B;
+  }
+}
