@@ -58,9 +58,6 @@
     const router = useRouter();
     const log = userLogin();
 
-    if(!log.logins) {
-        router.push('/login'); 
-    }
 
     import postData from '../datas/postData.json'; // 임시 게시물 데이터
 
