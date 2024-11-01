@@ -10,7 +10,7 @@
             </select>
         </div>
         <input type="text" name="title" id="title" placeholder="제목을 입력해주세요." v-model="title"><br>
-        <textarea name="content" id="content" placeholder="내용을 입력해주세요." v-model="text"></textarea>
+        <textarea name="content" id="content" placeholder="내용을 입력해주세요." v-model="content"></textarea>
         <div class="bot_btn">
             <div class="file_box">
                 <label for="file">
@@ -36,9 +36,9 @@
     import { useRouter } from 'vue-router';
 
     const previewImage = ref([]);
-    const title = ref('');
-    const text = ref('');
-    const selectedCategory = ref('');
+    const title = ref();
+    const content = ref();
+    const selectedCategory = ref();
     const router = useRouter();
 
     const changeImage = (e) => {
@@ -65,11 +65,11 @@
     const submitPost = async () => {
         const postData = {
             title: title.value,
-            text: text.value,
+            text: content.value,
             category: selectedCategory.value,
             images: previewImage.value,
             author: {
-                userID: '671ae48150f0899c1d43f17c'
+                userID: "671ae48150f0899c1d43f17c" // 임시 값
             }
         };
 
