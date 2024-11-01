@@ -22,7 +22,7 @@ export const getTotalUsers = async () => { // 전체 사용자 가져오기
 
 export const getUserInfo = async (userID) => { // 개별 사용자 정보 가져오기
     try {
-        const { data: response } = await baseAPI.get('/userInfo', userID);
+        const { data: response } = await baseAPI.get('/user-info', userID);
 
         return response;
     } catch(error) {
