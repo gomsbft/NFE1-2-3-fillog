@@ -95,7 +95,7 @@
                         <span>[{{ article.comments.length.toLocaleString('ko-KR') }}]</span>
                     </RouterLink>
 
-                    <span class="latest-item-date">{{ dateFormat(article.date) }}</span>
+                    <span class="latest-item-date">{{ dateFormat(article.createdAt) }}</span>
                 </li>
             </ul>
         </div>

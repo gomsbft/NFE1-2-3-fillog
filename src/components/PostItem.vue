@@ -29,7 +29,7 @@
                 <span>·</span>
 
                 <RouterLink :to="`/posts/${ thisArticle._id }`">
-                    {{ dateFormat(thisArticle.date) }}
+                    {{ dateFormat(thisArticle.createdAt) }}
                 </RouterLink>
             </dd>
 

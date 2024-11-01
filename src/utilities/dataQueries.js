@@ -143,13 +143,15 @@ export const searchMovies = async (searchQuery) => { // 영화 정보 검색
     }
 }
 
-export const writeGuestbook = async (guestbookObj) => { // 방명록 작성
+export const writeGuestbook = async (guestbookObj, forwardFunction) => { // 방명록 작성
     try {
         const response = await baseAPI.post('/guestbooks/write', guestbookObj);
 
-        if (response.status === 200) return alert('방명록 작성 완료');
+        if (response.status === 200) alert('방명록 작성 완료');
     } catch(error) {
         console.error(error);
+    } finally {
+        forwardFunction;
     }
 }
 
@@ -173,12 +175,14 @@ export const getGuestbookInfo = async (guestbookID) => { // 개별 방명록 글
     }
 }
 
-export const writeGuestbookReply = async (guestbookID, replyObject) => {
+export const writeGuestbookReply = async (guestbookID, replyObject, forwardFunction) => {
     try {
         const response = await baseAPI.post(`/guestbooks/reply/${ guestbookID }`, replyObject);
 
-        if (response.status === 200) return alert('답글 작성 완료');
+        if (response.status === 200) alert('답글 작성 완료');
     } catch(error) {
         console.log(error);
+    } finally {
+        forwardFunction;
     }
 }

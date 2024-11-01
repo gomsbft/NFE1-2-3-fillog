@@ -2319,6 +2319,13 @@ button {
 .buttons:focus {
   outline: 0.1rem dashed rgb(var(--clr-tint-100)/0.5);
 }
+.buttons:disabled {
+  border-color: rgb(var(--clr-surface-60));
+  background-color: rgb(var(--clr-surface-0));
+  color: rgb(var(--clr-surface-60));
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.25);
+  cursor: no-drop;
+}
 .buttons > .remix {
   width: 0.8rem;
 }
@@ -2419,6 +2426,15 @@ button {
 #btnSubmitGuestbook:focus,
 .button-guestbook-reply:focus {
   border-color: rgb(var(--clr-tint-100));
+}
+#btnSubmitReply:disabled,
+#btnSubmitGuestbook:disabled,
+.button-guestbook-reply:disabled {
+  border-color: rgb(var(--clr-surface-60));
+  background-color: rgb(var(--clr-surface-0));
+  color: rgb(var(--clr-surface-60));
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.25);
+  cursor: no-drop;
 }
 
 .buttons-blog-control {

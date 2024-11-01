@@ -45,8 +45,11 @@
 
 <script setup>
     import { ref } from 'vue';
+    import router from '../router';
     import { getTotalGuestbooks, writeGuestbook } from '../utilities/dataQueries';
-    import guestData from '../datas/guestData.json';
+
+    const guestData = await getTotalGuestbooks();
+    const filteredData = ref(guestData);
 
     const guestFilterArray = [ // 임시 필터 리스트 데이터
         { name: '전체', value: 'all' },
@@ -54,7 +57,6 @@
         { name: '답글 없음', value: 'no-reply' }
     ]
 
-    const filteredData = ref(guestData);
     const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
     const writeData = ref({
         isUser: false,
@@ -80,6 +82,6 @@
             return alert('내용이 입력되지 않았어요.');
         }
 
-        writeGuestbook(writeData.value);
+        writeGuestbook(writeData.value, router.go(0));
     }
 </script> <!-- Logic Ends -->
