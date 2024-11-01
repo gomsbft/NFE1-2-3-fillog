@@ -1,7 +1,7 @@
 <template>
     <li class="article-item">
         <div class="article-item-image-container">
-            <RouterLink :to="`/posts/${ thisArticle.id }`">
+            <RouterLink :to="`/posts/${ thisArticle._id }`">
                 <img class="article-item-thumbnail" v-if="thisArticle.images.length > 0" :src="thisArticle.images.find(item => item.index === thisArticle.thumbIndex)?.imageURL" alt="이미지 미리보기">
             </RouterLink>
 
@@ -13,7 +13,7 @@
         <dl class="article-item-descriptions">
             <dt class="article-item-titlebar" :title="thisArticle.title">
                 <p class="article-item-title">
-                    <RouterLink :to="`/posts/${ thisArticle.id }`">
+                    <RouterLink :to="`/posts/${ thisArticle._id }`">
                         {{ thisArticle.title }}
                     </RouterLink>
                 </p>
@@ -22,19 +22,19 @@
             </dt>
 
             <dd class="article-item-info">
-                <RouterLink :to="`/posts/${ thisArticle.id }`">
+                <RouterLink :to="`/posts/${ thisArticle._id }`">
                     {{ postCategory[thisArticle.category] }}
                 </RouterLink>
 
                 <span>·</span>
 
-                <RouterLink :to="`/posts/${ thisArticle.id }`">
+                <RouterLink :to="`/posts/${ thisArticle._id }`">
                     {{ new Date(thisArticle.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
                 </RouterLink>
             </dd>
 
             <dd class="article-item-text-summary">
-                <RouterLink :to="`/posts/${ thisArticle.id }`">
+                <RouterLink :to="`/posts/${ thisArticle._id }`">
                     {{ thisArticle.text.replace(/<[^>]*>?/g, ' ') }}
                 </RouterLink>
             </dd>
@@ -47,6 +47,6 @@
     import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 
-    const props = defineProps([ 'articleId' ]);
-    const thisArticle = postData.find(item => item.id === props.articleId);
+    const props = defineProps([ 'postObject' ]);
+    const thisArticle = props.postObject;
 </script> <!-- Logic Ends -->

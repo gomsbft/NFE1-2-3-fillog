@@ -34,45 +34,52 @@
     import axios from 'axios';
     import movieCategory from '../../datas/movieCategory.json';
     import { useRouter } from 'vue-router';
-    
+
     const previewImage = ref([]);
-    const title = ref([]);
-    const content = ref([]);
-    const selectedCategory = ref([]);
+    const title = ref();
+    const content = ref();
+    const selectedCategory = ref();
     const router = useRouter();
 
     const changeImage = (e) => {
-        if(previewImage.value.length >= 3) {
+        if (previewImage.value.length >= 3) {
             alert('이미지는 최대 3장까지 업로드 가능합니다.');
             return;
         }
-        
+
         const file = e.target.files[0];
+
         if (!file) {
             return;
-        }        
+        }
+
         const reader = new FileReader();
+
         reader.onload = (e) => {
             previewImage.value.push(e.target.result);
         }
-        
+
         reader.readAsDataURL(file);
     }
-    
+
     const submitPost = async () => {
         const postData = {
             title: title.value,
-            content: content.value,
+            text: content.value,
             category: selectedCategory.value,
-            images: previewImage.value
+            images: previewImage.value,
+            author: {
+                userID: 123125 // 임시 값
+            }
         };
-        
+
         try {
             const response = await axios.post('http://localhost:3000/post', postData);
+
             alert('게시글이 등록되었습니다.');
             router.push('/posts');
-        } catch (err) {
-            console.error('Error post:', err);
+        } catch(error) {
+            console.error('Error post:', error);
             alert('게시글 등록에 실패했습니다.');
         }
     };

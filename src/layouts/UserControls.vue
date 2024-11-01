@@ -7,7 +7,7 @@
         </div>
 
         <div class="user-info-container" v-else>
-            <ButtonWithIcon element-id="btnConfig" icon-position="only" icon-name="user-fill">
+            <ButtonWithIcon element-id="btnConfig" icon-position="only" icon-name="user-fill" @click="myPageAction">
                 사용자 설정
             </ButtonWithIcon>
 
@@ -38,5 +38,10 @@
         log.setLoginFalse(); // 로그아웃 상태로 전환하여 로그인 상태를 false로 설정
         localStorage.removeItem('token'); // 저장된 토큰 삭제
         router.push('/login');
+    };
+
+    // 버튼 클릭시 마이페이지로 이동
+    const myPageAction = () => {
+        router.push('/mypage');
     };
 </script> <!-- Logic Ends -->
