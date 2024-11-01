@@ -69,13 +69,13 @@ input:not(.exclude) { // 폼 입력 요소 공통 - .exclude 클래스가 있을
     }
 }
 
-textarea {
+textarea:not(.exclude) {
     @include input-commons();
 
     padding-block: .4rem;
 }
 
-select {
+select:not(.exclude) {
     @include input-commons();
 
     padding-inline-end: 1.6rem;
