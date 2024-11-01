@@ -1240,6 +1240,10 @@ a, a:visited {
   opacity: 0.5;
 }
 
+.sidebar-category-container {
+  padding-block-end: 0.4rem;
+}
+
 .sidebar-category-item {
   --hover-effect-size: 0;
   display: flex;
@@ -1266,6 +1270,9 @@ a, a:visited {
 .sidebar-latest-item {
   padding: 0.8rem;
 }
+.sidebar-latest-item:has(.router-link-active) {
+  background-color: rgb(var(--clr-tint-100)/0.25);
+}
 .sidebar-latest-item:hover .latest-item-titlebar > p {
   color: rgb(var(--clr-theme));
 }
@@ -1284,9 +1291,6 @@ a, a:visited {
 .latest-item-titlebar > span {
   font-size: var(--fnt-xs);
   opacity: 0.75;
-}
-.latest-item-titlebar.active {
-  background-color: red;
 }
 
 .latest-item-date {
