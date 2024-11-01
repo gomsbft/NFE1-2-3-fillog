@@ -36,9 +36,9 @@
     import { useRouter } from 'vue-router';
 
     const previewImage = ref([]);
-    const title = ref();
-    const content = ref();
-    const selectedCategory = ref();
+    const title = ref('');
+    const content = ref('');
+    const selectedCategory = ref('');
     const router = useRouter();
 
     const changeImage = (e) => {
