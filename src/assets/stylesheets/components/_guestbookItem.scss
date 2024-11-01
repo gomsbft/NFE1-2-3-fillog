@@ -1,0 +1,130 @@
+/* _guestbookItem.scss */
+
+.guestbook-item {
+    display: flex;
+    gap: .8rem;
+    margin-inline: .4rem;
+}
+
+.guest-user-image-container {
+    flex-shrink: 0;
+    position: relative;
+    width: 2.4rem;
+    height: 2.4rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 25rem;
+    background-color: rgb(128 128 128);
+    overflow: hidden;
+    user-select: none;
+    pointer-events: none;
+
+    > .remix {
+        position: absolute;
+        inset: 0;
+        margin-block: auto -.2rem;
+        margin-inline: auto;
+        width: 90%;
+        color: rgb(255 255 255 / .5);
+    }
+
+    > .guest-user-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.guestbook-main-container {
+    flex: 1;
+}
+
+.guest-info {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    gap: .4rem;
+    height: 2.4rem;
+}
+
+.guest-user-name {
+    font-size: var(--fnt-xl);
+    font-weight: 700;
+}
+
+.guest-written-date {
+    font-size: var(--fnt-sm);
+    opacity: .5;
+}
+
+.guestbook-content {
+    margin-block-start: .4rem;
+    font-size: var(--fnt-lg);
+}
+
+.guestbook-reply-input {
+    display: none;
+    gap: .4rem;
+    margin-block-start: .8rem;
+
+    &.show {
+        display: flex;
+    }
+
+    > textarea {
+        resize: none;
+        width: 100%;
+        height: 3.6rem;
+    }
+}
+
+.guestbook-control {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    margin-block: .8rem;
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
+}
+
+.guestbook-reply-container {
+    border-block: 1px solid rgb(var(--clr-max) / .15);
+}
+
+.guestbook-reply-item {
+    padding: .8rem;
+
+    &:hover {
+        background-color: rgb(var(--clr-surface-20));
+    }
+
+    & + & {
+        border-block-start: 1px solid rgb(var(--clr-max) / .15);
+    }
+}
+
+.guestbook-reply-info {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
+}
+
+.guestbook-reply-date {
+    font-size: var(--fnt-sm);
+    opacity: .5;
+}
+
+.guestbook-reply-text {
+    margin-block: .8rem;
+    font-size: var(--fnt-lg);
+}
+
+/* _guestbookItem.scss */

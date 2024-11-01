@@ -2,36 +2,86 @@
     <div id="guestBook">
         <h1 class="page-title">방명록</h1>
 
-        <div id="guestFilter" class="page-filter-container">
-            <label class="page-filter-type-label">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-right-line"></use>
-                </svg>
+        <PageFilter id="guestFilter" label-icon="corner-down-right-line" label-text="답글 여부" :filter-array="guestFilterArray" :origin-value="'all'" @current-filter="getCurrentFilter" />
 
-                <span>답글 여부</span>
-            </label>
+        <div id="guestbookEditor">
+            <div v-if="tempUserID !== null" id="guestbookUser">
+                <UserNameTag :user-id="tempUserID" />
+            </div> <!-- #guestbookUser - 사용자가 로그인 된 상태일 때 -->
 
-            <div class="page-filter-wrapper">
-                <button type="button" class="button-filter-selector active">
-                    전체
-                </button>
+            <div v-else id="guestbookUser">
+                <div class="guestbook-unknown-user">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-fill"></use>
+                    </svg>
+                </div>
 
-                <button type="button" class="button-filter-selector">
-                    답글 있음
-                </button>
+                <input type="text" name="guest-name" id="txtGuestName" minlength="2" maxlength="12" placeholder="별명" v-model="writeData.userName">
+                <input type="password" name="guest-password" id="txtGuestPassword" minlength="8" maxlength="16" placeholder="비밀번호" v-model="writeData.password">
+            </div> <!-- #guestbookUser - 사용자가 로그인하지 않았을 때 -->
 
-                <button type="button" class="button-filter-selector">
-                    답글 없음
+            <div id="guestbookInput">
+                <textarea name="guestbook-input" id="txtGuestbook" placeholder="방명록 글 입력..." v-model="writeData.text"></textarea>
+
+                <button type="button" id="btnSubmitGuestbook" title="방명록 글 등록" @click="sendGuestbook()">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
+                    </svg>
+
+                    <span>등록</span>
                 </button>
             </div>
-        </div>
+        </div> <!-- #guestbookEditor -->
 
-        <ul></ul>
+        <ul v-if="guestData.length > 0" id="guestItemList">
+            <GuestbookItem v-for="guestItem in filteredData" :key="guestItem._id" :guest-object="guestItem">
+                <GuestbookReplyItem v-for="replyItem in guestItem.replies" :key="replyItem._id" :reply-object="replyItem" />
+            </GuestbookItem>
+        </ul> <!-- #guestItemList -->
 
-        <EmptyList />
+        <EmptyList v-else />
     </div> <!-- #guestBook -->
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { ref } from 'vue';
+    import router from '../router';
+    import { getTotalGuestbooks, writeGuestbook } from '../utilities/dataQueries';
 
+    const guestData = await getTotalGuestbooks();
+    const filteredData = ref(guestData);
+
+    const guestFilterArray = [ // 임시 필터 리스트 데이터
+        { name: '전체', value: 'all' },
+        { name: '답글 있음', value: 'reply-exist' },
+        { name: '답글 없음', value: 'no-reply' }
+    ]
+
+    const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
+    const writeData = ref({
+        isUser: false,
+        userID: null,
+        userName: null,
+        userImage: null,
+        password: null,
+        text: null
+    });
+
+    const getCurrentFilter = (data) => {
+        if (data === 'reply-exist') filteredData.value = guestData.filter(item => item.replies.length > 0);
+        if (data === 'no-reply') filteredData.value = guestData.filter(item => item.replies.length === 0);
+        if (data === 'all') filteredData.value = guestData;
+    }
+
+    const sendGuestbook = () => {
+        if (!!writeData.value.isUser === false && writeData.value.userName === null) {
+            return alert('별명을 입력해 주세요.');
+        } else if (!!writeData.value.isUser === false && writeData.value.password === null) {
+            return alert('비밀번호를 입력해 주세요.');
+        } else if (writeData.text === null) {
+            return alert('내용이 입력되지 않았어요.');
+        }
+
+        writeGuestbook(writeData.value, router.go(0));
+    }
 </script> <!-- Logic Ends -->

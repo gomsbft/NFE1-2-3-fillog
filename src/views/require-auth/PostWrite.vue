@@ -1,15 +1,164 @@
 <template>
     <div id="frmPostWrite">
-        <input type="text" name="" id="">
+        <h1 class="page-title">포스트 작성</h1>
 
-        글쓰기
+        <section id="writeUpperArea" class="labeled-row-section">
+            <div class="row-section-label">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-list-radio"></use>
+                </svg>
+
+                <span>카테고리</span>
+            </div>
+
+            <div class="row-section-container">
+                <select name="category" id="slctCategory" class="exclude write-form-inputs" v-model="selectedCategory">
+                    <option value="" disabled>카테고리 선택</option>
+
+                    <option v-for="(category, value) in articleCategory" :key="value" :value="value">
+                        {{ category }}
+                    </option>
+                </select>
+            </div>
+        </section> <!-- #writeUpperArea -->
+
+        <section id="writeTitleArea" class="labeled-row-section">
+            <div class="row-section-label">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-text-block"></use>
+                </svg>
+
+                <span>글 제목</span>
+            </div>
+
+            <div class="row-section-container">
+                <input type="text" name="title" id="txtArticleTitle" class="exclude write-form-inputs" placeholder="포스트 제목" v-model="title">
+            </div>
+        </section> <!-- #writeTitleArea -->
+
+        <section id="writeTextArea" class="labeled-row-section">
+            <div class="row-section-label">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-menu-2-line"></use>
+                </svg>
+
+                <span>내용</span>
+            </div>
+
+            <div class="row-section-container">
+                <textarea name="content" id="txtArticleContent" class="exclude" placeholder="포스트 내용 입력..." v-model="content"></textarea>
+            </div>
+        </section> <!-- #writeTextArea -->
+
+        <section id="writeLowerArea" class="labeled-row-section">
+            <div class="row-section-label">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-image-2-line"></use>
+                </svg>
+
+                <span>이미지</span>
+            </div>
+
+            <div class="row-section-container">
+                <div class="write-file-upload-container">
+                    <ButtonWithIcon element-id="btnUploadImages" icon-position="front" icon-name="image-add-line" tool-tip="이미지 업로드" :disabled="previewImage.length === 3" @click="fileUploader.click()">
+                        이미지 추가
+                    </ButtonWithIcon>
+
+                    <span>최대 3장을 첨부할 수 있어요.</span>
+
+                    <input type="file" name="file-post-image-uploader" id="filePostImages" accept="image/*" ref="file-uploader" @change="changeImage">
+                </div>
+
+                <div class="write-file-preview-container">
+                    <div class="write-preview-image-container" v-for="(img, index) in previewImage" :key="index">
+                        <img class="write-preview-image" :src="img" />
+
+                        <div class="write-preview-image-overlay">
+                            <button type="button" class="button-remove-preview-item" title="이 이미지 제거" @click="console.log(index + '번 이미지')">
+                                <svg class="remix">
+                                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-close-circle-fill"></use>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- #writeLowerArea -->
+
+        <section id="writeFilmArea" class="labeled-row-section">
+            <div class="row-section-label">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-movie-2-line"></use>
+                </svg>
+
+                <span>영화 선택</span>
+            </div>
+
+            <MovieFinder class="row-section-container" />
+        </section>
+
+        <ButtonWithIcon element-id="btnUploadPost" icon-position="front" icon-name="upload-line" tool-tip="포스트 업로드" @click="submitPost">
+            작성 완료
+        </ButtonWithIcon>
     </div> <!-- #frmPostWrite -->
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { ref, useTemplateRef } from 'vue';
+    import { useRouter } from 'vue-router';
+    import axios from 'axios';
+    import MovieFinder from '../../components/commons/MovieFinder.vue';
+    import articleCategory from '../../datas/articleCategory.json';
 
+    const router = useRouter();
+    const fileUploader = useTemplateRef('file-uploader'); // input:file 이벤트 추가를 위한 템플릿 레퍼런스
+    const selectedCategory = ref('');
+    const title = ref();
+    const content = ref();
+    const previewImage = ref([]);
+
+    const changeImage = (e) => {
+        if (previewImage.value.length >= 3) {
+            alert('이미지는 최대 3장까지 업로드 가능합니다.');
+
+            return;
+        }
+
+        const file = e.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            previewImage.value.push(e.target.result);
+        }
+
+        reader.readAsDataURL(file);
+    }
+
+    const submitPost = async () => {
+        const postData = {
+            title: title.value,
+            text: content.value,
+            category: selectedCategory.value,
+            images: previewImage.value,
+            author: {
+                userID: "671ae48150f0899c1d43f17c" // 임시 값
+            }
+        };
+
+        try {
+            const response = await axios.post('http://localhost:3000/post', postData);
+
+            alert('게시글이 등록되었습니다.');
+            router.push('/posts');
+        } catch(error) {
+            console.error('Error post:', error);
+            alert('게시글 등록에 실패했습니다.');
+        }
+    };
 </script> <!-- Logic Ends -->
-
-<style lang="scss" scoped>
-
-</style> <!-- Stylesheet Ends -->

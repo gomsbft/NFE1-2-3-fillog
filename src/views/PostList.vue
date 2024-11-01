@@ -11,24 +11,22 @@
                 <span>검색 조건</span>
             </label>
 
-            <div class="page-filter-wrapper">
-                <select name="list-category" id="lstCategory">
-                    <option value="all">전체</option>
-                    <option v-for="(catItem, index) in postCategory" :key="index" :value="index">{{ catItem }}</option>
-                </select> <!-- #lstCategory -->
+            <select name="list-category" id="lstCategory" v-model="selectedCategory">
+                <option value="all">전체</option>
+                <option v-for="(category, value) in articleCategory" :key="value" :value="value">{{ category }}</option>
+            </select>
 
-                <div id="totalSearchContainer">
-                    <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
+            <div id="totalSearchContainer">
+                <input type="text" name="search-keyword" id="txtTotalSearch" v-model="searchKeyword" placeholder="검색 키워드 입력...">
 
-                    <ButtonWithIcon element-id="btnTotalSearch" icon-position="only" icon-name="search-2-line" @click="console.log(searchKeyword)">
-                        검색
-                    </ButtonWithIcon>
-                </div> <!-- #totalSearchContainer -->
-            </div>
+                <ButtonWithIcon element-id="btnTotalSearch" icon-position="only" icon-name="search-2-line" @click="searchPost">
+                    검색
+                </ButtonWithIcon>
+            </div> <!-- #totalSearchContainer -->
         </div> <!-- #postFilter -->
 
-        <ul id="postItemList" v-if="postData.length > 0">
-            <PostItem v-for="article in postData" :key="article.id" :article-id="article.id" />
+        <ul id="postItemList" v-if="filterPost.length > 0">
+            <PostItem v-for="post in filterPost" :key="post._id" :post-object="post" />
         </ul> <!-- #postItemList -->
 
         <EmptyList v-else />
@@ -36,14 +34,24 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import postData from '../datas/postData.json'; // 임시 데이터
-    import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
+    import { ref, computed } from 'vue';
+    import { getTotalPosts } from '../utilities/dataQueries';
+    import articleCategory from '../datas/articleCategory.json';
 
-    const searchKeyword = defineModel({ default: '' }); // 검색 키워드 v-model
+    const postData = ref(await getTotalPosts());
+    const searchKeyword = ref('');
+    const selectedCategory = ref('all');
 
-    postData.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const filterPost = computed(() => {
+        return postData.value.filter(article => {
+            const matchKeyword = article.title.includes(searchKeyword.value) || article.text.includes(searchKeyword.value);
+            const matchCategory = selectedCategory.value === 'all' || article.category === selectedCategory.value;
+
+            return matchKeyword && matchCategory;
+        });
+    });
+
+    const searchPost = () => {
+        console.log(searchKeyword.value);
+    }
 </script> <!-- Logic Ends -->
-
-<style lang="scss" scoped>
-
-</style> <!-- Stylesheet Ends -->
