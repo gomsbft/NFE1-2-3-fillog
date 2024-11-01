@@ -14,10 +14,11 @@
 
 <script setup>
     import { ref } from 'vue';
-    import { movieCategories } from '../utilities/dataQueries';
-    import postData from '../datas/postData.json'; // 임시 게시물 데이터
+    import { getTotalPosts, movieCategories } from '../utilities/dataQueries';
 
-    const featuredMovies = ref(postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, genres: item.movieGenres, articleID: item.id } }).filter(item => !!item));
+    const postData = await getTotalPosts();
+
+    const featuredMovies = ref(postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, genres: item.movieGenres, articleID: item._id } }).filter(item => !!item));
     const genreList = await movieCategories();
 
     genreList.unshift({ name: '전체', id: 0 });

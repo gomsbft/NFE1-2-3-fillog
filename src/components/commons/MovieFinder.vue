@@ -48,6 +48,5 @@
         const findResult = await searchMovies(e.target.value);
 
         movieArray.value = findResult;
-        console.log(movieArray.value);
     }
 </script> <!-- Logic Ends -->

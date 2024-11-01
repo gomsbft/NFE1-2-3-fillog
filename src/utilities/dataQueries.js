@@ -10,6 +10,16 @@ export const getBlogInfo = async (blogID) => { // 블로그 기본 정보 가져
     }
 }
 
+export const getAdminInfo = async () => { // 블로그 관리자 정보 가져오기
+    try {
+        const { data: response } = await baseAPI.get('/admin-info');
+
+        return response;
+    } catch(error) {
+        console.error(error);
+    }
+};
+
 export const getTotalUsers = async () => { // 전체 사용자 가져오기
     try {
         const { data: response } = await baseAPI.get('/users');

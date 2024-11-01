@@ -1139,8 +1139,19 @@ a, a:visited {
   aspect-ratio: 1/1;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 25rem;
+  background-color: rgb(128, 128, 128);
+  overflow: hidden;
+}
+.blog-owner-image-container > .remix {
+  position: absolute;
+  inset: 0;
+  margin-inline: auto;
+  margin-block: auto -0.4rem;
+  width: 90%;
 }
 .blog-owner-image-container > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 25rem;
@@ -1230,18 +1241,59 @@ a, a:visited {
 }
 
 .sidebar-category-item {
+  --hover-effect-size: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.8rem;
+  background-image: linear-gradient(to left, rgb(var(--clr-tint-0)), rgb(var(--clr-tint-0)) var(--hover-effect-size), transparent var(--hover-effect-size));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 1.2rem;
 }
 .sidebar-category-item > span {
   font-size: var(--fnt-xs);
-  font-weight: 700;
+  font-weight: 900;
   opacity: 0.5;
 }
-.sidebar-category-item.active {
-  border-inline-end: 0.2rem solid red;
+.sidebar-category-item:hover {
+  --hover-effect-size: .2rem;
+}
+.sidebar-category-item:hover > span {
+  color: rgb(var(--clr-tint-0));
+}
+
+.sidebar-latest-item {
+  padding: 0.8rem;
+}
+.sidebar-latest-item:hover .latest-item-titlebar > p {
+  color: rgb(var(--clr-theme));
+}
+
+.latest-item-titlebar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+.latest-item-titlebar > p {
+  font-size: var(--fnt-sm);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.latest-item-titlebar > span {
+  font-size: var(--fnt-xs);
+  opacity: 0.75;
+}
+.latest-item-titlebar.active {
+  background-color: red;
+}
+
+.latest-item-date {
+  display: block;
+  margin-block-start: 0.4rem;
+  font-size: var(--fnt-xs);
+  opacity: 0.5;
 }
 
 .rounded {
