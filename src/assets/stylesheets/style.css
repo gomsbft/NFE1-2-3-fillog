@@ -1150,6 +1150,7 @@ a, a:visited {
   margin-inline: auto;
   margin-block: auto -0.4rem;
   width: 90%;
+  color: rgba(255, 255, 255, 0.5);
 }
 .blog-owner-image-container > img {
   position: absolute;
@@ -1256,6 +1257,7 @@ a, a:visited {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 1.2rem;
+  font-size: var(--fnt-sm);
 }
 .sidebar-category-item > span {
   font-size: var(--fnt-xs);
