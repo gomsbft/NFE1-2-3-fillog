@@ -11,7 +11,7 @@
         <div class="guestbook-main-container">
             <div class="guest-info">
                 <p class="guest-user-name">
-                    {{ thisUser ? thisUser.userName : guestObject.writtenUser.userName }}
+                    {{ guestObject.writtenUser.isUser ? thisUser.userName : guestObject.writtenUser.userName }}
                 </p>
 
                 <p class="guest-written-date">

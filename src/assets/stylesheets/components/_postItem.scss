@@ -102,6 +102,20 @@
     }
 }
 
+.article-item-info-likes {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+
+    > .remix {
+        width: .6rem;
+    }
+
+    &.hot {
+        color: rgb(173, 76, 109);
+    }
+}
+
 .article-item-text-summary {
     display: -webkit-box;
     -webkit-box-orient: vertical;

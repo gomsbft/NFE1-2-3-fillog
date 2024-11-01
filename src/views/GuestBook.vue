@@ -34,8 +34,8 @@
         </div> <!-- #guestbookEditor -->
 
         <ul v-if="guestData.length > 0" id="guestItemList">
-            <GuestbookItem v-for="guestItem in filteredData" :key="guestItem.id" :guest-object="guestItem">
-                <GuestbookReplyItem v-for="replyItem in guestItem.replies" :key="replyItem.id" :reply-object="replyItem" />
+            <GuestbookItem v-for="guestItem in filteredData" :key="guestItem._id" :guest-object="guestItem">
+                <GuestbookReplyItem v-for="replyItem in guestItem.replies" :key="replyItem._id" :reply-object="replyItem" />
             </GuestbookItem>
         </ul> <!-- #guestItemList -->
 

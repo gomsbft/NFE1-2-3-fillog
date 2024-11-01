@@ -2,11 +2,11 @@
     <aside id="sideBarMain">
         <div id="sideBlogInfoContainer">
             <div class="blog-owner-image-container">
-                <svg class="remix">
+                <img v-if="blogAdmin?.adminImage" :src="`http://localhost:3000/${ blogAdmin.adminImage }`" alt="블로그 관리자 프로파일 이미지">
+
+                <svg class="remix" v-else>
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-fill"></use>
                 </svg>
-
-                <img v-if="blogAdmin?.adminImage" :src="`http://localhost:3000/${ blogAdmin.adminImage }`" alt="블로그 관리자 프로파일 이미지">
 
                 <button type="button" id="btnShowInfo" title="블로그 소개">
                     <span>블로그 소개</span>
@@ -14,12 +14,12 @@
             </div>
 
             <div class="blog-info-container sidebar-hidden">
-                <h6 class="blog-info-blog-name">{{ blogAdmin.blogName }}</h6>
+                <h6 class="blog-info-blog-name">{{ blogAdmin.blogInfo.blogName }}</h6>
 
                 <p>{{ blogAdmin.adminName }}</p>
 
-                <div class="blog-info-tag-container" v-if="blogAdmin.favoriteGenres?.length > 0">
-                    <p class="blog-info-tags" v-for="genre in blogAdmin.favoriteGenres">{{ genre }}</p>
+                <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo.favoriteGenres?.length > 0">
+                    <p class="blog-info-tags" v-for="genre in blogAdmin.blogInfo.favoriteGenres">{{ genreList.find(item => item.id === genre).name }}</p>
                 </div>
             </div>
         </div> <!-- #sideBlogInfoContainer -->
@@ -104,11 +104,9 @@
 
 <script setup>
     import { ref, onMounted, watch } from 'vue';
-    import { RouterLink } from 'vue-router';
+    import { useRouter, RouterLink } from 'vue-router';
     import axios from 'axios';
-    import { getAdminInfo, getTotalPosts } from '../utilities/dataQueries';
-    import movieCategory from '../datas/movieCategory.json';
-    import { useRouter } from 'vue-router';
+    import { getAdminInfo, getTotalPosts, movieCategories } from '../utilities/dataQueries';
     import { userLogin } from '../stores/isLogin';
     import dateFormat from '../utilities/dateFormat';
     import articleCategory from '../datas/articleCategory.json';
@@ -117,25 +115,23 @@
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const blogAdmin = ref({ // 블로그 기본값
         adminID: null,
-        adminName: '블로그 주인',})
+        adminName: '블로그 주인'
+    });
 
     const router = useRouter();
-
-
-
     const thisUser = ref({ // 현재 사용자 기본값
         userId: null,
         userImage: '',
         userName: '사용자명'
     });
 
-
     const userInfo = () => {
-        router.push('/userinfo'); 
+        router.push('/userinfo');
     }
 
     const adminFromDB = await getAdminInfo();
     const postData = await getTotalPosts();
+    const genreList = await movieCategories();
 
     if (adminFromDB?.adminID) blogAdmin.value = adminFromDB;
 
@@ -158,7 +154,7 @@
 
             const response = await axios.get('http://localhost:3000/profile', {
                 headers: {
-                    Authorization: `Bearer ${token}`, // 토큰을 Authorization 헤더에 추가
+                    Authorization: `Bearer ${ token }`, // 토큰을 Authorization 헤더에 추가
                 },
             });
 
@@ -175,30 +171,9 @@
         }
     };
 
-    const fetchAdminInfo = async () => {
-        try {
-            // 서버에서 관리자 정보를 가져옵니다.
-            const response = await axios.get("http://localhost:3000/admin-info");
-
-            // 응답에서 관리자 정보 데이터를 구조 분해 할당을 통해 추출합니다.
-            const { adminImage, userName, blogName, tags } = response.data;
-
-            // 가져온 데이터를 blogOwner의 속성에 각각 할당합니다.
-            blogOwner.value.adminImage = adminImage;
-            blogOwner.value.adminName = userName;
-            blogOwner.value.blogName = blogName;
-            blogOwner.value.tags = tags;
-        } catch (error) {
-            console.error("관리자 정보 가져오기 실패(클라이언트):", error);
-        }
-    };
-
-
     onMounted(() => {
         getUserProfile();
     });
-
-    
 
     // 팔로우 기능
     const followFn = async() => {
