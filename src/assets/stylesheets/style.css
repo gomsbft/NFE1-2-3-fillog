@@ -2983,6 +2983,18 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   font-weight: 900;
 }
 
+.article-item-info-likes {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.article-item-info-likes > .remix {
+  width: 0.6rem;
+}
+.article-item-info-likes.hot {
+  color: rgb(173, 76, 109);
+}
+
 .article-item-text-summary {
   display: -webkit-box;
   -webkit-box-orient: vertical;

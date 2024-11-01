@@ -31,6 +31,16 @@
                 <RouterLink :to="`/posts/${ thisArticle._id }`">
                     {{ dateFormat(thisArticle.createdAt) }}
                 </RouterLink>
+
+                <span>·</span>
+
+                <RouterLink class="article-item-info-likes" :class="thisArticle.likes.length > 1 ? 'hot' : null" :to="`/posts/${ thisArticle._id }`">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
+                    </svg>
+
+                    {{ thisArticle.likes.length.toLocaleString('ko-KR') }}
+                </RouterLink>
             </dd>
 
             <dd class="article-item-text-summary">

@@ -1,7 +1,7 @@
 <template>
     <div class="user-name-tag">
         <div class="user-profile-image">
-            <img v-if="thisUser?.userImage" :src="thisUser.userImage" alt="사용자 프로파일 이미지">
+            <img v-if="thisUser?.userImage" :src="`http://localhost:3000/${ thisUser.userImage }`" alt="사용자 프로파일 이미지">
 
             <svg v-else class="remix">
                 <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-fill"></use>
