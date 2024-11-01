@@ -71,7 +71,4 @@
   };
 </script>
 
-<style lang="scss" scoped>
-  @use '../../assets/stylesheets/views/login'
-</style>
 

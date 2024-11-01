@@ -22,7 +22,7 @@
         </div> <!-- #sideBlogInfoContainer -->
 
         <div id="sideBlogControls">
-            <button type="button" class="buttons-blog-control">
+            <button type="button" class="buttons-blog-control" @click="userInfo">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-search-fill"></use>
                 </svg>
@@ -95,11 +95,13 @@
     import { ref, onMounted, watch } from 'vue';
     import axios from 'axios';
     import movieCategory from '../datas/movieCategory.json';
+    import { useRouter } from 'vue-router';
     import { userLogin } from '../stores/isLogin';
 
     const didIFollowed = ref(true); // 임시 팔로우 정보
     const postData = ref([]);
     const log = userLogin();
+    const router = useRouter();
 
     // 관리자(admin)의 이미지와 이름을 저장하는 ref
     const blogOwner = ref({
@@ -114,6 +116,10 @@
         userImage: "",
         userName: "사용자명"
     });
+
+    const userInfo = () => {
+        router.push('/userinfo'); 
+    }
 
     const isAdmin = ref(false); // 사용자 권한 체크
 
