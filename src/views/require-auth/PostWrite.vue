@@ -10,7 +10,7 @@
             </select>
         </div>
         <input type="text" name="title" id="title" placeholder="제목을 입력해주세요." v-model="title"><br>
-        <textarea name="content" id="content" placeholder="내용을 입력해주세요." v-model="content"></textarea>
+        <textarea name="content" id="content" placeholder="내용을 입력해주세요." v-model="text"></textarea>
         <div class="bot_btn">
             <div class="file_box">
                 <label for="file">
@@ -37,7 +37,7 @@
 
     const previewImage = ref([]);
     const title = ref('');
-    const content = ref('');
+    const text = ref('');
     const selectedCategory = ref('');
     const router = useRouter();
 
@@ -65,7 +65,7 @@
     const submitPost = async () => {
         const postData = {
             title: title.value,
-            text: content.value,
+            text: text.value,
             category: selectedCategory.value,
             images: previewImage.value,
             author: {
