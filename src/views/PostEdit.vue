@@ -51,7 +51,7 @@ const fetchPostData = async () => {
   try {
     const response = await axios.get(`http://localhost:3000/posts/${postID}`);
     title.value = response.data.title;
-    content.value = response.data.content;
+    content.value = response.data.text;
     cate.value = response.data.category;
     images.value = response.data.images;
   } catch (err) {
