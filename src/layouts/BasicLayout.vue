@@ -17,7 +17,6 @@
 
 <script setup>
     import { useLoaderStore } from '../stores/isLoading';
-
     import HeadPrimary from './HeadPrimary.vue';
     import FootPrimary from './FootPrimary.vue';
     import Sidebar from './Sidebar.vue';
