@@ -6,7 +6,7 @@
             <span>·</span>
 
             <p class="guestbook-reply-date">
-                {{ new Date(replyObject.replyDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+                {{ dateFormat(replyObject.replyDate) }}
             </p>
         </div>
 
@@ -23,5 +23,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import dateFormat from '../utilities/dateFormat';
+
     const props = defineProps([ 'replyObject' ]);
 </script> <!-- Logic Ends -->

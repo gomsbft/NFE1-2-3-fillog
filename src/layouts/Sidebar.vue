@@ -95,9 +95,7 @@
                         <span>[{{ article.comments.length.toLocaleString('ko-KR') }}]</span>
                     </RouterLink>
 
-                    <span class="latest-item-date">
-                        <RouterLink :to="`/posts/${ article._id }`">{{ article.date }}</RouterLink>
-                    </span>
+                    <span class="latest-item-date">{{ dateFormat(article.date) }}</span>
                 </li>
             </ul>
         </div>
@@ -110,6 +108,7 @@
     import axios from 'axios';
     import { getAdminInfo, getTotalPosts } from '../utilities/dataQueries';
     import { userLogin } from '../stores/isLogin';
+    import dateFormat from '../utilities/dateFormat';
     import articleCategory from '../datas/articleCategory.json';
 
     const isAdmin = ref(false); // 사용자 권한 체크
@@ -124,6 +123,7 @@
             blogCategories: []
         }
     });
+
     const thisUser = ref({ // 현재 사용자 기본값
         userId: null,
         userImage: '',
@@ -133,21 +133,9 @@
     const adminFromDB = await getAdminInfo();
     const postData = await getTotalPosts();
 
-    console.log(postData);
-
     if (adminFromDB?.adminID) blogAdmin.value = adminFromDB;
 
     const log = userLogin();
-
-    const postDatas = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/posts');
-
-            postData.value = response.data;
-        } catch(error) {
-            console.error(error);
-        }
-    };
 
     watch(log, (newValue) => {
         if (newValue.logins) {
@@ -178,8 +166,8 @@
 
             // type이 "admin"인지 확인
             isAdmin.value = userData.type === 'admin';
-        } catch (error) {
-            console.error('사용자 정보 가져오기 실패:', error);
+        } catch(error) {
+            console.error(error);
         }
     };
 

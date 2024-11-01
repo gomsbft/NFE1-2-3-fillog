@@ -51,7 +51,6 @@
 
     const latestPosts = postData.slice(0, 5); // 가장 최근 글
     const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item._id } }).filter(item => !!item).slice(0, 10);
-
     const swiperParams = {
         effect: 'coverflow',
         direction: 'vertical',

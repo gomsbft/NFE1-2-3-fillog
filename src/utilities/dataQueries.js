@@ -1,15 +1,5 @@
 import baseAPI from './apiDefault';
 
-export const getBlogInfo = async (blogID) => { // 블로그 기본 정보 가져오기
-    try {
-        const { data: response } = await baseAPI.get('/blogInfo', blogID);
-
-        return response;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
 export const getAdminInfo = async () => { // 블로그 관리자 정보 가져오기
     try {
         const { data: response } = await baseAPI.get('/admin-info');
@@ -66,11 +56,10 @@ export const getTotalPosts = async () => { // 포스트 목록 가져오기
 
 export const getPostInfo = async (articleID) => { // 개별 포스트 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/post/${ articleID }`);
+        const { data: response } = await baseAPI.get(`/posts/${ articleID }`);
 
         return response;
     } catch(error) {
-        // 에러 출력 Utility 컴포넌트
         console.error(error);
     }
 }
@@ -115,7 +104,7 @@ export const getMovieInfo = async (movieID) => { // 특정 ID의 영화 정보 �
     }
 }
 
-export const movieCategories = async () => {
+export const movieCategories = async () => { // 영화 카테고리 정보 가져오기
     try {
         const { data: response } = await baseAPI({
             method: 'get',
@@ -181,5 +170,15 @@ export const getGuestbookInfo = async (guestbookID) => { // 개별 방명록 글
         return response;
     } catch(error) {
         console.error(error);
+    }
+}
+
+export const writeGuestbookReply = async (guestbookID, replyObject) => {
+    try {
+        const response = await baseAPI.post(`/guestbooks/reply/${ guestbookID }`, replyObject);
+
+        if (response.status === 200) return alert('답글 작성 완료');
+    } catch(error) {
+        console.log(error);
     }
 }

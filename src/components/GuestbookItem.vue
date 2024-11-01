@@ -15,7 +15,7 @@
                 </p>
 
                 <p class="guest-written-date">
-                    {{ new Date(guestObject.writtenDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+                    {{ dateFormat(guestObject.writtenDate) }}
                 </p>
             </div>
 
@@ -60,6 +60,7 @@
 
 <script setup>
     import { ref } from 'vue';
+    import dateFormat from '../utilities/dateFormat';
     import userData from '../datas/userData.json';
 
     const props = defineProps([ 'guestObject' ]);

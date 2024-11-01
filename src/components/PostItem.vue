@@ -29,7 +29,7 @@
                 <span>·</span>
 
                 <RouterLink :to="`/posts/${ thisArticle._id }`">
-                    {{ new Date(thisArticle.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+                    {{ dateFormat(thisArticle.date) }}
                 </RouterLink>
             </dd>
 
@@ -44,6 +44,7 @@
 
 <script setup>
     import { RouterLink } from 'vue-router';
+    import dateFormat from '../utilities/dateFormat';
     import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 

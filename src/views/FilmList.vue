@@ -17,7 +17,6 @@
     import { getTotalPosts, movieCategories } from '../utilities/dataQueries';
 
     const postData = await getTotalPosts();
-
     const featuredMovies = ref(postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, genres: item.movieGenres, articleID: item._id } }).filter(item => !!item));
     const genreList = await movieCategories();
 
