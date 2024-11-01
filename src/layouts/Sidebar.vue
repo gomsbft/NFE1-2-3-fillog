@@ -177,7 +177,6 @@
         }
     };
 
-    console.log("내가 오너", blogOwner)
 
     onMounted(() => {
         postDatas();
