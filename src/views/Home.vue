@@ -8,8 +8,8 @@
             <div id="heroSliderContainer">
                 <swiper-container id="heroSlider" v-bind="swiperParams">
                     <swiper-slide class="hero-slide" v-for="article in latestPosts">
-                        <RouterLink :to="`posts/${ article.id }`">
-                            <img class="latest-article-thumbnail" v-if="article.images.length > 0" :src="article.images[article.thumbIndex].imageURL" alt="">
+                        <RouterLink :to="`posts/${ article._id }`">
+                            <img class="latest-article-thumbnail" v-if="article.images.length > 0" :src="article.images[article.thumbIndex].imageURL" alt="포스트 미리보기 이미지">
 
                             <div class="latest-article-thumbnail no-image" v-else></div>
 
@@ -39,10 +39,13 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { useRouter } from 'vue-router';
-    import { userLogin } from '../stores/isLogin';
-    import axios from 'axios';
+    import { getTotalPosts } from '../utilities/dataQueries';
 
+    const postData = await getTotalPosts();
+
+    // if (!log.logins) { // 홈 화면 리디렉션하지 말아주세요... 로그인 해야만 볼 수 있는 블로그는 없잖아요
+    //     router.push('/login');
+    // }
     const userData = async() => {
         try {
             const response = await axios.get('http://localhost:3000/users');
@@ -64,8 +67,7 @@
     postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const latestPosts = postData.slice(0, 5); // 가장 최근 글
-    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item.id } }).filter(item => !!item).slice(0, 10);
-
+    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item._id } }).filter(item => !!item).slice(0, 10);
     const swiperParams = {
         effect: 'coverflow',
         direction: 'vertical',
