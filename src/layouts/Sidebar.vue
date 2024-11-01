@@ -30,7 +30,7 @@
                 <span>글쓴이 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="didIFollowed && blogInfo.adminId !== thisUser" @click="followFn">
+            <button type="button" class="buttons-blog-control" v-if="didIFollowed && !isAdmin" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-add-fill"></use>
                 </svg>
@@ -38,7 +38,7 @@
                 <span>팔로우</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && blogInfo.adminId !== thisUser" @click="followFn">
+            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && !isAdmin" @click="followFn">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-dislike-fill"></use>
                 </svg>
@@ -185,9 +185,6 @@
         fetchAdminInfo(); 
     });
 
-    const loggedUser = userLogin(); // 로그인 유저 store
-    const didIFollowed = ref(true); // 임시 팔로우 정보
-    const thisUser = ref(''); // 임시 로그인 유저 ID (현재 블로그 주인의 ID는 123125로 설정되어 있음)
     
     // 팔로우 기능
     const followFn = async() => {
