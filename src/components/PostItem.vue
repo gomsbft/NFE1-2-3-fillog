@@ -29,7 +29,17 @@
                 <span>·</span>
 
                 <RouterLink :to="`/posts/${ thisArticle._id }`">
-                    {{ new Date(thisArticle.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+                    {{ dateFormat(thisArticle.createdAt) }}
+                </RouterLink>
+
+                <span>·</span>
+
+                <RouterLink class="article-item-info-likes" :class="thisArticle.likes.length > 1 ? 'hot' : null" :to="`/posts/${ thisArticle._id }`">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
+                    </svg>
+
+                    {{ thisArticle.likes.length.toLocaleString('ko-KR') }}
                 </RouterLink>
             </dd>
 
@@ -44,6 +54,7 @@
 
 <script setup>
     import { RouterLink } from 'vue-router';
+    import dateFormat from '../utilities/dateFormat';
     import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 

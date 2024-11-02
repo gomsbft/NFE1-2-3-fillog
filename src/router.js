@@ -121,6 +121,16 @@ const router = createRouter({ // 라우터 정의
                 ]
             }
         },
+        { // 글쓴이 정보
+            path: '/userinfo',
+            name: 'Userinfo',
+            component: () => import('./views/UserInfo.vue'),
+            meta: {
+                breadCrumb: [
+                    { name: 'UserInfo' }
+                ]
+            }
+        },
         { // 관리자 설정
             path: '/settings',
             name: 'Settings',

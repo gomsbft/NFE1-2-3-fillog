@@ -41,6 +41,14 @@ button { // 기본값 초기화
         outline: .1rem dashed rgb(var(--clr-tint-100) / .5);
     }
 
+    &:disabled {
+        border-color: rgb(var(--clr-surface-60));
+        background-color: rgb(var(--clr-surface-0));
+        color: rgb(var(--clr-surface-60));
+        text-shadow: 1px 1px 0 rgb(255 255 255 / .25);
+        cursor: no-drop;
+    }
+
     > .remix {
         width: .8rem;
     }
@@ -151,6 +159,14 @@ button { // 기본값 초기화
 
     &:focus {
         border-color: rgb(var(--clr-tint-100));
+    }
+
+    &:disabled {
+        border-color: rgb(var(--clr-surface-60));
+        background-color: rgb(var(--clr-surface-0));
+        color: rgb(var(--clr-surface-60));
+        text-shadow: 1px 1px 0 rgb(255 255 255 / .25);
+        cursor: no-drop;
     }
 }
 
