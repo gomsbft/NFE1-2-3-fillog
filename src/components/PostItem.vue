@@ -34,7 +34,7 @@
 
                 <span>·</span>
 
-                <RouterLink class="article-item-info-likes" :class="thisArticle.likes.length > 1 ? 'hot' : null" :to="`/posts/${ thisArticle._id }`">
+                <RouterLink class="article-item-info-likes" :to="`/posts/${ thisArticle._id }`">
                     <svg class="remix">
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
@@ -55,7 +55,6 @@
 <script setup>
     import { RouterLink } from 'vue-router';
     import dateFormat from '../utilities/dateFormat';
-    import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 
     const props = defineProps([ 'postObject' ]);

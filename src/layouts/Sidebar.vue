@@ -19,7 +19,9 @@
                 <p>{{ blogAdmin.adminName }}</p>
 
                 <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo.favoriteGenres?.length > 0">
-                    <p class="blog-info-tags" v-for="genre in blogAdmin.blogInfo.favoriteGenres">{{ genreList.find(item => item.id === genre).name }}</p>
+                    <p class="blog-info-tags" v-for="genre in blogAdmin.blogInfo.favoriteGenres">
+                        {{ genreList.find(item => item.id === genre).name }}
+                    </p>
                 </div>
             </div>
         </div> <!-- #sideBlogInfoContainer -->
@@ -172,7 +174,7 @@
     };
 
     onMounted(() => {
-        getUserProfile();
+        // getUserProfile();
     });
 
     // 팔로우 기능

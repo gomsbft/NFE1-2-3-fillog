@@ -16,7 +16,7 @@
                             <div class="latest-article-text">
                                 <p class="latest-article-title">{{ article.title }}</p>
 
-                                <UserNameTag :user-id="article.author.userId" />
+                                <UserNameTag :user-id="article.author" />
                             </div>
                         </RouterLink>
                     </swiper-slide>
