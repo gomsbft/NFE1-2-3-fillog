@@ -13,7 +13,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, computed } from 'vue';
+    import { ref } from 'vue';
     import { getTotalPosts, movieCategories } from '../utilities/dataQueries';
 
     const postData = ref(await getTotalPosts());
