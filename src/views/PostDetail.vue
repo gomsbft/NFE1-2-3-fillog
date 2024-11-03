@@ -25,7 +25,7 @@
         <div id="postImageSlider" class="no-images" v-else></div> <!-- #postImageSlider - 이미지가 없을 때 -->
 
         <div id="postInformations">
-            <p class="article-info-category">{{ movieCategory[thisArticle.category] }}</p>
+            <p class="article-info-category">{{ articleCategory[thisArticle.category] }}</p>
 
             <h1 id="postTitle">{{ thisArticle.title }}</h1> <!-- postTitle -->
 
@@ -34,7 +34,7 @@
 
                 <span>·</span>
 
-                <p class="article-info-date">{{ new Date(thisArticle.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</p>
+                <p class="article-info-date">{{ dateFormat(thisArticle.createdAt) }}</p>
 
                 <span>·</span>
 
@@ -82,7 +82,7 @@
             </button>
 
             <!-- 이 버튼들은 자기가 쓴 게시물에만 표시 -->
-            <button type="button" class="button-post-controls" title="수정" style="--button-icon-color: var(--clr-info)" @click="editArticle(thisArticle._id)">
+            <button type="button" class="button-post-controls" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle._id }`)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
                 </svg>
@@ -164,70 +164,23 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, onMounted, computed, reactive } from 'vue';
+    import { ref, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
+    import { getPostInfo } from '../utilities/dataQueries';
+    import dateFormat from '../utilities/dateFormat';
     import axios from 'axios';
     import movieCategory from '../datas/movieCategory.json';
+    import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
     import ArticleReply from '../components/ArticleReply.vue';
 
     const router = useRouter();
     const route = useRoute();
-    const thisArticle = ref(null);
-
-    const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
-
+    const thisArticle = await getPostInfo(route.params.postID);
     const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
-    const commentText = ref('');
     const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
-
-    const findArticle = async () => {
-        const postID = route.params.postID;
-
-        try {
-            const response = await axios.get(`http://localhost:3000/posts/${postID}`);
-            //   console.log('마운트시 응답 데이터 :',response.data)
-            thisArticle.value = response.data;
-            console.log('thisArticle:',thisArticle);
-
-            if (response && response.data) {
-                Object.assign(ArticleInDB, response.data);
-                console.log('ArticleInDB:', ArticleInDB);
-            }
-
-        } catch(error) {
-            console.error(error);
-        }
-    }
-
-    // 게시물 수정
-    const editArticle = () => {
-        const postID = route.params.postID;
-
-        router.push(`/posts/edit/${ postID }`);
-    };
-
-    // 게시물 삭제
-    const deleteArticle = async () => {
-        const postID = route.params.postID;
-        const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
-
-        if (confirmDel) {
-            try {
-                await axios.delete(`http://localhost:3000/posts/${postID}`);
-
-                alert('게시물이 삭제되었습니다.');
-                router.push('/posts');
-            } catch(error) {
-                alert('게시물 삭제에 실패했습니다.');
-                console.error(error);
-            }
-        }
-    }
-
-    onMounted(() => {
-        findArticle();
-    });
+    const commentText = ref('');
+    const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
 
     const swiperParams = {
         slidesPerView: 1,
@@ -246,13 +199,31 @@
         }
     }
 
+    // 게시물 삭제
+    const deleteArticle = async () => {
+        const postID = route.params.postID;
+        const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
+
+        if (confirmDel) {
+            try {
+                await axios.delete(`http://localhost:3000/posts/${ postID }`);
+
+                alert('게시물이 삭제되었습니다.');
+                router.push('/posts');
+            } catch(error) {
+                alert('게시물 삭제에 실패했습니다.');
+                console.error(error);
+            }
+        }
+    }
+
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
         const postId = thisArticle.value._id;  // 포스트를 작성한 유저 id
         const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
 
         try {
-            const response = await axios.post(`http://localhost:3000/posts/${postId}/like`, { userId });
+            const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
 
             if (response.data.message === '좋아요 추가 성공') {
                 // 좋아요 추가된 경우
@@ -286,8 +257,8 @@
             id: Math.floor(Math.random() * 1000000), // 임시 데이터
             userId: 1, // 임시 데이터, 유저 id로 변경 예정
             commentText: commentText.value,
-            date: new Date().toLocaleDateString(),
-            time: new Date().toLocaleTimeString(),
+            date: new Date(),
+            time: new Date()
         });
 
         commentText.value = '';

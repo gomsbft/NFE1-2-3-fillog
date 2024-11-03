@@ -15,7 +15,7 @@
                 </p>
 
                 <p class="guest-written-date">
-                    {{ new Date(guestObject.writtenDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+                    {{ dateFormat(guestObject.writtenDate) }}
                 </p>
             </div>
 
@@ -26,7 +26,7 @@
             <div class="guestbook-reply-input" :class="setReplyStatus ? 'show' : null">
                 <textarea :id="`txtReplyTo${ guestObject.id }`" rows="5" :placeholder="isUser ? '답글 입력...' : '먼저 로그인해 주세요.'" :disabled="!isUser"></textarea>
 
-                <button type="button" class="button-guestbook-reply" title="답글 입력 완료">
+                <button type="button" class="button-guestbook-reply" title="답글 입력 완료" :disabled="!isUser" @click="guestReplyHandler()">
                     <span>입력완료</span>
                 </button>
             </div>
@@ -60,6 +60,8 @@
 
 <script setup>
     import { ref } from 'vue';
+    import router from '../router';
+    import dateFormat from '../utilities/dateFormat';
     import userData from '../datas/userData.json';
 
     const props = defineProps([ 'guestObject' ]);
@@ -67,4 +69,10 @@
     const setReplyStatus = ref(false);
     const isUser = false; // 임시 로그인 사용자
     const thisUser = userData.find(user => user.id === parseInt(props.guestObject.writtenUser.userID));
+
+    const guestReplyHandler = () => {
+        if (isUser === false) router.push('/login');
+
+        console.log('답글 작성');
+    }
 </script> <!-- Logic Ends -->

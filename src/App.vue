@@ -1,7 +1,7 @@
 <template>
     <Suspense>
         <BasicLayout>
-            <RouterView />
+            <RouterView :key="$route.fullPath" />
         </BasicLayout>
     </Suspense>
 </template> <!-- Template Ends -->

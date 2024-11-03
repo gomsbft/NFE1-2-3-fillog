@@ -133,6 +133,14 @@
                 }
             }, 250);
         });
+
+        window.addEventListener('click', (e) => {
+            if (mobileBurgerActive.value === true) {
+                if (!e.target.classList.contains('on') || !e.target.id === 'btnBurger')
+
+                mobileBurgerActive.value = false;
+            }
+        });
     });
 
     function setLocalTheme(e) {

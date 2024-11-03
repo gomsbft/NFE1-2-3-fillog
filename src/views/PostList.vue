@@ -13,7 +13,7 @@
 
             <select name="list-category" id="lstCategory" v-model="selectedCategory">
                 <option value="all">전체</option>
-                <option v-for="(category, value) in movieCategory" :key="value" :value="value">{{ category }}</option>
+                <option v-for="(category, value) in articleCategory" :key="value" :value="value">{{ category }}</option>
             </select>
 
             <div id="totalSearchContainer">
@@ -35,20 +35,9 @@
 
 <script setup>
     import { ref, computed } from 'vue';
-    import axios from 'axios';
-    import movieCategory from '../datas/movieCategory.json';
-
-    const postDatas = async() => {
-        try {
-            const response = await axios.get('http://localhost:3000/posts');
-            console.log(response.data)
-            return response.data;
-        } catch(error) {
-            console.error(error);
-        }
-    };
-
-    const postData = ref(await postDatas());
+    import { getTotalPosts } from '../utilities/dataQueries';
+    import articleCategory from '../datas/articleCategory.json';
+    const postData = ref(await getTotalPosts());
     const searchKeyword = ref('');
     const selectedCategory = ref('all');
 
