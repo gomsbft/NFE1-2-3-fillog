@@ -43,10 +43,6 @@
 
     const postData = await getTotalPosts();
 
-    // if (!log.logins) { // 홈 화면 리디렉션하지 말아주세요... 로그인 해야만 볼 수 있는 블로그는 없잖아요
-    //     router.push('/login');
-    // }
-
     postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const latestPosts = postData.slice(0, 5); // 가장 최근 글
