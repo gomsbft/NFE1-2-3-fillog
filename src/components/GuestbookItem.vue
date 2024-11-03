@@ -15,7 +15,7 @@
                 </p>
 
                 <p class="guest-written-date">
-                    {{ dateFormat(guestObject.writtenDate) }}
+                    {{ dateFormat(guestObject.createdAt) }}
                 </p>
             </div>
 
