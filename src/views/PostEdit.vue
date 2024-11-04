@@ -19,11 +19,11 @@
     </div>
     <div class="btns">
       <div class="file_box">
-          <label for="file">
-              <div class="file_upload">이미지 업로드</div>
-          </label>
-          <span> * 최대 3장까지 가능합니다.</span>
-          <input type="file" name="file" id="file" @change="addPhoto" />
+        <label for="file">
+          <div class="file_upload">이미지 업로드</div>
+        </label>
+        <span> * 최대 3장까지 가능합니다.</span>
+        <input type="file" name="file" id="file" @change="addPhoto" />
       </div>
       <button class="edit_btn" @click="editPost">수정 완료</button>
     </div>
@@ -108,5 +108,5 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-    @import 'src/assets/stylesheets/views/_postEdit.scss';
+  @import 'src/assets/stylesheets/views/_postEdit.scss';
 </style> <!-- Stylesheet Ends -->
