@@ -16,7 +16,7 @@
                             <div class="latest-article-text">
                                 <p class="latest-article-title">{{ article.title }}</p>
 
-                                <UserNameTag :user-id="article.author.userId" />
+                                <UserNameTag :user-id="article.author" />
                             </div>
                         </RouterLink>
                     </swiper-slide>
@@ -42,10 +42,6 @@
     import { getTotalPosts } from '../utilities/dataQueries';
 
     const postData = await getTotalPosts();
-
-    // if (!log.logins) { // 홈 화면 리디렉션하지 말아주세요... 로그인 해야만 볼 수 있는 블로그는 없잖아요
-    //     router.push('/login');
-    // }
 
     postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 

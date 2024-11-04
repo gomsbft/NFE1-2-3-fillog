@@ -2983,6 +2983,15 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   font-weight: 900;
 }
 
+.article-item-info-likes {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.article-item-info-likes > .remix {
+  width: 0.6rem;
+}
+
 .article-item-text-summary {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -3328,6 +3337,42 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 .reply-info-container > span {
   font-weight: 900;
   opacity: 0.5;
+}
+
+.reply-user-tag {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.reply-user-tag > .reply-user-image {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  aspect-ratio: 1/1;
+  border-radius: 25rem;
+  background-color: rgb(128, 128, 128);
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.reply-user-tag > .reply-user-image > .remix {
+  position: absolute;
+  inset: 0;
+  margin-block: auto -0.1rem;
+  margin-inline: auto;
+  width: 90%;
+  color: rgba(255, 255, 255, 0.5);
+}
+.reply-user-tag > .reply-user-name::after {
+  opacity: 0.75;
+  content: " 님";
+}
+.reply-user-tag > .reply-user-name > span {
+  font-weight: 700;
 }
 
 .reply-date {

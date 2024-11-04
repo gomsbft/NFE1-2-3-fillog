@@ -30,7 +30,7 @@
             <h1 id="postTitle">{{ thisArticle.title }}</h1> <!-- postTitle -->
 
             <div id="postSummaries">
-                <!-- <UserNameTag :user-id="thisArticle.author.userId" /> -->
+                <UserNameTag :user-id="thisArticle.author" />
 
                 <span>·</span>
 
@@ -38,7 +38,7 @@
 
                 <span>·</span>
 
-                <p class="article-info-time">{{ thisArticle.time }}</p>
+                <p class="article-info-time">{{ new Date(thisArticle.createdAt).getHours() + new Date(thisArticle.createdAt).getMinutes() }}</p>
 
                 <span>·</span>
 
@@ -123,7 +123,7 @@
             </div> <!-- #repliesContainer - 댓글이 없을 때 -->
 
             <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(commentItem, index) in thisArticle.comments" :key="index" :reply-object="commentItem" />
+                <ArticleReply v-for="(commentID, index) in thisArticle.comments" :key="index" :reply-id="commentID" />
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
@@ -169,7 +169,6 @@
     import { getPostInfo } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import axios from 'axios';
-    import movieCategory from '../datas/movieCategory.json';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
     import ArticleReply from '../components/ArticleReply.vue';

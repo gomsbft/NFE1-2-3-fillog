@@ -102,6 +102,16 @@
     }
 }
 
+.article-item-info-likes {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+
+    > .remix {
+        width: .6rem;
+    }
+}
+
 .article-item-text-summary {
     display: -webkit-box;
     -webkit-box-orient: vertical;

@@ -1,23 +1,35 @@
 <template>
     <div class="reply-item">
         <div class="reply-info-container">
-            <UserNameTag :user-id="props.replyObject.userId" />
+            <UserNameTag v-if="thisReply.userID" :user-id="thisReply.userID" />
+
+            <div class="reply-user-tag" v-else>
+                <div class="reply-user-image">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-fill"></use>
+                    </svg>
+                </div>
+
+                <p class="reply-user-name">
+                    <span>{{ thisUser.userName }}</span>
+                </p>
+            </div>
 
             <span>·</span>
 
             <p class="reply-date">
-                {{ new Date(props.replyObject.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+                {{ dateFormat(thisReply.createdAt) }}
             </p>
         </div>
 
         <div class="reply-outer-container">
             <div class="reply-inner-container">
                 <p class="reply-text">
-                    {{ props.replyObject.commentText }}
+                    {{ thisReply.replyText }}
                 </p>
 
                 <div class="reply-controls">
-                    <button @click="console.log(props.replyObject.id)">댓글 ID 확인 (임시)</button>
+                    <button @click="console.log(thisReply._id)">댓글 ID 확인 (임시)</button>
                 </div>
             </div>
         </div>
@@ -25,9 +37,10 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    const props = defineProps([ 'replyObject' ]);
+    import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
+    import dateFormat from '../utilities/dateFormat';
+
+    const props = defineProps([ 'replyId' ]);
+    const thisReply = await getArticleReplies(props.replyId);
+    const thisUser = await getUserInfo(thisReply.userID);
 </script> <!-- Logic Ends -->
-
-<style lang="scss" scoped>
-
-</style> <!-- Stylesheet Ends -->

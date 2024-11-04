@@ -31,6 +31,16 @@
                 <RouterLink :to="`/posts/${ thisArticle._id }`">
                     {{ dateFormat(thisArticle.createdAt) }}
                 </RouterLink>
+
+                <span>·</span>
+
+                <RouterLink class="article-item-info-likes" :to="`/posts/${ thisArticle._id }`">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
+                    </svg>
+
+                    {{ thisArticle.likes.length.toLocaleString('ko-KR') }}
+                </RouterLink>
             </dd>
 
             <dd class="article-item-text-summary">
@@ -45,7 +55,6 @@
 <script setup>
     import { RouterLink } from 'vue-router';
     import dateFormat from '../utilities/dateFormat';
-    import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 
     const props = defineProps([ 'postObject' ]);
