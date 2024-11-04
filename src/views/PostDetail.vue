@@ -38,7 +38,7 @@
 
                 <span>·</span>
 
-                <p class="article-info-time">{{ `${ new Date(thisArticle.createdAt).getHours().toString().padStart(2, '0') } : ${ new Date(thisArticle.createdAt).getMinutes().toString().padStart(2, '0') }` }}</p>
+                <p class="article-info-time">{{ hourFormat(thisArticle.createdAt) }}</p>
 
                 <span>·</span>
 
@@ -123,7 +123,9 @@
             </div> <!-- #repliesContainer - 댓글이 없을 때 -->
 
             <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(commentID, index) in thisArticle.comments" :key="index" :reply-id="commentID" />
+                <ArticleReply v-for="(commentID, index) in thisArticle.comments" :key="index" :reply-id="commentID">
+                    <ArticleReply v-for="(reReplies, index) in thisArticle.comments" :key="index" :reply-id="reReplies" />
+                </ArticleReply>
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
@@ -165,9 +167,10 @@
 <script setup>
     import { ref, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
-    import { getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
-    import dateFormat from '../utilities/dateFormat';
     import axios from 'axios';
+    import { getPostInfo, getArticleRepliesAll, getReplyReplies } from '../utilities/dataQueries';
+    import dateFormat from '../utilities/dateFormat';
+    import hourFormat from '../utilities/hourFormat';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
 

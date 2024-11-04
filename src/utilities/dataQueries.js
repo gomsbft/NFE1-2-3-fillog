@@ -165,9 +165,9 @@ export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓
     }
 }
 
-export const getReplyReplies = async (reReplyID) => { // 대댓글 가져오기
+export const getReplyReplies = async (replyID) => { // 대댓글 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/re-replies/${ reReplyID }`);
+        const { data: response } = await baseAPI.get(`/re-replies/${ replyID }`);
 
         return response;
     } catch(error) {
@@ -202,6 +202,20 @@ export const getGuestbookInfo = async (guestbookID) => { // 개별 방명록 글
         const { data: response } = await baseAPI.get(`/guestbooks/${ guestbookID }`);
 
         return response;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const deleteGuestbook = async (guestbookID) => { // 방명록 글 삭제
+    const areYouSure = confirm('이 방명록 글을 삭제하시겠어요?');
+
+    if (!areYouSure) return;
+
+    try {
+        await baseAPI.delete(`/guestbooks/${ guestbookID }`);
+
+        alert('방명록 삭제 완료');
     } catch(error) {
         console.error(error);
     }

@@ -3582,9 +3582,17 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   content: "";
 }
 
+.reply-inner-container {
+  flex: 1;
+}
+
 .reply-text {
   font-size: var(--fnt-lg);
   line-height: 1.8;
+}
+
+.reply-reply-container {
+  margin-block-start: 0.4rem;
 }
 
 .reply-controls {
@@ -3849,6 +3857,9 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 .guestbook-reply-date {
   font-size: var(--fnt-sm);
   opacity: 0.5;
+}
+.guestbook-reply-date > span {
+  font-weight: 900;
 }
 
 .guestbook-reply-text {

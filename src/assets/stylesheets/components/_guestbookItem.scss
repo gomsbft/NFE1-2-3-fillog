@@ -124,6 +124,10 @@
 .guestbook-reply-date {
     font-size: var(--fnt-sm);
     opacity: .5;
+
+    > span {
+        font-weight: 900;
+    }
 }
 
 .guestbook-reply-text {

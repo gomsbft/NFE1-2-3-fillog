@@ -7,6 +7,10 @@
 
             <p class="guestbook-reply-date">
                 {{ dateFormat(replyObject?.createdAt) }}
+
+                <span>·</span>
+
+                {{ hourFormat(replyObject?.createdAt) }}
             </p>
         </div>
 
@@ -24,6 +28,7 @@
 
 <script setup>
     import dateFormat from '../utilities/dateFormat';
+    import hourFormat from '../utilities/hourFormat';
 
     const props = defineProps([ 'replyObject' ]);
 </script> <!-- Logic Ends -->
