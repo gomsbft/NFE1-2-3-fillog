@@ -6,7 +6,7 @@
             <span>·</span>
 
             <p class="guestbook-reply-date">
-                {{ dateFormat(replyObject.replyDate) }}
+                {{ dateFormat(replyObject.createdAt) }}
             </p>
         </div>
 

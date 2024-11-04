@@ -21,8 +21,10 @@ export const getTotalUsers = async () => { // 전체 사용자 가져오기
 }
 
 export const getUserInfo = async (userID) => { // 개별 사용자 정보 가져오기
+    if (!!userID === false) return console.warn('dataQueries / getUserInfo Error : 사용자 ID 형식이 잘못되었거나 존재하지 않는 ID입니다.');
+
     try {
-        const { data: response } = await baseAPI.get('/user-info', userID);
+        const { data: response } = await baseAPI.get(`/user-info/${ userID }`);
 
         return response;
     } catch(error) {
@@ -136,6 +138,26 @@ export const searchMovies = async (searchQuery) => { // 영화 정보 검색
             },
             responseType: 'json'
         });
+
+        return response;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓글 가져오기
+    try {
+        const { data: response } = await baseAPI.get(`/replies/${ replyID }`);
+
+        return response;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const getReplyReplies = async (reReplyID) => { // 대댓글 가져오기
+    try {
+        const { data: response } = await baseAPI.get(`/re-replies/${ reReplyID }`);
 
         return response;
     } catch(error) {
