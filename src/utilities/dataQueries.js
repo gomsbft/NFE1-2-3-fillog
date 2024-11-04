@@ -1,6 +1,6 @@
 import baseAPI from './apiDefault';
 
-export const login = async (userObject) => { // 로그인
+export const login = async (userObject) => { // 로그인 - 미완성
     try {
         const { data: response } = await baseAPI.post('/login', userObject);
 

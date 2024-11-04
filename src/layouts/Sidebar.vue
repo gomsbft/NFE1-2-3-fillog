@@ -113,33 +113,26 @@
     import dateFormat from '../utilities/dateFormat';
     import articleCategory from '../datas/articleCategory.json';
 
+    const router = useRouter();
     const isAdmin = ref(false); // 사용자 권한 체크
     const didIFollowed = ref(true); // 임시 팔로우 정보
-    const blogAdmin = ref({ // 블로그 기본값
-        adminID: null,
-        adminName: '블로그 주인'
-    });
+    const blogAdmin = ref(await getAdminInfo()); // 블로그 관리자 정보 가져오기
+    const postData = ref(await getTotalPosts()); // 최근 게시물 출력을 위한 게시물 가져오기
+    const genreList = await movieCategories(); // 선호 장르 태그 출력을 위한 영화 장르 목록 가져오기
 
-    const router = useRouter();
     const thisUser = ref({ // 현재 사용자 기본값
         userId: null,
         userImage: '',
         userName: '사용자명'
     });
 
-    const adminFromDB = await getAdminInfo();
-    const postData = ref(await getTotalPosts());
-    const genreList = await movieCategories();
-
-    postData.value.map(async item => { // 각 포스트의 댓글 갯수 가져오기
+    postData.value.map(async item => { // 각 포스트의 전체 댓글 갯수 가져오기
         const replies = await getArticleRepliesAll(item._id);
 
         item.comments = replies;
 
         return item;
     });
-
-    if (adminFromDB?.adminID) blogAdmin.value = adminFromDB;
 
     const log = userLogin();
 
