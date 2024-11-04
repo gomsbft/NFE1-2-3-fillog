@@ -93,12 +93,16 @@
 }
 
 .reply-inner-container {
-
+    flex: 1;
 }
 
 .reply-text {
     font-size: var(--fnt-lg);
     line-height: 1.8;
+}
+
+.reply-reply-container {
+    margin-block-start: .4rem;
 }
 
 .reply-controls {
