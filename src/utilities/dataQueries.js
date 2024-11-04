@@ -165,16 +165,6 @@ export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓
     }
 }
 
-export const getReplyReplies = async (replyID) => { // 대댓글 가져오기
-    try {
-        const { data: response } = await baseAPI.get(`/re-replies/${ replyID }`);
-
-        return response;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
 export const writeGuestbook = async (guestbookObj, forwardFunction) => { // 방명록 작성
     try {
         const response = await baseAPI.post('/guestbooks/write', guestbookObj);

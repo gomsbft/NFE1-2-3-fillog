@@ -177,8 +177,8 @@
     const router = useRouter();
     const route = useRoute();
     const thisArticle = await getPostInfo(route.params.postID);
-    const totalReplies = await getArticleRepliesAll(thisArticle._id);
-    const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article');
+    const totalReplies = await getArticleRepliesAll(thisArticle._id); // 해당 게시물을 target으로 하는 모든 댓글 가져오기
+    const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article'); // 해당 게시물 자체에 달린 댓글을 우선 출력하는 배열
     const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
     const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
     const commentText = ref('');
