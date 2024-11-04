@@ -15,8 +15,12 @@
                 <input type="password" id="txtLoginPassword" class="exclude" placeholder="비밀번호 입력..." v-model="loginFormData.userPassword">
             </div>
 
-            <div id="labelLoginResult" :class="responseMessage.result ? 'success' : 'failed'">
-                {{ responseMessage.message }}
+            <div id="labelLoginResult" v-if="responseMessage.message" :class="responseMessage.result ? 'success' : 'failed'">
+                <svg class="remix">
+                    <use :xlink:href="`/miscs/remixicon.symbol.svg#ri-${ responseMessage.result ? 'information-fill' : 'error-warning-fill' }`"></use>
+                </svg>
+
+                <span>{{ responseMessage.message }}</span>
             </div> <!-- #labelLoginResult -->
 
             <div id="loginButtonContainer">
@@ -24,8 +28,8 @@
                 <ButtonWithIcon @click="router.push('/register')">회원가입</ButtonWithIcon>
             </div> <!-- #loginButtonContainer -->
         </div> <!-- #loginInputContainer -->
-    </form>
-</template>
+    </form> <!-- #frmLogin -->
+</template> <!-- Template Ends -->
 
 <script setup>
     import { ref } from 'vue';
@@ -35,17 +39,14 @@
 
     const router = useRouter();
     const log = userLogin();
-
-    const loginFormData = ref({
+    const responseMessage = ref(''); // 로그인 결과 메시지
+    const loginFormData = ref({ // 로그인 객체
         userAccount: '',
         userPassword: ''
     });
 
-    const responseMessage = ref('');
-
     const login = async () => {
         try {
-            // JSON 형식으로 전송
             const response = await axios.post('http://localhost:3000/login', loginFormData.value);
 
             // 성공 시 처리 (예: 토큰 저장)
@@ -60,4 +61,4 @@
             responseMessage.value = { result: false, message: error.response?.data?.message || '로그인 중 오류가 발생했습니다.' };
         }
     }
-</script>
+</script> <!-- Logic Ends -->

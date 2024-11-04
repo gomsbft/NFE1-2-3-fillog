@@ -1606,13 +1606,22 @@ a, a:visited {
 }
 
 #labelLoginResult {
-  text-align: center;
-  font-size: var(--fnt-lg);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  padding-block: 1.2rem;
+  border-radius: 0.8rem;
+  font-size: var(--fnt-sm);
+  font-weight: 700;
 }
 #labelLoginResult.success {
+  background-color: rgb(var(--clr-clear)/0.15);
   color: rgb(var(--clr-clear));
 }
 #labelLoginResult.failed {
+  background-color: rgb(var(--clr-alert)/0.15);
   color: rgb(var(--clr-alert));
 }
 
