@@ -40,6 +40,7 @@
     import { ref } from 'vue';
     import { movieCategories, searchMovies } from '../../utilities/dataQueries';
 
+    const emits = defineEmits([ 'sendMovieObject' ]);
     const genreList = await movieCategories();
     const movieArray = ref([]);
     const selectedMovie = ref({});

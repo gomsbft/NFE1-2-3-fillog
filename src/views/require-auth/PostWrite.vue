@@ -12,7 +12,7 @@
             </div>
 
             <div class="row-section-container">
-                <select name="category" id="slctCategory" class="exclude write-form-inputs" v-model="selectedCategory">
+                <select name="category" id="slctCategory" class="exclude write-form-inputs" v-model="postFormData.category">
                     <option value="" disabled>카테고리 선택</option>
 
                     <option v-for="(category, value) in articleCategory" :key="value" :value="value">
@@ -32,7 +32,7 @@
             </div>
 
             <div class="row-section-container">
-                <input type="text" name="title" id="txtArticleTitle" class="exclude write-form-inputs" placeholder="포스트 제목" v-model="title">
+                <input type="text" name="title" id="txtArticleTitle" class="exclude write-form-inputs" placeholder="포스트 제목" v-model="postFormData.title">
             </div>
         </section> <!-- #writeTitleArea -->
 
@@ -46,7 +46,7 @@
             </div>
 
             <div class="row-section-container">
-                <textarea name="content" id="txtArticleContent" class="exclude" placeholder="포스트 내용 입력..." v-model="content"></textarea>
+                <textarea name="content" id="txtArticleContent" class="exclude" placeholder="포스트 내용 입력..." v-model="postFormData.text"></textarea>
             </div>
         </section> <!-- #writeTextArea -->
 
@@ -61,7 +61,7 @@
 
             <div class="row-section-container">
                 <div class="write-file-upload-container">
-                    <ButtonWithIcon element-id="btnUploadImages" icon-position="front" icon-name="image-add-line" tool-tip="이미지 업로드" :disabled="previewImage.length === 3" @click="fileUploader.click()">
+                    <ButtonWithIcon element-id="btnUploadImages" icon-position="front" icon-name="image-add-line" tool-tip="이미지 업로드" :disabled="postFormData.images.length === 3" @click="fileUploader.click()">
                         이미지 추가
                     </ButtonWithIcon>
 
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="write-file-preview-container">
-                    <div class="write-preview-image-container" v-for="(img, index) in previewImage" :key="index">
+                    <div class="write-preview-image-container" v-for="(img, index) in postFormData.images" :key="index">
                         <img class="write-preview-image" :src="img" />
 
                         <div class="write-preview-image-overlay">
@@ -113,13 +113,17 @@
 
     const router = useRouter();
     const fileUploader = useTemplateRef('file-uploader'); // input:file 이벤트 추가를 위한 템플릿 레퍼런스
-    const selectedCategory = ref('');
-    const title = ref();
-    const content = ref();
-    const previewImage = ref([]);
+    const postFormData = ref({
+        title: '',
+        category: 0,
+        movieID: null,
+        text: '',
+        images: [],
+        author: '671ae48150f0899c1d43f17c'
+    });
 
     const changeImage = (e) => {
-        if (previewImage.value.length >= 3) {
+        if (postFormData.value.images.length >= 3) {
             alert('이미지는 최대 3장까지 업로드 가능합니다.');
 
             return;
@@ -134,23 +138,15 @@
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            previewImage.value.push(e.target.result);
+            postFormData.value.images.push(e.target.result);
         }
 
         reader.readAsDataURL(file);
     }
 
     const submitPost = async () => {
-        const postData = {
-            title: title.value,
-            text: content.value,
-            category: selectedCategory.value,
-            images: previewImage.value,
-            author: "671ae48150f0899c1d43f17c" // 임시 값
-        };
-
         try {
-            const response = await axios.post('http://localhost:3000/post', postData);
+            const response = await axios.post('http://localhost:3000/post', postFormData.value);
 
             alert('게시글이 등록되었습니다.');
             router.push('/posts');

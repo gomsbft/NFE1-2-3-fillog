@@ -145,6 +145,16 @@ export const searchMovies = async (searchQuery) => { // 영화 정보 검색
     }
 }
 
+export const getArticleRepliesAll = async (articleID) => { // 포스트에 해당되는 전체 댓글 가져오기
+    try {
+        const { data: response } = await baseAPI.get(`/replies/post/${ articleID }`);
+
+        return response;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
 export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓글 가져오기
     try {
         const { data: response } = await baseAPI.get(`/replies/${ replyID }`);
@@ -155,9 +165,9 @@ export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓
     }
 }
 
-export const getReplyReplies = async (reReplyID) => { // 대댓글 가져오기
+export const getReplyReplies = async (replyID) => { // 대댓글 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/re-replies/${ reReplyID }`);
+        const { data: response } = await baseAPI.get(`/re-replies/${ replyID }`);
 
         return response;
     } catch(error) {
@@ -197,14 +207,38 @@ export const getGuestbookInfo = async (guestbookID) => { // 개별 방명록 글
     }
 }
 
-export const writeGuestbookReply = async (guestbookID, replyObject, forwardFunction) => {
+export const deleteGuestbook = async (guestbookID) => { // 방명록 글 삭제
+    const areYouSure = confirm('이 방명록 글을 삭제하시겠어요?');
+
+    if (!areYouSure) return;
+
+    try {
+        await baseAPI.delete(`/guestbooks/${ guestbookID }`);
+
+        alert('방명록 삭제 완료');
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const writeGuestbookReply = async (guestbookID, replyObject, forwardFunction) => { // 방명록 답글 작성
     try {
         const response = await baseAPI.post(`/guestbooks/reply/${ guestbookID }`, replyObject);
 
         if (response.status === 200) alert('답글 작성 완료');
     } catch(error) {
-        console.log(error);
+        console.error(error);
     } finally {
         forwardFunction;
+    }
+}
+
+export const getGuestbookReplies = async (guestbookID) => { // 방명록 글의 전체 답글 가져오기
+    try {
+        const { data: response } = await baseAPI.get(`/guestbooks/replies/${ guestbookID }`);
+
+        return response;
+    } catch(error) {
+        console.error(error);
     }
 }

@@ -18,7 +18,7 @@
                     </RouterLink>
                 </p>
 
-                <span>[{{ thisArticle.comments.length }}]</span>
+                <span>[{{ thisReplies.length }}]</span>
             </dt>
 
             <dd class="article-item-info">
@@ -54,9 +54,11 @@
 
 <script setup>
     import { RouterLink } from 'vue-router';
+    import { getArticleRepliesAll } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 
     const props = defineProps([ 'postObject' ]);
     const thisArticle = props.postObject;
+    const thisReplies = await getArticleRepliesAll(props.postObject._id);
 </script> <!-- Logic Ends -->
