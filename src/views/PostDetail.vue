@@ -158,9 +158,15 @@
             </div> <!-- #replyEditor -->
         </div> <!-- #postReplies -->
 
-        <div>
-            <button @click="router.go(-1)">뒤로</button>
-        </div>
+        <div id="postNavigation">
+            <button type="button" id="btnBackToList" @click="router.push('/posts')">
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-arrow-drop-left-line"></use>
+                </svg>
+
+                <span>뒤로</span>
+            </button>
+        </div> <!-- #postNavigation -->
     </article> <!-- #postDetail -->
 </template> <!-- Template Ends -->
 
@@ -221,7 +227,7 @@
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
-        const postId = thisArticle.value.id;  // 포스트를 작성한 유저 id
+        const postId = thisArticle.value._id;  // 포스트를 작성한 유저 id
         const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
 
         try {
@@ -252,15 +258,13 @@
 
         if (!!commentText.value === false) {
             commentText.value = '';
+
             return console.log('댓글 내용 없음');
         }
 
         thisArticle.value.comments.push({
-            id: Math.floor(Math.random() * 1000000), // 임시 데이터
             userId: 1, // 임시 데이터, 유저 id로 변경 예정
             commentText: commentText.value,
-            date: new Date(),
-            time: new Date()
         });
 
         commentText.value = '';

@@ -1,30 +1,34 @@
 <template>
-    <div class="container">
-        <h3>Login</h3>
+    <form id="frmLogin" @submit.prevent="login" class="loginForm">
+        <div class="section-title-bar">
+            로그인
+        </div>
 
-        <form @submit.prevent="login" class="loginForm">
-            <div>
-                <label for="account">account</label>
-                <input v-model="form.account" id="account" type="email" required>
+        <div id="loginInputContainer">
+            <div class="login-form-input-wrapper">
+                <label for="txtLoginAccount">사용자 계정</label>
+                <input type="email" id="txtLoginAccount" class="exclude" placeholder="example@email.com" v-model="loginFormData.userAccount">
             </div>
 
-            <div>
-                <label for="password">password</label>
-                <input v-model="form.password" id="password" type="password" required>
+            <div class="login-form-input-wrapper">
+                <label for="txtLoginPassword">비밀번호</label>
+                <input type="password" id="txtLoginPassword" class="exclude" placeholder="비밀번호 입력..." v-model="loginFormData.userPassword">
             </div>
 
-            <button type="submit" class="loginBtn">Login</button>
+            <div id="labelLoginResult" :class="responseMessage.result ? 'success' : 'failed'">
+                {{ responseMessage.message }}
+            </div> <!-- #labelLoginResult -->
 
-            <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-            <div v-if="successMessage" class="success">{{ successMessage }}</div>
-        </form>
-
-        <button class="joinBtn" @click="joinClick">Join</button>
-    </div>
+            <div id="loginButtonContainer">
+                <ButtonWithIcon type="submit">로그인</ButtonWithIcon>
+                <ButtonWithIcon @click="router.push('/register')">회원가입</ButtonWithIcon>
+            </div> <!-- #loginButtonContainer -->
+        </div> <!-- #loginInputContainer -->
+    </form>
 </template>
 
 <script setup>
-    import { reactive, ref } from 'vue';
+    import { ref } from 'vue';
     import { useRouter } from 'vue-router';
     import axios from 'axios';
     import { userLogin } from '../../stores/isLogin';
@@ -32,40 +36,28 @@
     const router = useRouter();
     const log = userLogin();
 
-    const form = reactive({
-        account: '',
-        password: '',
+    const loginFormData = ref({
+        userAccount: '',
+        userPassword: ''
     });
 
-    const errorMessage = ref('');
-    const successMessage = ref('');
-
-    const joinClick = () => {
-        router.push('/register');
-    }
+    const responseMessage = ref('');
 
     const login = async () => {
-        console.log(form);
-
         try {
             // JSON 형식으로 전송
-            const response = await axios.post('http://localhost:3000/login', {
-                account: form.account,
-                password: form.password
-            });
+            const response = await axios.post('http://localhost:3000/login', loginFormData.value);
 
             // 성공 시 처리 (예: 토큰 저장)
             const token = response.data.token;
 
             localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
-            successMessage.value = '로그인 성공!';
-            errorMessage.value = ''; // 에러 메시지 초기화
+            responseMessage.value = { result: true, message: '로그인 성공!' };
             log.setLoginTrue(); // 로그인 상태 true
             router.push('/');
-        } catch (err) {
+        } catch(error) {
             // 실패 시 에러 메시지 처리
-            errorMessage.value = err.response?.data?.message || '로그인 중 오류가 발생했습니다.';
-            successMessage.value = ''; // 성공 메시지 초기화
+            responseMessage.value = { result: false, message: error.response?.data?.message || '로그인 중 오류가 발생했습니다.' };
         }
     }
 </script>

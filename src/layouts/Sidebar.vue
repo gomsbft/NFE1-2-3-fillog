@@ -27,7 +27,7 @@
         </div> <!-- #sideBlogInfoContainer -->
 
         <div id="sideBlogControls">
-            <button type="button" class="buttons-blog-control" @click="userInfo">
+            <button type="button" class="buttons-blog-control" @click="router.push('/userinfo');">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-search-fill"></use>
                 </svg>
@@ -59,7 +59,7 @@
                 <span>블로그 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="isAdmin === true && log.logins === true" @click="$router.push('/posts/write')">
+            <button type="button" class="buttons-blog-control" v-if="isAdmin === true && log.logins === true" @click="router.push('/posts/write')">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
                 </svg>
@@ -127,10 +127,6 @@
         userName: '사용자명'
     });
 
-    const userInfo = () => {
-        router.push('/userinfo');
-    }
-
     const adminFromDB = await getAdminInfo();
     const postData = ref(await getTotalPosts());
     const genreList = await movieCategories();
@@ -186,7 +182,7 @@
     });
 
     // 팔로우 기능
-    const followFn = async() => {
+    const followFn = async () => {
         const url = didIFollowed.value
             ? `http://localhost:3000/users/${ blogOwner.adminId }/follow`
             : `http://localhost:3000/users/${ blogOwner.adminId }/unfollow`;

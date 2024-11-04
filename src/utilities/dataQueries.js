@@ -1,5 +1,15 @@
 import baseAPI from './apiDefault';
 
+export const login = async (userObject) => { // 로그인
+    try {
+        const { data: response } = await baseAPI.post('/login', userObject);
+
+        return response;
+    } catch(error) {
+        return error;
+    }
+}
+
 export const getAdminInfo = async () => { // 블로그 관리자 정보 가져오기
     try {
         const { data: response } = await baseAPI.get('/admin-info');

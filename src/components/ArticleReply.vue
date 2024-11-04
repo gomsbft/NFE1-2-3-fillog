@@ -36,8 +36,24 @@
                     <slot></slot>
                 </div>
 
-                <div class="reply-controls" v-if="thisReply.replyTarget.target === 'article'">
-                    <button @click="console.log(thisReply._id)">댓글 ID 확인 (임시 - 해당 ID를 기준으로 대댓글 작성)</button>
+                <div class="reply-controls">
+                    <button type="button" class="button-reply-controls" v-if="thisReply.replyTarget.target === 'article'" @click="console.log('지금 클릭한 댓글 :',thisReply._id)">
+                        <svg class="remix">
+                            <use xlink:href="/miscs/remixicon.symbol.svg#ri-chat-3-line"></use>
+                        </svg>
+
+                        <span>대댓글 작성</span>
+                    </button>
+
+                    <span v-if="thisReply.replyTarget.target === 'article'">·</span>
+
+                    <button type="button" class="button-reply-controls" @click="console.log('지금 삭제하려는 댓글 :', thisReply._id)">
+                        <svg class="remix">
+                            <use xlink:href="/miscs/remixicon.symbol.svg#ri-close-circle-fill"></use>
+                        </svg>
+
+                        <span>삭제</span>
+                    </button>
                 </div>
             </div>
         </div>

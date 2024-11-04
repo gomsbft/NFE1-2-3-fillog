@@ -8,15 +8,15 @@
             </button>
         </div>
 
-        <button class="floating-button">
+        <button type="button" class="floating-button">
             블로그 관리
         </button>
 
-        <button class="floating-button">
+        <button type="button" class="floating-button">
             글쓰기
         </button>
 
-        <button class="floating-button">
+        <button type="button" class="floating-button">
             글쓴이 정보
         </button>
     </aside> <!-- #floatButtonContainer -->

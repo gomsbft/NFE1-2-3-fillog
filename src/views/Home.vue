@@ -7,7 +7,7 @@
 
             <div id="heroSliderContainer">
                 <swiper-container id="heroSlider" v-bind="swiperParams">
-                    <swiper-slide class="hero-slide" v-for="article in latestPosts">
+                    <swiper-slide class="hero-slide" v-for="article in latestPosts" :key="article._id" :data-article-date="dateFormat(article.createdAt)">
                         <RouterLink :to="`posts/${ article._id }`">
                             <img class="latest-article-thumbnail" v-if="article.images.length > 0" :src="article.images[article.thumbIndex].imageURL" alt="포스트 미리보기 이미지">
 
@@ -40,6 +40,7 @@
 
 <script setup>
     import { getTotalPosts } from '../utilities/dataQueries';
+    import dateFormat from '../utilities/dateFormat';
 
     const postData = await getTotalPosts();
 
