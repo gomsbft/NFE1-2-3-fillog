@@ -18,7 +18,7 @@
 
                 <p>{{ blogAdmin.adminName }}</p>
 
-                <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo.favoriteGenres?.length > 0">
+                <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo && blogAdmin.blogInfo.favoriteGenres?.length > 0">
                     <p class="blog-info-tags" v-for="genre in blogAdmin.blogInfo.favoriteGenres">
                         {{ genreList.find(item => item.id === genre).name }}
                     </p>
@@ -94,7 +94,7 @@
                     <RouterLink class="latest-item-titlebar" :to="`/posts/${ article._id }`">
                         <p>{{ article.title }}</p>
 
-                        <span>[{{ article.comments.length.toLocaleString('ko-KR') }}]</span>
+                        <span>[{{ article.comments ? article.comments.length.toLocaleString('ko-KR') : 0 }}]</span>
                     </RouterLink>
 
                     <span class="latest-item-date">{{ dateFormat(article.createdAt) }}</span>

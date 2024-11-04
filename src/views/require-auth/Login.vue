@@ -28,9 +28,12 @@
     import { useRouter } from 'vue-router';
     import axios from 'axios';
     import { userLogin } from '../../stores/isLogin';
+    import { useUserStore } from '../../stores/userInfo';
 
-    const router = useRouter();
-    const log = userLogin();
+
+  const router = useRouter();
+  const log = userLogin();
+  const userStore = useUserStore();
 
     const form = reactive({
         account: '',
@@ -40,32 +43,33 @@
     const errorMessage = ref('');
     const successMessage = ref('');
 
-    const joinClick = () => {
-        router.push('/register');
+  const joinClick = () => {
+    router.push('/register'); 
+  }
+  
+  const login = async () => {
+    console.log(form);
+    try {
+      // JSON 형식으로 전송
+      const response = await axios.post('http://localhost:3000/login', {
+        account: form.account,
+        password: form.password
+      });
+      
+      // 성공 시 처리 (예: 토큰 저장)
+      const { token,userId } = response.data;
+      localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
+      successMessage.value = '로그인 성공!';
+      errorMessage.value = ''; // 에러 메시지 초기화
+
+      log.setLoginTrue(); // 로그인 상태 true
+      userStore.setUser({ account: form.account, userId  }); // 유저 이메일 스토어 저장
+      console.log("스토어에 저장된 유저정보: ",userStore.state)
+      router.push('/'); 
+    } catch (err) {
+      // 실패 시 에러 메시지 처리
+      errorMessage.value = err.response?.data?.message || '로그인 중 오류가 발생했습니다.';
+      successMessage.value = ''; // 성공 메시지 초기화
     }
-
-    const login = async () => {
-        console.log(form);
-
-        try {
-            // JSON 형식으로 전송
-            const response = await axios.post('http://localhost:3000/login', {
-                account: form.account,
-                password: form.password
-            });
-
-            // 성공 시 처리 (예: 토큰 저장)
-            const token = response.data.token;
-
-            localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
-            successMessage.value = '로그인 성공!';
-            errorMessage.value = ''; // 에러 메시지 초기화
-            log.setLoginTrue(); // 로그인 상태 true
-            router.push('/');
-        } catch (err) {
-            // 실패 시 에러 메시지 처리
-            errorMessage.value = err.response?.data?.message || '로그인 중 오류가 발생했습니다.';
-            successMessage.value = ''; // 성공 메시지 초기화
-        }
-    }
+  };
 </script>

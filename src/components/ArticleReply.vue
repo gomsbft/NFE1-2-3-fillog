@@ -25,7 +25,7 @@
         <div class="reply-outer-container">
             <div class="reply-inner-container">
                 <p class="reply-text">
-                    {{ thisReply.replyText }}
+                    {{ thisReply.commentText }}
                 </p>
 
                 <div class="reply-reply-container">
@@ -44,7 +44,11 @@
     import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
 
-    const props = defineProps([ 'replyId' ]);
-    const thisReply = await getArticleReplies(props.replyId);
+    const props = defineProps([ 'postId','replyId' ]);
+    const thisReply = await getArticleReplies(props.postId);
     const thisUser = await getUserInfo(thisReply.userID);
+    thisReply.forEach(async (reply) => {
+  const userInfo = await getUserInfo(reply.userId);
+  console.log('User Info:', userInfo); // 유저 정보가 제대로 출력되는지 확인
+});
 </script> <!-- Logic Ends -->

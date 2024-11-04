@@ -83,38 +83,20 @@
         userImage: null,
     });
 
-    let modalState = ref(false);
-    const previewImageUrl = ref(null);
-
-    // 토큰에서 로그인한 유저 이메일 추출하기
-    const findUserAccount = () => {
-        const token = window.localStorage.getItem("token");
-        // 토큰에서 payload 부분만 추출
-        const base64Payload = token.split('.')[1];
-        // base64 디코딩하여 JSON 객체로 변환
-        const userAccount = JSON.parse(atob(base64Payload)).account;
-        // tokenPayload.value = userAccount.account;
-        console.log('userAccount :',userAccount);
-        findUserInfo(userAccount);
-    }
-
-    // 추출한 이메일을 기반으로 DB에서 유저 정보 가져오기
-    const findUserInfo = async (userAccount) => {
-        try{
-            const postResponse = await axios.post(`http://localhost:3000/mypage`, { userAccount });
-
-            console.log('응답 데이터:',postResponse.data);
-            Object.assign(userInfo, postResponse.data);
-            console.log('userInfo: ', userInfo)
-        } catch(err) {
-            console.error(err);
-        }
-    }
+let modalState = ref(false);
+const previewImageUrl = ref(null);
 
     onMounted(()=>{
-        findUserAccount();
-    });
-
+        // 스토어에 값이 존재하지 않을 때
+        if (!userStore.state.account) {
+            console.error('유저 정보가 스토어에 없습니다.');
+            console.log("userStore.state.userID:", userStore.state.account)
+        }else {
+            Object.assign(userInfo, userStore.state);  // 스토어에 저장된 유저 정보를 사용
+            console.log('스토어에 있는 유저정보 사용: ' , userStore.state.account)
+        }
+    })
+ 
     // 프로필 관리 버튼 : 클릭시 정보 수정 모달창 열림
     const openModal = () =>{
         Object.assign(editUserInfo, {

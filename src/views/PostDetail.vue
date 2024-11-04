@@ -47,7 +47,7 @@
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
 
-                    <span>{{ displayLikes.toLocaleString('ko-KR') }}</span>
+                    <span>{{ displayLikes }}</span>
                 </p>
             </div> <!-- #postSummaries -->
         </div>  <!-- #postInformations -->
@@ -129,8 +129,8 @@
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
-                <div v-if="tempUserID" id="replyingUser">
-                    <UserNameTag />
+                <div v-if="userStore.state.account" id="replyingUser">
+                    <UserNameTag :userId="userStore.state.userId" />
                 </div> <!-- #replyingUser - 사용자가 로그인 된 상태일 때 -->
 
                 <div v-else id="replyingUser">
@@ -147,7 +147,7 @@
                 <div id="replyingInput">
                     <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
-                    <button type="button" id="btnSubmitReply">
+                    <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
                         <svg class="remix">
                             <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
                         </svg>
@@ -178,11 +178,15 @@
     const route = useRoute();
     const thisArticle = await getPostInfo(route.params.postID);
     const thisReplies = await getArticleRepliesAll(thisArticle._id);
-    const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
-    const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
+    const postData = reactive({
+        likes: [...thisArticle.likes], 
+        comments: [...thisArticle.comments], 
+    });
+    const displayLikes = computed(() => { return postData.likes.length.toLocaleString('ko-KR') });
     const commentText = ref('');
     const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
-
+    const userStore = useUserStore();  // userInfo 스토어 사용
+    console.log("postData.comments:", postData.comments)
     const swiperParams = {
         slidesPerView: 1,
         spaceBetween: 24,
@@ -220,24 +224,28 @@
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
-        const postId = thisArticle.value.id;  // 포스트를 작성한 유저 id
-        const userId = 123456; // 임시 데이터, 유저 id로 변경 예정
+        const postId = thisArticle.id;  
+        const userId = userStore.state.userId;// 로그인한 사용자의 ObjectId
+        console.log("userId: ",userId)
 
         try {
             const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
 
             if (response.data.message === '좋아요 추가 성공') {
                 // 좋아요 추가된 경우
-                ArticleInDB.likes.push(userId);
-                console.log('좋아요 목록 업데이트:', ArticleInDB.likes);
-            } else if (response.data.message === '좋아요 취소 성공') { // 좋아요 취소된 경우, ArticleInDB.likes 배열에서 유저 아이디 제거
-                const index = ArticleInDB.likes.indexOf(userId);
+                if (!postData.likes.includes(userId)) {
+                postData.likes.push(userId);
+                console.log('좋아요 목록 업데이트:', postData.likes);
+                }
+            } else if (response.data.message === '좋아요 취소 성공') { 
+                // 좋아요 취소된 경우, postData.likes 배열에서 유저 아이디 제거
+                const index = postData.likes.indexOf(userId);
 
                 if (index > -1) {
-                    ArticleInDB.likes.splice(index, 1);
+                    postData.likes.splice(index, 1);
                 }
 
-                console.log('좋아요 목록 업데이트(취소):', ArticleInDB.likes);
+                console.log('좋아요 목록 업데이트(취소):', thisArticle.likes);
             }
         } catch(error) {
             console.error('에러 발생', error.response ? error.response.data : error.message)
@@ -245,23 +253,45 @@
     }
 
     // 댓글 등록 버튼 클릭 시 핸들러
-    const commentBtnHandler = (e) => {
+    const commentBtnHandler = async (e) => {
         e.preventDefault();
-        console.log(thisArticle.value.comments);
+        const postObjId = thisArticle._id;
+        const postId = thisArticle.id;
+        console.log("postObjId: ",postObjId)
+        console.log("thisArticle.comments: ",thisArticle.comments);
 
-        if (!!commentText.value === false) {
+        if (!commentText.value) {
             commentText.value = '';
             return console.log('댓글 내용 없음');
         }
 
-        thisArticle.value.comments.push({
-            id: Math.floor(Math.random() * 1000000), // 임시 데이터
-            userId: 1, // 임시 데이터, 유저 id로 변경 예정
+        const newComment = {
+            userId: userStore.state.account, 
             commentText: commentText.value,
-            date: new Date(),
-            time: new Date()
-        });
+            date: new Date().toLocaleDateString(), // 현재 날짜
+            time: new Date().toLocaleTimeString(), // 현재 시간
+            postId: postId,
+        };
+        
+        try {
+            console.log(`이곳으로 댓글을 보냄: /posts/${postObjId}/comment`);
+            console.log('댓글 데이터:', newComment);
+            const response = await axios.post(`http://localhost:3000/posts/${postObjId}/comment`, newComment);
 
-        commentText.value = '';
+            // 서버 응답 처리
+            if (response.status === 200) {
+                console.log(response.data.message);
+                console.log('서버에서 받은 댓글:', response.data.comment);
+                postData.comments.push({...newComment}); 
+            } else {
+                console.error(response.data.message); 
+            }
+        } catch (error) {
+            console.error('댓글 등록 중 오류 발생:', error); 
+        } finally {
+            // 댓글 입력 필드 초기화
+            commentText.value = '';
+            console.log("postData.comments: ", postData.comments)
+        }
     }
 </script> <!-- Logic Ends -->
