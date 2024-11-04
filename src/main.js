@@ -26,6 +26,7 @@ import EmptyList from './components/commons/EmptyList.vue'; // 빈 목록 표시
 import CustomAlert from './components/CustomAlert.vue'; // 커스텀 얼럿
 import ImageViewer from './components/ImageViewer.vue'; // 슬라이더 이미지 뷰어
 import PostItem from './components/PostItem.vue' // 포스트 카드 아이템
+import ArticleReply from './components/ArticleReply.vue'; // 포스트 댓글 아이템
 import MovieItem from './components/MovieItem.vue'; // 영화 정보 카드 아이템
 import GuestbookItem from './components/GuestbookItem.vue'; // 방명록 글 아이템
 import GuestbookReplyItem from './components/GuestbookReplyItem.vue'; // 방명록 글의 답글 아이템
@@ -41,6 +42,7 @@ myProject.component('EmptyList', EmptyList);
 myProject.component('CustomAlert', CustomAlert);
 myProject.component('ImageViewer', ImageViewer);
 myProject.component('PostItem', PostItem);
+myProject.component('ArticleReply', ArticleReply);
 myProject.component('MovieItem', MovieItem);
 myProject.component('GuestbookItem', GuestbookItem);
 myProject.component('GuestbookReplyItem', GuestbookReplyItem);

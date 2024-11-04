@@ -108,7 +108,7 @@
     import { ref, onMounted, watch } from 'vue';
     import { useRouter, RouterLink } from 'vue-router';
     import axios from 'axios';
-    import { getAdminInfo, getTotalPosts, movieCategories } from '../utilities/dataQueries';
+    import { getAdminInfo, getTotalPosts, movieCategories, getArticleRepliesAll } from '../utilities/dataQueries';
     import { userLogin } from '../stores/isLogin';
     import dateFormat from '../utilities/dateFormat';
     import articleCategory from '../datas/articleCategory.json';
@@ -132,8 +132,16 @@
     }
 
     const adminFromDB = await getAdminInfo();
-    const postData = await getTotalPosts();
+    const postData = ref(await getTotalPosts());
     const genreList = await movieCategories();
+
+    postData.value.map(async item => { // 각 포스트의 댓글 갯수 가져오기
+        const replies = await getArticleRepliesAll(item._id);
+
+        item.comments = replies;
+
+        return item;
+    });
 
     if (adminFromDB?.adminID) blogAdmin.value = adminFromDB;
 
@@ -174,7 +182,7 @@
     };
 
     onMounted(() => {
-        // getUserProfile();
+        getUserProfile();
     });
 
     // 팔로우 기능

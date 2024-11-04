@@ -1563,6 +1563,191 @@ a, a:visited {
   color: #7BF4BC;
 }
 
+.section-title-bar {
+  margin-top: 2.5rem;
+}
+
+.imgContainer {
+  width: 10rem;
+  height: 10rem;
+  position: relative;
+  text-align: center;
+  display: flex;
+  margin: auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid red;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.infoList p:nth-child(1) {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.infoList p:nth-child(2) {
+  font-size: 1rem;
+}
+
+.infoContent {
+  align-self: center;
+  justify-content: center;
+}
+
+#editBtn {
+  justify-content: center;
+  align-self: center;
+  width: 100px;
+  border: 1px solid rgb(var(--clr-theme));
+  border-radius: 0.4rem;
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 5px;
+  transition: all 0.15s;
+  background-color: rgb(var(--clr-theme)/0.1);
+  color: rgb(var(--clr-tint-60));
+  font-weight: 700;
+}
+#editBtn:hover {
+  background-color: rgb(var(--clr-tint-60));
+  color: rgb(var(--clr-if-0));
+}
+#editBtn:active {
+  background-color: rgb(var(--clr-tint-0));
+}
+#editBtn:focus {
+  border-color: rgb(var(--clr-tint-100));
+}
+
+.modal-wrap {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 40%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-container {
+  width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.editInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+  color: #000;
+}
+
+.imgText {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+  margin-top: 70px;
+}
+
+.imgLabel {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.imgLabel:hover, .modal-btn button:hover {
+  background-color: #0056b3;
+}
+
+.imgInput {
+  display: none;
+}
+
+.imgView {
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.editInfoList label {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.editContent {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.modal-btn {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-btn button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.close-button {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s ease;
+}
+.close-button:hover {
+  color: #000;
+}
+
 /* _landingPage.scss */
 #landingPage {
   display: flex;
@@ -3397,9 +3582,17 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   content: "";
 }
 
+.reply-inner-container {
+  flex: 1;
+}
+
 .reply-text {
   font-size: var(--fnt-lg);
   line-height: 1.8;
+}
+
+.reply-reply-container {
+  margin-block-start: 0.4rem;
 }
 
 .reply-controls {
@@ -3603,6 +3796,9 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   font-size: var(--fnt-sm);
   opacity: 0.5;
 }
+.guest-written-date > span {
+  font-weight: 900;
+}
 
 .guestbook-content {
   margin-block-start: 0.4rem;
@@ -3661,6 +3857,9 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 .guestbook-reply-date {
   font-size: var(--fnt-sm);
   opacity: 0.5;
+}
+.guestbook-reply-date > span {
+  font-weight: 900;
 }
 
 .guestbook-reply-text {
