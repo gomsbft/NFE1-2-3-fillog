@@ -1,16 +1,16 @@
 <template>
     <li class="guestbook-reply-item">
         <div class="guestbook-reply-info">
-            <UserNameTag :user-id="replyObject.replyUserID" />
+            <UserNameTag :user-id="replyObject?.replyUserID" />
 
             <span>·</span>
 
             <p class="guestbook-reply-date">
-                {{ dateFormat(replyObject.createdAt) }}
+                {{ dateFormat(replyObject?.createdAt) }}
             </p>
         </div>
 
-        <p class="guestbook-reply-text">{{ replyObject.replyText }}</p>
+        <p class="guestbook-reply-text">{{ replyObject?.replyText ?? '(내용 없음)' }}</p>
 
         <button type="button" class="button-guestbook-controls" title="방명록 답글 삭제">
             <svg class="remix">

@@ -16,6 +16,10 @@
 
                 <p class="guest-written-date">
                     {{ dateFormat(guestObject.createdAt) }}
+
+                    <span>·</span>
+
+                    {{ `${ new Date(guestObject.createdAt).getHours().toString().padStart(2, '0') } : ${ new Date(guestObject.createdAt).getMinutes().toString().padStart(2, '0') }` }}
                 </p>
             </div>
 
@@ -51,8 +55,8 @@
                 </button>
             </div>
 
-            <ul v-if="guestObject.replies?.length > 0" class="guestbook-reply-container">
-                <slot></slot>
+            <ul class="guestbook-reply-container" v-if="guestObject.replies.length > 0">
+                <GuestbookReplyItem v-for="(replyObject, index) in thisReplies" :key="index" :reply-object="replyObject" />
             </ul>
         </div>
     </li>
@@ -60,15 +64,16 @@
 
 <script setup>
     import { ref } from 'vue';
-    import router from '../router';
-    import { getUserInfo } from '../utilities/dataQueries';
+    import { useRouter } from 'vue-router';
+    import { getUserInfo, getGuestbookReplies } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
 
+    const router = useRouter();
     const props = defineProps([ 'guestObject' ]);
-
     const setReplyStatus = ref(false);
     const isUser = false; // 임시 로그인 사용자
     const thisUser = await getUserInfo(props.guestObject.writtenUser.userID);
+    const thisReplies = props.guestObject.replies.length > 0 ? ref(await getGuestbookReplies(props.guestObject._id)) : null;
 
     const guestReplyHandler = () => {
         if (isUser === false) router.push('/login');

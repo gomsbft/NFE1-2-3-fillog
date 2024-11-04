@@ -38,7 +38,7 @@
 
                 <span>·</span>
 
-                <p class="article-info-time">{{ new Date(thisArticle.createdAt).getHours() + new Date(thisArticle.createdAt).getMinutes() }}</p>
+                <p class="article-info-time">{{ `${ new Date(thisArticle.createdAt).getHours().toString().padStart(2, '0') } : ${ new Date(thisArticle.createdAt).getMinutes().toString().padStart(2, '0') }` }}</p>
 
                 <span>·</span>
 
@@ -54,7 +54,7 @@
 
         <div id="articleText" v-dompurify-html="thisArticle.text"></div> <!-- #articleText -->
 
-        <MediaInfo :movie-id="thisArticle.movieID" />
+        <MediaInfo v-if="!!thisArticle.movieID === true" :movie-id="thisArticle.movieID" />
 
         <div id="postControls">
             <button type="button" class="button-post-controls" title="좋아요" style="--button-icon-color: var(--clr-alert);" @click="likeBtnHandler">
@@ -111,7 +111,7 @@
                     <span></span>
                 </div>
 
-                <p>댓글 <span>·</span> <span class="replies-counter">{{ thisArticle.comments.length.toLocaleString('ko-KR') }}</span></p>
+                <p>댓글 <span>·</span> <span class="replies-counter">{{ thisReplies.length.toLocaleString('ko-KR') }}</span></p>
             </div>
 
             <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
@@ -165,16 +165,16 @@
 <script setup>
     import { ref, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
-    import { getPostInfo } from '../utilities/dataQueries';
+    import { getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import axios from 'axios';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
-    import ArticleReply from '../components/ArticleReply.vue';
 
     const router = useRouter();
     const route = useRoute();
     const thisArticle = await getPostInfo(route.params.postID);
+    const thisReplies = await getArticleRepliesAll(thisArticle._id);
     const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
     const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
     const commentText = ref('');

@@ -28,8 +28,12 @@
                     {{ thisReply.replyText }}
                 </p>
 
+                <div class="reply-reply-container">
+                    <slot></slot>
+                </div>
+
                 <div class="reply-controls">
-                    <button @click="console.log(thisReply._id)">댓글 ID 확인 (임시)</button>
+                    <button @click="console.log(thisReply._id)">댓글 ID 확인 (임시 - 해당 ID를 기준으로 대댓글 작성)</button>
                 </div>
             </div>
         </div>
