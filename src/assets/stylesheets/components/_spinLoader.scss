@@ -29,4 +29,16 @@
     }
 }
 
+.dark {
+    #spinloader {
+        mix-blend-mode: screen;
+    }
+}
+
+.light {
+    #spinloader {
+        mix-blend-mode: overlay;
+    }
+}
+
 /* _spinLoader.scss */

@@ -19,6 +19,10 @@
 
             <p class="reply-date">
                 {{ dateFormat(thisReply.createdAt) }}
+
+                <span>·</span>
+
+                {{ hourFormat(thisReply.createdAt) }}
             </p>
         </div>
 
@@ -28,11 +32,11 @@
                     {{ thisReply.replyText }}
                 </p>
 
-                <div class="reply-reply-container">
+                <div class="reply-reply-container" v-if="thisReply.replyTarget.target === 'article'">
                     <slot></slot>
                 </div>
 
-                <div class="reply-controls">
+                <div class="reply-controls" v-if="thisReply.replyTarget.target === 'article'">
                     <button @click="console.log(thisReply._id)">댓글 ID 확인 (임시 - 해당 ID를 기준으로 대댓글 작성)</button>
                 </div>
             </div>
@@ -43,6 +47,7 @@
 <script setup>
     import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
+    import hourFormat from '../utilities/hourFormat';
 
     const props = defineProps([ 'replyId' ]);
     const thisReply = await getArticleReplies(props.replyId);

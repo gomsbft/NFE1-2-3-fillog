@@ -1927,6 +1927,7 @@ a, a:visited {
 #postImageSlider:hover > .slider-pagination {
   opacity: 1;
   transition: 0.25s;
+  z-index: 3;
 }
 #postImageSlider.no-images {
   background-color: #dbe5df;
@@ -3071,6 +3072,14 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   background-color: rgb(0, 0, 0);
   color: rgb(128, 128, 128);
   font-weight: 900;
+}
+
+.dark #spinloader {
+  mix-blend-mode: screen;
+}
+
+.light #spinloader {
+  mix-blend-mode: overlay;
 }
 
 /* _spinLoader.scss */

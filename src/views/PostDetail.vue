@@ -111,7 +111,7 @@
                     <span></span>
                 </div>
 
-                <p>댓글 <span>·</span> <span class="replies-counter">{{ thisReplies.length.toLocaleString('ko-KR') }}</span></p>
+                <p>댓글 <span>·</span> <span class="replies-counter">{{ totalReplies.length.toLocaleString('ko-KR') }}</span></p>
             </div>
 
             <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
@@ -123,8 +123,8 @@
             </div> <!-- #repliesContainer - 댓글이 없을 때 -->
 
             <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(commentID, index) in thisArticle.comments" :key="index" :reply-id="commentID">
-                    <ArticleReply v-for="(reReplies, index) in thisArticle.comments" :key="index" :reply-id="reReplies" />
+                <ArticleReply v-for="(replyItem, index) in replyArticlesOnly" :key="index" :reply-id="replyItem._id">
+                    <ArticleReply v-for="(reReplyID, index) in replyItem.reReplies" :key="index" :reply-id="reReplyID" />
                 </ArticleReply>
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
@@ -168,7 +168,7 @@
     import { ref, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
-    import { getPostInfo, getArticleRepliesAll, getReplyReplies } from '../utilities/dataQueries';
+    import { getPostInfo, getArticleRepliesAll, getArticleReplies } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
@@ -177,7 +177,8 @@
     const router = useRouter();
     const route = useRoute();
     const thisArticle = await getPostInfo(route.params.postID);
-    const thisReplies = await getArticleRepliesAll(thisArticle._id);
+    const totalReplies = await getArticleRepliesAll(thisArticle._id);
+    const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article');
     const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
     const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
     const commentText = ref('');
