@@ -111,7 +111,7 @@
                     <span></span>
                 </div>
 
-                <p>댓글 <span>·</span> <span class="replies-counter">{{ thisReplies.length.toLocaleString('ko-KR') }}</span></p>
+                <p>댓글 <span>·</span> <span class="replies-counter">{{ displayComments }}</span></p>
             </div>
 
             <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
@@ -123,14 +123,14 @@
             </div> <!-- #repliesContainer - 댓글이 없을 때 -->
 
             <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(commentID, index) in thisArticle.comments" :key="index" :reply-id="commentID">
-                    <ArticleReply v-for="(reReplies, index) in thisArticle.comments" :key="index" :reply-id="reReplies" />
+                <ArticleReply :replyId="commentID" :postId="thisArticle._id">
                 </ArticleReply>
+                <!-- <ArticleReply v-for="(reReplies, index) in thisArticle.comments" :key="index" :reply-id="reReplies" /> -->
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
-                <div v-if="userStore.state.account" id="replyingUser">
-                    <UserNameTag :userId="userStore.state.userId" />
+                <div v-if="userName" id="replyingUser">
+                    <UserNameTag :userId="userName" />
                 </div> <!-- #replyingUser - 사용자가 로그인 된 상태일 때 -->
 
                 <div v-else id="replyingUser">
@@ -165,14 +165,15 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, computed, reactive } from 'vue';
+    import { ref, computed, reactive, onMounted } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
-    import { getPostInfo, getArticleRepliesAll, getReplyReplies } from '../utilities/dataQueries';
+    import { getPostInfo, getArticleRepliesAll, getArticleReplies } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
+    import { useUserStore } from '../stores/userInfo';
 
     const router = useRouter();
     const route = useRoute();
@@ -183,10 +184,13 @@
         comments: [...thisArticle.comments], 
     });
     const displayLikes = computed(() => { return postData.likes.length.toLocaleString('ko-KR') });
+    const displayComments = computed(() => { return postData.comments.length.toLocaleString('ko-KR') });
     const commentText = ref('');
-    const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
-    const userStore = useUserStore();  // userInfo 스토어 사용
-    console.log("postData.comments:", postData.comments)
+
+    const userStore = useUserStore(); 
+    const userName = userStore.state.userName;
+    const replies = ref([]);
+
     const swiperParams = {
         slidesPerView: 1,
         spaceBetween: 24,
@@ -203,6 +207,20 @@
             el: '.slider-pagination'
         }
     }
+    const fetchReplies = async (postId) => {
+        try {
+            const commentIds = await getArticleRepliesAll(postId); 
+            const repliesData = await Promise.all(commentIds.map(async (replyId) => {
+            return await getArticleReplies(replyId); 
+            }));
+            replies.value = repliesData; 
+        } catch (error) {
+            console.error("댓글 로드 중 오류 발생:", error);
+        }
+    };
+    onMounted(() => {
+        fetchReplies(thisArticle._id); 
+    });
 
     // 게시물 삭제
     const deleteArticle = async () => {
@@ -224,9 +242,8 @@
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
-        const postId = thisArticle.id;  
+        const postId = thisArticle._id;  
         const userId = userStore.state.userId;// 로그인한 사용자의 ObjectId
-        console.log("userId: ",userId)
 
         try {
             const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
@@ -235,7 +252,6 @@
                 // 좋아요 추가된 경우
                 if (!postData.likes.includes(userId)) {
                 postData.likes.push(userId);
-                console.log('좋아요 목록 업데이트:', postData.likes);
                 }
             } else if (response.data.message === '좋아요 취소 성공') { 
                 // 좋아요 취소된 경우, postData.likes 배열에서 유저 아이디 제거
@@ -244,8 +260,6 @@
                 if (index > -1) {
                     postData.likes.splice(index, 1);
                 }
-
-                console.log('좋아요 목록 업데이트(취소):', thisArticle.likes);
             }
         } catch(error) {
             console.error('에러 발생', error.response ? error.response.data : error.message)
@@ -255,33 +269,36 @@
     // 댓글 등록 버튼 클릭 시 핸들러
     const commentBtnHandler = async (e) => {
         e.preventDefault();
-        const postObjId = thisArticle._id;
-        const postId = thisArticle.id;
-        console.log("postObjId: ",postObjId)
-        console.log("thisArticle.comments: ",thisArticle.comments);
+        const postId = thisArticle._id;
+        const userId = userStore.state.userId;
+        const userName = userStore.state.userName;
 
         if (!commentText.value) {
             commentText.value = '';
             return console.log('댓글 내용 없음');
         }
+        const txtReplyingPasswordElem = document.querySelector("#txtReplyingPassword");
+        const txtReplyingNameElem = document.querySelector("#txtReplyingName");
 
+        const txtReplyingPassword = txtReplyingPasswordElem ? String(txtReplyingPasswordElem.value) : '';
+        const txtReplyingName = txtReplyingNameElem ? txtReplyingNameElem.value : '';
+        
         const newComment = {
-            userId: userStore.state.account, 
-            commentText: commentText.value,
-            date: new Date().toLocaleDateString(), // 현재 날짜
-            time: new Date().toLocaleTimeString(), // 현재 시간
-            postId: postId,
+            replyTarget: "article",
+            userID: userId ? userId : null,
+            userName: txtReplyingName ? txtReplyingName : userName,
+            password: txtReplyingPassword ? txtReplyingPassword : null,
+            replyText: commentText.value,
+            reReply: [{}],
+            createdAt: new Date().toISOString().replace('T', ' ').slice(0, 19)
+            
         };
         
         try {
-            console.log(`이곳으로 댓글을 보냄: /posts/${postObjId}/comment`);
-            console.log('댓글 데이터:', newComment);
-            const response = await axios.post(`http://localhost:3000/posts/${postObjId}/comment`, newComment);
+            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, {newComment});
 
             // 서버 응답 처리
             if (response.status === 200) {
-                console.log(response.data.message);
-                console.log('서버에서 받은 댓글:', response.data.comment);
                 postData.comments.push({...newComment}); 
             } else {
                 console.error(response.data.message); 
@@ -289,9 +306,34 @@
         } catch (error) {
             console.error('댓글 등록 중 오류 발생:', error); 
         } finally {
-            // 댓글 입력 필드 초기화
-            commentText.value = '';
-            console.log("postData.comments: ", postData.comments)
+            if (commentText) commentText.value = ''; 
+            if (txtReplyingPasswordElem) txtReplyingPasswordElem.value = '';
+            if (txtReplyingNameElem) txtReplyingNameElem.value = '';
         }
+    }
+
+    // 댓글 삭제 버튼 클릭 시 핸들러
+     const commentDeleteHandler = async (commentId) => {         
+        const postId = route.params.postId;       
+        const password = prompt("삭제를 확인하려면 비밀번호를 입력하세요:");     
+    
+        if (!password) {             
+            alert("댓글 삭제를 위해 비밀번호가 필요합니다.");             
+            return;         
+        }          
+        try {             
+            const response = await axios.delete(`/posts/${postId}/comment/${commentId}`, { password });              
+            const data = response.data;              
+    
+            if (response.status === 200) {                    
+                comments.value = comments.value.filter(comment => comment._id !== commentId);             
+                alert(data.message);             
+            } else {                        
+                alert(data.message);             
+            }         
+        } catch (error) {             
+            console.error("댓글 삭제 중 오류:", error);             
+            alert("댓글 삭제 중 오류가 발생했습니다.");         
+        }     
     }
 </script> <!-- Logic Ends -->

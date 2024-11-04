@@ -1,8 +1,7 @@
 <template>
-    <div class="reply-item">
+    <div  v-for="reply in replies" :key="reply._id" class="reply-item">
         <div class="reply-info-container">
-            <UserNameTag v-if="thisReply.userID" :user-id="thisReply.userID" />
-
+            <UserNameTag v-if="reply.userID" :userId="userStore.state.userName" />
             <div class="reply-user-tag" v-else>
                 <div class="reply-user-image">
                     <svg class="remix">
@@ -11,21 +10,22 @@
                 </div>
 
                 <p class="reply-user-name">
-                    <span>{{ thisUser.userName }}</span>
+                    <span>{{ reply?.userName || '익명'}}</span>
                 </p>
             </div>
 
             <span>·</span>
 
             <p class="reply-date">
-                {{ dateFormat(thisReply.createdAt) }}
+                {{ dateFormat(reply.createdAt) }}
             </p>
+            <button v-if="commentDeleteHandler">X</button>
         </div>
 
         <div class="reply-outer-container">
             <div class="reply-inner-container">
                 <p class="reply-text">
-                    {{ thisReply.commentText }}
+                    {{ reply.replyText }}
                 </p>
 
                 <div class="reply-reply-container">
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="reply-controls">
-                    <button @click="console.log(thisReply._id)">댓글 ID 확인 (임시 - 해당 ID를 기준으로 대댓글 작성)</button>
+                    <button @click="console.log(reply._id)">댓글 ID 확인 (임시 - 해당 ID를 기준으로 대댓글 작성)</button>
                 </div>
             </div>
         </div>
@@ -41,14 +41,39 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
+    import { getArticleReplies, getArticleRepliesAll } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
+    import { ref, onMounted } from 'vue';
+    import { useUserStore } from '../stores/userInfo';
+    const userStore = useUserStore();
 
-    const props = defineProps([ 'postId','replyId' ]);
-    const thisReply = await getArticleReplies(props.postId);
-    const thisUser = await getUserInfo(thisReply.userID);
-    thisReply.forEach(async (reply) => {
-  const userInfo = await getUserInfo(reply.userId);
-  console.log('User Info:', userInfo); // 유저 정보가 제대로 출력되는지 확인
-});
+    userStore.state.userName
+    const props = defineProps({
+        postId: {
+            type: String,
+            required: true,
+        },
+        replyId: {
+            type: String,
+            required: true,
+        },
+        });
+
+    const replies = ref([]);
+
+    const fetchReplies = async (postId) => {
+        try {
+            const commentIds = await getArticleRepliesAll(postId); 
+            const repliesData = await Promise.all(commentIds.map(async (replyId) => {
+            return await getArticleReplies(replyId); 
+            }));
+            replies.value = repliesData; 
+        } catch (error) {
+            console.error("Error fetching replies:", error);
+        }
+    };
+
+    onMounted(() => {
+    fetchReplies(props.postId); 
+    });
 </script> <!-- Logic Ends -->

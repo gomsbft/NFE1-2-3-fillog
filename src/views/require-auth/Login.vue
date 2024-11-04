@@ -57,13 +57,13 @@
       });
       
       // 성공 시 처리 (예: 토큰 저장)
-      const { token,userId } = response.data;
+      const { token,userId, userName } = response.data;
       localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
       successMessage.value = '로그인 성공!';
       errorMessage.value = ''; // 에러 메시지 초기화
 
       log.setLoginTrue(); // 로그인 상태 true
-      userStore.setUser({ account: form.account, userId  }); // 유저 이메일 스토어 저장
+      userStore.setUser({ account: form.account, userId, userName }); // 유저 정보 스토어 저장
       console.log("스토어에 저장된 유저정보: ",userStore.state)
       router.push('/'); 
     } catch (err) {
