@@ -8,26 +8,26 @@
                 <input v-model="form.account" id="account" type="email" required>
             </div>
 
-      <div>
-        <label for="password">password</label>
-        <input v-model="form.password" id="password" type="password" required>
-      </div>
+            <div>
+                <label for="password">password</label>
+                <input v-model="form.password" id="password" type="password" required>
+            </div>
 
-      <button type="submit" class="loginBtn">Login</button>
+            <button type="submit" class="loginBtn">Login</button>
 
-      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-      <div v-if="successMessage" class="success">{{ successMessage }}</div>
-    </form>
+            <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+            <div v-if="successMessage" class="success">{{ successMessage }}</div>
+        </form>
 
-    <button class="joinBtn" @click="joinClick">Join</button>
-  </div>
+        <button class="joinBtn" @click="joinClick">Join</button>
+    </div>
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import axios from 'axios';
-  import { userLogin } from '../../stores/isLogin';
+    import { reactive, ref } from 'vue';
+    import { useRouter } from 'vue-router';
+    import axios from 'axios';
+    import { userLogin } from '../../stores/isLogin';
 
     const router = useRouter();
     const log = userLogin();

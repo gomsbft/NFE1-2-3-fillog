@@ -115,9 +115,16 @@
 
     const isAdmin = ref(false); // 사용자 권한 체크
     const didIFollowed = ref(true); // 임시 팔로우 정보
-    const blogAdmin = ref({ // 블로그 기본값
+    const blogAdmin = ref({
         adminID: null,
-        adminName: '블로그 주인'
+        adminName: '블로그 주인',
+        adminImage: '',
+        followers: [],
+        blogInfo: {
+            blogName: '',
+            favoriteGenres: [],
+            blogCategories: [],
+        }
     });
 
     const router = useRouter();
@@ -188,8 +195,8 @@
     // 팔로우 기능
     const followFn = async() => {
         const url = didIFollowed.value
-            ? `http://localhost:3000/users/${ blogOwner.adminId }/follow`
-            : `http://localhost:3000/users/${ blogOwner.adminId }/unfollow`;
+            ? `http://localhost:3000/users/${ blogAdmin.adminId }/follow`
+            : `http://localhost:3000/users/${ blogAdmin.adminId }/unfollow`;
 
         try {
             await axios.post(url, { followerId: thisUser.value });

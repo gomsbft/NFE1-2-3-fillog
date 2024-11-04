@@ -54,13 +54,13 @@ if (!!localStorage.getItem('fillogLocalSettings') === false) localStorage.setIte
 const fillogSettings = JSON.parse(localStorage.getItem('fillogLocalSettings'));
 
 if (!!fillogSettings === true && fillogSettings.useDarkTheme === true) { // 다크 테마 체크
-  document.querySelector('html').classList.add('dark');
+    document.querySelector('html').classList.add('dark');
 } else {
-  document.querySelector('html').classList.add('light');
+    document.querySelector('html').classList.add('light');
 }
 
 myProject
-  .use(pinia)
-  .use(router)
-  .use(VueDOMPurifyHTML)
-  .mount('#app')
+    .use(pinia)
+    .use(router)
+    .use(VueDOMPurifyHTML)
+    .mount('#app')
