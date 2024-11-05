@@ -9,7 +9,7 @@
         </div>
 
         <p class="user-name">
-            <span>{{ thisUser.userName ? thisUser.userName : '(알 수 없음)' }}</span>
+            <span>{{ thisUser?.userName ? thisUser.userName : '(알 수 없음)' }}</span>
         </p>
     </div>
 </template> <!-- Template Ends -->
