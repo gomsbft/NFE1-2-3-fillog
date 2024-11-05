@@ -47,10 +47,10 @@
     import { ref } from 'vue';
     import { useRouter } from 'vue-router';
     import axios from 'axios';
-    import { userLogin } from '../../stores/isLogin';
+    import { useUserStore } from '../../stores/userInfo';
 
     const router = useRouter();
-    const log = userLogin();
+    const currentUser = useUserStore();
     const responseMessage = ref(''); // 로그인 결과 메시지
     const loginFormData = ref({ // 로그인 객체
         userAccount: '',
@@ -60,13 +60,11 @@
     const login = async () => {
         try {
             const response = await axios.post('http://localhost:3000/login', loginFormData.value);
-
-            // 성공 시 처리 (예: 토큰 저장)
             const token = response.data.token;
 
             localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
             responseMessage.value = { result: true, message: '로그인 성공!' };
-            log.setLoginTrue(); // 로그인 상태 true
+            currentUser.setUser({ userID: response.data.user._id, token: token });
             router.push('/');
         } catch(error) {
             // 실패 시 에러 메시지 처리

@@ -82,7 +82,7 @@
             </button>
 
             <!-- 이 버튼들은 자기가 쓴 게시물에만 표시 -->
-            <button type="button" class="button-post-controls" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle.id }`)">
+            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle.id }`)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
                 </svg>
@@ -90,7 +90,7 @@
                 <span>수정</span>
             </button>
 
-            <button type="button" class="button-post-controls" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deleteArticle(thisArticle.id)">
+            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deleteArticle(thisArticle.id)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
                 </svg>
@@ -129,8 +129,8 @@
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
-                <div v-if="tempUserID" id="replyingUser">
-                    <UserNameTag />
+                <div v-if="currentUser.state.userID" id="replyingUser">
+                    <UserNameTag :user-id="currentUser.state.userID" />
                 </div> <!-- #replyingUser - 사용자가 로그인 된 상태일 때 -->
 
                 <div v-else id="replyingUser">
@@ -174,21 +174,24 @@
     import { ref, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
-    import { getPostInfo, getArticleRepliesAll, getArticleReplies } from '../utilities/dataQueries';
+    import { getAdminInfo, getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
+    import { useUserStore } from '../stores/userInfo';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
 
+
     const router = useRouter();
     const route = useRoute();
+    const blogAdmin = await getAdminInfo();
     const thisArticle = await getPostInfo(route.params.postID);
     const totalReplies = await getArticleRepliesAll(thisArticle._id); // 해당 게시물을 target으로 하는 모든 댓글 가져오기
     const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article'); // 해당 게시물 자체에 달린 댓글을 우선 출력하는 배열
+    const currentUser = useUserStore(); // 현재 로그인 사용자 Store
     const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
     const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
     const commentText = ref('');
-    const tempUserID = null; // 임시 사용자 ID - 이후에는 로그인 사용자 스토어에서 가지고 와야 함
 
     const swiperParams = {
         slidesPerView: 1,

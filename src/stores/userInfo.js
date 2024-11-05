@@ -6,6 +6,8 @@ export const useUserStore = defineStore('currentUser', () => {
 
     const setUser = (userObject) => {
         state.value = userObject;
+
+        console.log(userObject);
     }
 
     const removeUser = () => {
