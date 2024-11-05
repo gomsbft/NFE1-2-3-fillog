@@ -111,7 +111,7 @@
                     <span></span>
                 </div>
 
-                <p>댓글 <span>·</span> <span class="replies-counter">{{ totalReplies.length.toLocaleString('ko-KR') }}</span></p>
+                <p>댓글 <span>·</span> <span class="replies-counter">{{ totalReplies.toLocaleString('ko-KR') }}</span></p>
             </div>
 
             <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
@@ -126,7 +126,6 @@
                 <ArticleReply v-for="(replyItem, index) in replyArticlesOnly" :key="index" :reply-id="replyItem._id">
                     <ArticleReply v-for="(reReplyID, index) in replyItem.reReplies" :key="index" :reply-id="reReplyID" />
                 </ArticleReply>
-                <!-- <ArticleReply v-for="(reReplies, index) in thisArticle.comments" :key="index" :reply-id="reReplies" /> -->
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
@@ -141,12 +140,12 @@
                         </svg>
                     </div>
 
-                    <input type="text" name="replying-name" id="txtReplyingName" minlength="2" maxlength="12" placeholder="별명">
-                    <input type="password" name="replying-password" id="txtReplyingPassword" minlength="8" maxlength="16" placeholder="비밀번호">
+                    <input type="text" name="replying-name" id="txtReplyingName" v-model="commentObject.userName" minlength="2" maxlength="12" placeholder="별명">
+                    <input type="password" name="replying-password" id="txtReplyingPassword" v-model="commentObject.password" minlength="8" maxlength="16" placeholder="비밀번호">
                 </div> <!-- #replyingUser - 사용자가 로그인하지 않았을 때 -->
 
                 <div id="replyingInput">
-                    <textarea v-model="commentText" name="reply-input" id="txtReply" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
+                    <textarea name="reply-input" id="txtReply" v-model="commentObject.replyText" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
                     <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
                         <svg class="remix">
@@ -181,33 +180,25 @@
     import hourFormat from '../utilities/hourFormat';
     import articleCategory from '../datas/articleCategory.json'; // 임시 카테고리
     import MediaInfo from '../components/commons/MediaInfo.vue';
-    import { useUserStore } from '../stores/userInfo';
 
     const router = useRouter();
     const route = useRoute();
     const blogAdmin = await getAdminInfo();
-    const thisArticle = await getPostInfo(route.params.postID);
-    
-    const thisReplies = await getArticleRepliesAll(thisArticle._id);
-    const postData = reactive({
-        likes: [...thisArticle.likes], 
-        comments: [...thisArticle.comments], 
-    });
-    const displayLikes = computed(() => { return postData.likes.length.toLocaleString('ko-KR') });
-    const displayComments = computed(() => { return postData.comments.length.toLocaleString('ko-KR') });
-    const commentText = ref('');
-
-    const userStore = useUserStore(); 
-    const userName = userStore.state.userName;
-    const replies = ref([]);
-    
-    const totalReplies = await getArticleRepliesAll(thisArticle._id); // 해당 게시물을 target으로 하는 모든 댓글 가져오기
-    const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article'); // 해당 게시물 자체에 달린 댓글을 우선 출력하는 배열
     const currentUser = useUserStore(); // 현재 로그인 사용자 Store
-    const ArticleInDB = reactive({likes: []}); // DB에 존재하는 임시 포스트 데이터를 가져올 변수
-    const displayLikes = computed(() => { return ArticleInDB.likes.length.toLocaleString('ko-KR') });
-    const commentText = ref('');
-    
+    const thisArticle = await getPostInfo(route.params.postID);
+    const totalReplies = await getArticleRepliesAll(thisArticle._id); // 해당 게시물을 target으로 하는 모든 댓글 가져오기
+
+    console.log(totalReplies);
+
+    const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article'); // 해당 게시물 자체에 달린 댓글을 우선 출력하는 배열
+
+    const postData = reactive({
+        likes: [...thisArticle.likes],
+        comments: [...thisArticle.comments],
+    });
+
+    const displayLikes = computed(() => { return postData.likes.length.toLocaleString('ko-KR') });
+
     const swiperParams = {
         slidesPerView: 1,
         spaceBetween: 24,
@@ -224,19 +215,15 @@
             el: '.slider-pagination'
         }
     }
-    const fetchReplies = async (postId) => {
-        try {
-            const commentIds = await getArticleRepliesAll(postId); 
-            const repliesData = await Promise.all(commentIds.map(async (replyId) => {
-            return await getArticleReplies(replyId); 
-            }));
-            replies.value = repliesData; 
-        } catch (error) {
-            console.error("댓글 로드 중 오류 발생:", error);
-        }
-    };
-    onMounted(() => {
-        fetchReplies(thisArticle._id); 
+
+    const commentObject = ref({
+        replyTarget: 'article',
+        repliedArticle: thisArticle._id,
+        userID: '',
+        userName: '',
+        password: '',
+        replyText: '',
+        reReplies: []
     });
 
     // 게시물 삭제
@@ -259,8 +246,8 @@
 
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
-        const postId = thisArticle._id;  
-        const userId = userStore.state.userId;// 로그인한 사용자의 ObjectId
+        const postId = thisArticle._id;
+        const userId = currentUser.state.userID;// 로그인한 사용자의 ObjectId
 
         try {
             const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
@@ -270,7 +257,7 @@
                 if (!postData.likes.includes(userId)) {
                 postData.likes.push(userId);
                 }
-            } else if (response.data.message === '좋아요 취소 성공') { 
+            } else if (response.data.message === '좋아요 취소 성공') {
                 // 좋아요 취소된 경우, postData.likes 배열에서 유저 아이디 제거
                 const index = postData.likes.indexOf(userId);
 
@@ -287,8 +274,7 @@
     const commentBtnHandler = async (e) => {
         e.preventDefault();
         const postId = thisArticle._id;
-        const userId = userStore.state.userId;
-        const userName = userStore.state.userName;
+        const userId = currentUser.state.userID;
 
         if (!commentText.value) {
             commentText.value = '';
@@ -300,57 +286,56 @@
 
         const txtReplyingPassword = txtReplyingPasswordElem ? String(txtReplyingPasswordElem.value) : '';
         const txtReplyingName = txtReplyingNameElem ? txtReplyingNameElem.value : '';
-        
+
         const newComment = {
-            replyTarget: "article",
+            replyTarget: 'article',
             userID: userId ? userId : null,
-            userName: txtReplyingName ? txtReplyingName : userName,
+            userName: txtReplyingName ? txtReplyingName : null,
             password: txtReplyingPassword ? txtReplyingPassword : null,
             replyText: commentText.value,
-            reReply: [{}],
-            createdAt: new Date().toISOString().replace('T', ' ').slice(0, 19)
-            
+            reReply: [{}]
         };
-        
+
         try {
-            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, {newComment});
+            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, newComment);
             // 서버 응답 처리
             if (response.status === 200) {
-                postData.comments.push({...newComment}); 
+                postData.comments.push( response.data._id );
             } else {
-                console.error(response.data.message); 
+                console.error(response.data.message);
             }
         } catch (error) {
-            console.error('댓글 등록 중 오류 발생:', error); 
+            console.error('댓글 등록 중 오류 발생:', error);
         } finally {
-            if (commentText) commentText.value = ''; 
+            if (commentText) commentText.value = '';
             if (txtReplyingPasswordElem) txtReplyingPasswordElem.value = '';
             if (txtReplyingNameElem) txtReplyingNameElem.value = '';
         }
     }
 
     // 댓글 삭제 버튼 클릭 시 핸들러
-     const commentDeleteHandler = async (commentId) => {         
-        const postId = route.params.postId;       
-        const password = prompt("삭제를 확인하려면 비밀번호를 입력하세요:");     
-    
-        if (!password) {             
-            alert("댓글 삭제를 위해 비밀번호가 필요합니다.");             
-            return;         
-        }          
-        try {             
-            const response = await axios.delete(`/posts/${postId}/comment/${commentId}`, { password });              
-            const data = response.data;              
-    
-            if (response.status === 200) {                    
-                comments.value = comments.value.filter(comment => comment._id !== commentId);             
-                alert(data.message);             
-            } else {                        
-                alert(data.message);             
-            }         
-        } catch (error) {             
-            console.error("댓글 삭제 중 오류:", error);             
-            alert("댓글 삭제 중 오류가 발생했습니다.");         
-        }     
+    const commentDeleteHandler = async (commentId) => {
+        const postId = route.params.postId;
+        const password = prompt("삭제를 확인하려면 비밀번호를 입력하세요:");
+
+        if (!password) {
+            alert("댓글 삭제를 위해 비밀번호가 필요합니다.");
+            return;
+        }
+
+        try {
+            const response = await axios.delete(`/posts/${postId}/comment/${commentId}`, { password });
+            const data = response.data;
+
+            if (response.status === 200) {
+                comments.value = comments.value.filter(comment => comment._id !== commentId);
+                alert(data.message);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error("댓글 삭제 중 오류:", error);
+            alert("댓글 삭제 중 오류가 발생했습니다.");
+        }
     }
 </script> <!-- Logic Ends -->
