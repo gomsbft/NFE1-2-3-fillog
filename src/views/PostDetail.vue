@@ -271,11 +271,12 @@
         const postId = thisArticle._id;
         const userId = currentUser.state.userID;
 
-        if (!commentText.value) {
-            commentText.value = '';
+        if (!commentObject.replyText.value) {
+            commentObject.replyText.value = '';
 
             return console.log('댓글 내용 없음');
         }
+
         const txtReplyingPasswordElem = document.querySelector("#txtReplyingPassword");
         const txtReplyingNameElem = document.querySelector("#txtReplyingName");
 
@@ -287,7 +288,7 @@
             userID: userId ? userId : null,
             userName: txtReplyingName ? txtReplyingName : null,
             password: txtReplyingPassword ? txtReplyingPassword : null,
-            replyText: commentText.value,
+            replyText: commentObject.replyText.value,
             reReply: [{}]
         };
 
@@ -302,7 +303,7 @@
         } catch (error) {
             console.error('댓글 등록 중 오류 발생:', error);
         } finally {
-            if (commentText) commentText.value = '';
+            if (commentObject.replyText) commentObject.replyText.value = '';
             if (txtReplyingPasswordElem) txtReplyingPasswordElem.value = '';
             if (txtReplyingNameElem) txtReplyingNameElem.value = '';
         }
