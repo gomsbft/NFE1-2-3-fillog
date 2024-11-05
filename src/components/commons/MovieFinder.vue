@@ -7,7 +7,7 @@
         </div>
 
         <ul id="movieFinderList" v-if="movieArray.results?.length > 0">
-            <li class="movie-search-item" :class="selectedMovie === movie ? 'selected' : null" v-for="movie in movieArray.results" :key="movie.id" @click="selectedMovie = movie">
+            <li class="movie-search-item" :class="selectedMovie === movie ? 'selected' : null" v-for="movie in movieArray.results" :key="movie.id" @click="selectMovieHandler(movie)">
                 <div class="movie-search-poster-container">
                     <svg class="remix">
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-image-2-line"></use>
@@ -40,6 +40,7 @@
     import { ref } from 'vue';
     import { movieCategories, searchMovies } from '../../utilities/dataQueries';
 
+    const emits = defineEmits([ 'sendMovieObject' ]);
     const genreList = await movieCategories();
     const movieArray = ref([]);
     const selectedMovie = ref({});
@@ -48,5 +49,11 @@
         const findResult = await searchMovies(e.target.value);
 
         movieArray.value = findResult;
+    }
+
+    const selectMovieHandler = (movie) => {
+        selectedMovie.value = movie;
+
+        emits('sendMovieObject', selectedMovie.value);
     }
 </script> <!-- Logic Ends -->
