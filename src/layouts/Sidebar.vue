@@ -27,7 +27,7 @@
         </div> <!-- #sideBlogInfoContainer -->
 
         <div id="sideBlogControls">
-            <button type="button" class="buttons-blog-control" @click="userInfo">
+            <button type="button" class="buttons-blog-control" @click="router.push('/userinfo');">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-user-search-fill"></use>
                 </svg>
@@ -35,31 +35,7 @@
                 <span>글쓴이 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="didIFollowed && !isAdmin" @click="followFn">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-add-fill"></use>
-                </svg>
-
-                <span>팔로우</span>
-            </button>
-
-            <button type="button" class="buttons-blog-control" v-else-if="didIFollowed === false && !isAdmin" @click="followFn">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-dislike-fill"></use>
-                </svg>
-
-                <span>언팔로우</span>
-            </button>
-
-            <button type="button" class="buttons-blog-control" v-if="isAdmin === false">
-                <svg class="remix">
-                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-information-2-fill"></use>
-                </svg>
-
-                <span>블로그 정보</span>
-            </button>
-
-            <button type="button" class="buttons-blog-control" v-if="isAdmin === true && log.logins === true" @click="$router.push('/posts/write')">
+            <button type="button" class="buttons-blog-control" v-if="isAdmin === true && log.logins === true" @click="router.push('/posts/write')">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
                 </svg>
@@ -67,12 +43,28 @@
                 <span>글쓰기</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="isAdmin === true">
+            <button type="button" class="buttons-blog-control" v-else @click="followFn">
+                <svg class="remix">
+                    <use :xlink:href="`/miscs/remixicon.symbol.svg#ri-${ didIFollowed ? 'dislike-fill' : 'heart-add-fill' }`"></use>
+                </svg>
+
+                <span>{{ didIFollowed ? '언팔로우' : '팔로우' }}</span>
+            </button>
+
+            <button type="button" class="buttons-blog-control" v-if="isAdmin">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-settings-4-fill"></use>
                 </svg>
 
                 <span>블로그 관리</span>
+            </button>
+
+            <button type="button" class="buttons-blog-control" v-else>
+                <svg class="remix">
+                    <use xlink:href="/miscs/remixicon.symbol.svg#ri-information-2-fill"></use>
+                </svg>
+
+                <span>블로그 정보</span>
             </button>
         </div> <!-- #sideBlogControls -->
 
@@ -113,37 +105,26 @@
     import dateFormat from '../utilities/dateFormat';
     import articleCategory from '../datas/articleCategory.json';
 
-    const isAdmin = ref(false); // 사용자 권한 체크
-    const didIFollowed = ref(true); // 임시 팔로우 정보
-    const blogAdmin = ref({ // 블로그 기본값
-        adminID: null,
-        adminName: '블로그 주인'
-    });
-
     const router = useRouter();
+    const isAdmin = ref(false); // 사용자 권한 체크
+    const didIFollowed = ref(false); // 임시 팔로우 정보
+    const blogAdmin = ref(await getAdminInfo()); // 블로그 관리자 정보 가져오기
+    const postData = ref(await getTotalPosts()); // 최근 게시물 출력을 위한 게시물 가져오기
+    const genreList = await movieCategories(); // 선호 장르 태그 출력을 위한 영화 장르 목록 가져오기
+
     const thisUser = ref({ // 현재 사용자 기본값
         userId: null,
         userImage: '',
         userName: '사용자명'
     });
 
-    const userInfo = () => {
-        router.push('/userinfo');
-    }
-
-    const adminFromDB = await getAdminInfo();
-    const postData = ref(await getTotalPosts());
-    const genreList = await movieCategories();
-
-    postData.value.map(async item => { // 각 포스트의 댓글 갯수 가져오기
+    postData.value.map(async item => { // 각 포스트의 전체 댓글 갯수 가져오기
         const replies = await getArticleRepliesAll(item._id);
 
         item.comments = replies;
 
         return item;
     });
-
-    if (adminFromDB?.adminID) blogAdmin.value = adminFromDB;
 
     const log = userLogin();
 
@@ -186,7 +167,7 @@
     });
 
     // 팔로우 기능
-    const followFn = async() => {
+    const followFn = async () => {
         const url = didIFollowed.value
             ? `http://localhost:3000/users/${ blogOwner.adminId }/follow`
             : `http://localhost:3000/users/${ blogOwner.adminId }/unfollow`;

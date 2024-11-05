@@ -1,5 +1,15 @@
 import baseAPI from './apiDefault';
 
+export const login = async (userObject) => { // 로그인 - 미완성
+    try {
+        const { data: response } = await baseAPI.post('/login', userObject);
+
+        return response;
+    } catch(error) {
+        return error;
+    }
+}
+
 export const getAdminInfo = async () => { // 블로그 관리자 정보 가져오기
     try {
         const { data: response } = await baseAPI.get('/admin-info');
@@ -158,16 +168,6 @@ export const getArticleRepliesAll = async (articleID) => { // 포스트에 해�
 export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓글 가져오기
     try {
         const { data: response } = await baseAPI.get(`/posts/${replyID}/comments`);
-
-        return response;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
-export const getReplyReplies = async (replyID) => { // 대댓글 가져오기
-    try {
-        const { data: response } = await baseAPI.get(`/re-replies/${ replyID }`);
 
         return response;
     } catch(error) {
