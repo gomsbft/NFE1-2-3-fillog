@@ -39,15 +39,13 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { ref } from 'vue';
     import { getTotalPosts } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
 
     const postData = await getTotalPosts();
-
-    postData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
     const latestPosts = postData.slice(0, 5); // 가장 최근 글
-    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item._id } }).filter(item => !!item).slice(0, 10);
+    const featuredMovies = ref(postData.filter(item => !!item.movieID).map(item => { return { movieID: item.movieID, genres: item.movieGenres, articleID: item._id } }).slice(0, 12));
     const swiperParams = {
         effect: 'coverflow',
         direction: 'vertical',

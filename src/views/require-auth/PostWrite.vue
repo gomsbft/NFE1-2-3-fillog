@@ -71,8 +71,8 @@
                 </div>
 
                 <div class="write-file-preview-container">
-                    <div class="write-preview-image-container" v-for="(img, index) in postFormData.images" :key="index">
-                        <img class="write-preview-image" :src="img" />
+                    <div class="write-preview-image-container" v-for="(imageObject, index) in postFormData.images" :key="index">
+                        <img class="write-preview-image" :src="imageObject.imageURL" />
 
                         <div class="write-preview-image-overlay">
                             <button type="button" class="button-remove-preview-item" title="이 이미지 제거" @click="console.log(index + '번 이미지')">
@@ -114,18 +114,22 @@
     import { ref, useTemplateRef } from 'vue';
     import { useRouter } from 'vue-router';
     import axios from 'axios';
+    import { getAdminInfo } from '../../utilities/dataQueries';
     import MovieFinder from '../../components/commons/MovieFinder.vue';
     import articleCategory from '../../datas/articleCategory.json';
 
     const router = useRouter();
+    const blogAdmin = await getAdminInfo();
+    console.log(blogAdmin);
     const fileUploader = useTemplateRef('file-uploader'); // input:file 이벤트 추가를 위한 템플릿 레퍼런스
     const postFormData = ref({
         title: '',
         category: 0,
         movieID: null,
+        movieGenres: null,
         text: '',
         images: [],
-        author: '671ae48150f0899c1d43f17c'
+        author: blogAdmin.adminID
     });
 
     const changeImage = (e) => {
@@ -144,13 +148,17 @@
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            postFormData.value.images.push(e.target.result);
+            postFormData.value.images.push(
+                { imageURL: e.target.result, alt: '' }
+            );
         }
 
         reader.readAsDataURL(file);
     }
 
     const submitPost = async () => {
+        console.log(postFormData.value);
+
         try {
             const response = await axios.post('http://localhost:3000/post', postFormData.value);
 
@@ -163,10 +171,7 @@
     }
 
     const getMovieData = (data) => {
-        console.log(data);
-
         postFormData.value.movieID = data.id;
-
-        console.log(postFormData.value);
+        postFormData.value.movieGenres = data.genre_ids;
     }
 </script> <!-- Logic Ends -->
