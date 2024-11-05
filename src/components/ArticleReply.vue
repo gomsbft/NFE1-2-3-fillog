@@ -1,7 +1,7 @@
 <template>
     <div class="reply-item">
         <div class="reply-info-container">
-            <UserNameTag v-if="thisReply.userID" :user-id="thisReply.userID" />
+            <UserNameTag v-if="!!thisReply.userID" :user-id="thisReply.userID" />
 
             <div class="reply-user-tag" v-else>
                 <div class="reply-user-image">
@@ -60,5 +60,5 @@
 
     const props = defineProps([ 'replyId' ]);
     const thisReply = await getArticleReplies(props.replyId);
-    const thisUser = await getUserInfo(thisReply.userID);
+    const thisUser = thisReply.userID ? await getUserInfo(thisReply.userID) : { userName: thisReply.userName };
 </script> <!-- Logic Ends -->

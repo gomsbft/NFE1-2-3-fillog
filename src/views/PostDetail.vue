@@ -82,7 +82,7 @@
             </button>
 
             <!-- 이 버튼들은 자기가 쓴 게시물에만 표시 -->
-            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle.id }`)">
+            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle._id }`)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
                 </svg>
@@ -90,7 +90,7 @@
                 <span>수정</span>
             </button>
 
-            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deleteArticle(thisArticle.id)">
+            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deleteArticle(thisArticle._id)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
                 </svg>
@@ -147,7 +147,7 @@
                 <div id="replyingInput">
                     <textarea name="reply-input" id="txtReply" v-model="commentObject.replyText" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
-                    <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
+                    <button type="button" id="btnSubmitReply" @click="replyHandler">
                         <svg class="remix">
                             <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
                         </svg>
@@ -171,10 +171,10 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, computed, reactive } from 'vue';
+    import { ref, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
-    import { getAdminInfo, getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
+    import { getAdminInfo, getPostInfo, getArticleRepliesAll, writeReply } from '../utilities/dataQueries';
     import { useUserStore } from '../stores/userInfo';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
@@ -212,11 +212,14 @@
     }
 
     const commentObject = ref({
-        replyTarget: 'article',
+        replyTarget: {
+            target: 'article',
+            targetID: thisArticle._id
+        },
         repliedArticle: thisArticle._id,
-        userID: '',
-        userName: '',
-        password: '',
+        userID: currentUser.state.userID ?? null,
+        userName: null,
+        password: null,
         replyText: '',
         reReplies: []
     });
@@ -242,7 +245,7 @@
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
         const postId = thisArticle._id;
-        const userId = currentUser.state.userID;// 로그인한 사용자의 ObjectId
+        const userId = currentUser.state.userID; // 로그인한 사용자의 ObjectId
 
         try {
             const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
@@ -250,7 +253,7 @@
             if (response.data.message === '좋아요 추가 성공') {
                 // 좋아요 추가된 경우
                 if (!postData.likes.includes(userId)) {
-                postData.likes.push(userId);
+                    postData.likes.push(userId);
                 }
             } else if (response.data.message === '좋아요 취소 성공') {
                 // 좋아요 취소된 경우, postData.likes 배열에서 유저 아이디 제거
@@ -265,47 +268,21 @@
         }
     }
 
-    // 댓글 등록 버튼 클릭 시 핸들러
-    const commentBtnHandler = async (e) => {
-        e.preventDefault();
-        const postId = thisArticle._id;
-        const userId = currentUser.state.userID;
-
-        if (!commentObject.replyText.value) {
-            commentObject.replyText.value = '';
+    const replyHandler = async () => { // 댓글 작성
+        if (!commentObject.value.replyText) {
+            commentObject.value.replyText = '';
 
             return console.log('댓글 내용 없음');
         }
 
-        const txtReplyingPasswordElem = document.querySelector("#txtReplyingPassword");
-        const txtReplyingNameElem = document.querySelector("#txtReplyingName");
+        const response = await writeReply(thisArticle._id, commentObject.value);
 
-        const txtReplyingPassword = txtReplyingPasswordElem ? String(txtReplyingPasswordElem.value) : '';
-        const txtReplyingName = txtReplyingNameElem ? txtReplyingNameElem.value : '';
+        if (response.status === 200) {
+            commentObject.value.replyText = '';
+            commentObject.value.userName = '';
+            commentObject.value.password = '';
 
-        const newComment = {
-            replyTarget: 'article',
-            userID: userId ? userId : null,
-            userName: txtReplyingName ? txtReplyingName : null,
-            password: txtReplyingPassword ? txtReplyingPassword : null,
-            replyText: commentObject.replyText.value,
-            reReply: [{}]
-        };
-
-        try {
-            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, newComment);
-            // 서버 응답 처리
-            if (response.status === 200) {
-                postData.comments.push( response.data._id );
-            } else {
-                console.error(response.data.message);
-            }
-        } catch (error) {
-            console.error('댓글 등록 중 오류 발생:', error);
-        } finally {
-            if (commentObject.replyText) commentObject.replyText.value = '';
-            if (txtReplyingPasswordElem) txtReplyingPasswordElem.value = '';
-            if (txtReplyingNameElem) txtReplyingNameElem.value = '';
+            console.log('댓글 작성 완료')
         }
     }
 

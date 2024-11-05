@@ -155,6 +155,22 @@ export const searchMovies = async (searchQuery) => { // 영화 정보 검색
     }
 }
 
+export const writeReply = async (articleID, replyObject) => {
+    try {
+        const response = await baseAPI.post(`/posts/${ articleID }/comment`, replyObject);
+        // 서버 응답 처리
+        if (response.status === 200) {
+            console.log(response.data.message);
+
+            return response;
+        } else {
+            console.error(response.data.message);
+        }
+    } catch(error) {
+        console.error('댓글 등록 중 오류 발생 :', error);
+    }
+}
+
 export const getArticleRepliesAll = async (articleID) => { // 포스트에 해당되는 전체 댓글 가져오기
     try {
         const { data: response } = await baseAPI.get(`/replies/post/${ articleID }`);
@@ -167,7 +183,7 @@ export const getArticleRepliesAll = async (articleID) => { // 포스트에 해�
 
 export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓글 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/posts/${replyID}/comments`);
+        const { data: response } = await baseAPI.get(`/replies/${ replyID }`);
 
         return response;
     } catch(error) {
