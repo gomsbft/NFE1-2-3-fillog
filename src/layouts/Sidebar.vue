@@ -18,7 +18,7 @@
 
                 <p>{{ blogAdmin.adminName }}</p>
 
-                <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo && blogAdmin.blogInfo.favoriteGenres?.length > 0">
+                <div class="blog-info-tag-container" v-if="blogAdmin.blogInfo.favoriteGenres?.length > 0">
                     <p class="blog-info-tags" v-for="genre in blogAdmin.blogInfo.favoriteGenres">
                         {{ genreList.find(item => item.id === genre).name }}
                     </p>
@@ -35,7 +35,11 @@
                 <span>글쓴이 정보</span>
             </button>
 
+<<<<<<< HEAD
             <button type="button" class="buttons-blog-control" v-if="isAdminBtn && log.logins === true" @click="router.push('/posts/write')">
+=======
+            <button type="button" class="buttons-blog-control" v-if="currentUser?.state.userID === blogAdmin.adminID" @click="router.push('/posts/write')">
+>>>>>>> 84528b6aa99ac7f74f18e2edb8dc8daea2d129dc
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
                 </svg>
@@ -51,7 +55,7 @@
                 <span>{{ didIFollowed ? '언팔로우' : '팔로우' }}</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="isAdmin">
+            <button type="button" class="buttons-blog-control" v-if="currentUser?.state.userID === blogAdmin.adminID">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-settings-4-fill"></use>
                 </svg>
@@ -86,7 +90,7 @@
                     <RouterLink class="latest-item-titlebar" :to="`/posts/${ article._id }`">
                         <p>{{ article.title }}</p>
 
-                        <span>[{{ article.comments ? article.comments.length.toLocaleString('ko-KR') : 0 }}]</span>
+                        <span>[{{ article.comments.length.toLocaleString('ko-KR') }}]</span>
                     </RouterLink>
 
                     <span class="latest-item-date">{{ dateFormat(article.createdAt) }}</span>
@@ -97,26 +101,25 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+<<<<<<< HEAD
     import { ref, onMounted, watch, computed } from 'vue';
+=======
+    import { ref, onMounted } from 'vue';
+>>>>>>> 84528b6aa99ac7f74f18e2edb8dc8daea2d129dc
     import { useRouter, RouterLink } from 'vue-router';
     import axios from 'axios';
     import { getAdminInfo, getTotalPosts, movieCategories, getArticleRepliesAll } from '../utilities/dataQueries';
-    import { userLogin } from '../stores/isLogin';
+    import { useUserStore } from '../stores/userInfo';
     import dateFormat from '../utilities/dateFormat';
     import articleCategory from '../datas/articleCategory.json';
 
     const router = useRouter();
     const isAdmin = ref(false); // 사용자 권한 체크
-    const didIFollowed = ref(false); // 임시 팔로우 정보
+    const currentUser = useUserStore();
     const blogAdmin = ref(await getAdminInfo()); // 블로그 관리자 정보 가져오기
     const postData = ref(await getTotalPosts()); // 최근 게시물 출력을 위한 게시물 가져오기
     const genreList = await movieCategories(); // 선호 장르 태그 출력을 위한 영화 장르 목록 가져오기
-
-    const thisUser = ref({ // 현재 사용자 기본값
-        userId: null,
-        userImage: '',
-        userName: '사용자명'
-    });
+    const didIFollowed = ref(false); // 임시 팔로우 정보
 
     postData.value.map(async item => { // 각 포스트의 전체 댓글 갯수 가져오기
         const replies = await getArticleRepliesAll(item._id);
@@ -124,14 +127,6 @@
         item.comments = replies;
 
         return item;
-    });
-
-    const log = userLogin();
-
-    watch(log, (newValue) => {
-        if (newValue.logins) {
-            getUserProfile(); // 로그인 시 사용자 프로필 다시 가져오기
-        }
     });
 
     // 서버에서 사용자 정보 가져옴
@@ -151,12 +146,8 @@
 
             const userData = response.data;
 
-            thisUser.value.userId = userData._id; // 현재 로그인한 사용자의 ID
-            thisUser.value.userImage = userData.userImage; // 사용자 이미지
-            thisUser.value.userName = userData.userName; // 사용자 이름
-
             // type이 "admin"인지 확인
-            isAdmin.value = userData.type === 'admin';
+            isAdmin.value = userData.user.type === 'admin';
         } catch(error) {
             console.error(error);
         }
@@ -174,8 +165,8 @@
     // 팔로우 기능
     const followFn = async () => {
         const url = didIFollowed.value
-            ? `http://localhost:3000/users/${ blogAdmin.adminId }/follow`
-            : `http://localhost:3000/users/${ blogAdmin.adminId }/unfollow`;
+            ? `http://localhost:3000/users/${ blogAdmin.adminID }/follow`
+            : `http://localhost:3000/users/${ blogAdmin.adminID }/unfollow`;
 
         try {
             await axios.post(url, { followerId: thisUser.value });
