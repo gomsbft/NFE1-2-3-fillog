@@ -20,7 +20,7 @@ Use a more readable tab size (opinionated).
 html {
   -moz-tab-size: 4;
   -o-tab-size: 4;
-  tab-size: 4;
+     tab-size: 4;
 }
 
 /**
@@ -366,7 +366,7 @@ svg,
 video {
   display: block;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
 }
 
 img {
@@ -1706,7 +1706,7 @@ a, a:visited {
   margin: auto;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid red;
+  border: 1px solid rgb(179, 250, 214);
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
@@ -1800,6 +1800,7 @@ a, a:visited {
   margin-bottom: 10px;
   font-size: 14px;
   cursor: pointer;
+  background-color: #007bff;
   color: white;
   padding: 6px 12px;
   border-radius: 5px;
@@ -1815,11 +1816,12 @@ a, a:visited {
 }
 
 .imgView {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
+  margin-top: -6.1rem;
   border-radius: 50%;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   border: 2px solid #ddd;
 }
 
@@ -2075,13 +2077,17 @@ a, a:visited {
 
 .article-image-slide {
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  max-height: 48rem;
   border-radius: 0.4rem;
+  overflow: hidden;
 }
 
 .article-image {
   width: 100%;
   height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
@@ -2310,6 +2316,30 @@ a, a:visited {
   display: flex;
   flex-flow: column nowrap;
   gap: 0.4rem;
+}
+
+.reply-target-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem 0.2rem 0.4rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid rgb(var(--clr-max)/0.15);
+  border-radius: 0.2rem;
+  background-color: rgb(var(--clr-min));
+  font-size: var(--fnt-sm);
+}
+.reply-target-indicator > .remix {
+  width: 0.8rem;
+  color: rgb(var(--clr-warn));
+}
+.reply-target-indicator > p {
+  color: rgb(var(--clr-text)/0.5);
+}
+.reply-target-indicator span {
+  color: rgb(var(--clr-text));
+  font-weight: 700;
 }
 
 #replyingUser {
@@ -3781,6 +3811,10 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 }
 .reply-item:hover .reply-outer-container::before {
   border-color: rgb(var(--clr-text)/0.75);
+}
+.reply-item.current-target {
+  border-color: rgb(var(--clr-tint-100));
+  background-image: linear-gradient(to top, rgb(var(--clr-theme)/0.25) 0%, rgb(var(--clr-min)) 50%);
 }
 
 .reply-info-container {

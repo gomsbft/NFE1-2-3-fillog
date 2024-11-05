@@ -123,12 +123,20 @@
             </div> <!-- #repliesContainer - 댓글이 없을 때 -->
 
             <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(replyItem, index) in replyArticlesOnly" :key="index" :reply-id="replyItem._id">
+                <ArticleReply v-for="(replyItem, index) in replyArticlesOnly" :class="commentObject.replyTarget.targetID === replyItem._id ? 'current-target' : null" :key="index" :reply-id="replyItem._id" @send-reply-info="getReplyInfo">
                     <ArticleReply v-for="(reReplyID, index) in replyItem.reReplies" :key="index" :reply-id="reReplyID" />
                 </ArticleReply>
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
+                <div class="reply-target-indicator" v-if="targetIndicator">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-reply-fill"></use>
+                    </svg>
+
+                    <p>To. <span>{{ targetIndicator.userName }}</span> 님의 댓글</p>
+                </div>
+
                 <div v-if="currentUser.state.userID" id="replyingUser">
                     <UserNameTag :user-id="currentUser.state.userID" />
                 </div> <!-- #replyingUser - 사용자가 로그인 된 상태일 때 -->
@@ -174,7 +182,7 @@
     import { ref, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
-    import { getAdminInfo, getPostInfo, getArticleRepliesAll, writeReply } from '../utilities/dataQueries';
+    import { getAdminInfo, getPostInfo, getUserInfo, getArticleRepliesAll, writeReply } from '../utilities/dataQueries';
     import { useUserStore } from '../stores/userInfo';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
@@ -211,7 +219,7 @@
         }
     }
 
-    const commentObject = ref({
+    const commentObject = ref({ // 댓글 작성 Form Data 객체
         replyTarget: {
             target: 'article',
             targetID: thisArticle._id
@@ -223,6 +231,40 @@
         replyText: '',
         reReplies: []
     });
+
+    const targetIndicator = ref(null); // 현재 댓글 대상 표시기
+
+    const getReplyInfo = async (data) => { // 댓글의 emit 정보를 받아서 대댓글 상태로 전환
+        const targetObj = commentObject.value.replyTarget;
+        const replyUser = data.userID ? await getUserInfo(data.userID) : { userName: data.userName };
+
+        if (data) {
+            targetObj.target = 'reply';
+            targetObj.targetID = data._id;
+            targetIndicator.value = data;
+            targetIndicator.value.userName = replyUser.userName;
+        } else {
+            targetObj.target = 'article';
+            targetObj.targetID = thisArticle._id;
+            targetIndicator.value = null;
+        }
+    }
+
+    const replyHandler = async () => { // 댓글 작성 핸들러
+        if (!!commentObject.value.replyText === false) {
+            return console.warn('댓글 내용이 작성되지 않았습니다.');
+        }
+
+        const response = await writeReply(thisArticle._id, commentObject.value);
+
+        if (response.status === 200) {
+            commentObject.value.replyText = '';
+            commentObject.value.userName = '';
+            commentObject.value.password = '';
+
+            console.log('댓글 작성 완료');
+        }
+    }
 
     // 게시물 삭제
     const deleteArticle = async () => {
@@ -265,50 +307,6 @@
             }
         } catch(error) {
             console.error('에러 발생', error.response ? error.response.data : error.message)
-        }
-    }
-
-    const replyHandler = async () => { // 댓글 작성
-        if (!commentObject.value.replyText) {
-            commentObject.value.replyText = '';
-
-            return console.log('댓글 내용 없음');
-        }
-
-        const response = await writeReply(thisArticle._id, commentObject.value);
-
-        if (response.status === 200) {
-            commentObject.value.replyText = '';
-            commentObject.value.userName = '';
-            commentObject.value.password = '';
-
-            console.log('댓글 작성 완료')
-        }
-    }
-
-    // 댓글 삭제 버튼 클릭 시 핸들러
-    const commentDeleteHandler = async (commentId) => {
-        const postId = route.params.postId;
-        const password = prompt("삭제를 확인하려면 비밀번호를 입력하세요:");
-
-        if (!password) {
-            alert("댓글 삭제를 위해 비밀번호가 필요합니다.");
-            return;
-        }
-
-        try {
-            const response = await axios.delete(`/posts/${postId}/comment/${commentId}`, { password });
-            const data = response.data;
-
-            if (response.status === 200) {
-                comments.value = comments.value.filter(comment => comment._id !== commentId);
-                alert(data.message);
-            } else {
-                alert(data.message);
-            }
-        } catch (error) {
-            console.error("댓글 삭제 중 오류:", error);
-            alert("댓글 삭제 중 오류가 발생했습니다.");
         }
     }
 </script> <!-- Logic Ends -->
