@@ -2547,6 +2547,87 @@ a, a:visited {
 }
 
 /* _postWrite.scss */
+/* _postEdit.scss */
+#postEdit .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+#postEdit .top h1 {
+  font-size: 30px;
+}
+#postEdit input {
+  width: 100%;
+  margin-bottom: 20px;
+}
+#postEdit textarea {
+  width: 100%;
+  height: 300px;
+  resize: none;
+}
+#postEdit .bot {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+#postEdit .bot .image_area {
+  position: relative;
+  margin-right: 10px;
+}
+#postEdit .bot .image_area img {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+}
+#postEdit .bot .image_area .del_photo {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: black;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#postEdit .btns {
+  margin-top: 20px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+#postEdit .btns .file_box #file {
+  display: none;
+}
+#postEdit .btns .file_box .file_upload {
+  width: 100px;
+  border: 1px solid rgb(var(--clr-theme));
+  border-radius: 0.4rem;
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 5px;
+  transition: all 0.15s;
+}
+#postEdit .btns .file_box .file_upload:hover {
+  background-color: rgb(var(--clr-theme));
+  color: rgb(var(--clr-text-on-tint));
+}
+#postEdit .btns .file_box span {
+  font-size: 10px;
+}
+#postEdit .btns .edit_btn {
+  width: 100px;
+  border: 1px solid rgb(var(--clr-theme));
+  border-radius: 0.4rem;
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 5px;
+  transition: all 0.15s;
+}
+#postEdit .btns .edit_btn:hover {
+  background-color: rgb(var(--clr-theme));
+  color: rgb(var(--clr-text-on-tint));
+}
+
 /* _filmList.scss */
 #filmItemList {
   display: grid;
@@ -2633,6 +2714,23 @@ a, a:visited {
 }
 
 /* _guestbookList.scss */
+/* _userInfo.scss */
+#viewUserInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  gap: 2rem;
+}
+#viewUserInfo .title {
+  color: #7BF4BC;
+}
+#viewUserInfo .text {
+  color: #E2180B;
+}
+
+/* _userInfo.scss */
 /* _buttons.scss */
 button {
   padding: 0;
@@ -4052,4 +4150,4 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   font-size: var(--fnt-lg);
 }
 
-/* _guestbookItem.scss *//*# sourceMappingURL=style.css.map */
+/* _guestbookItem.scss */

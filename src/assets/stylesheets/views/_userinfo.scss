@@ -1,16 +1,20 @@
+/* _userInfo.scss */
+
 #viewUserInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-  gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    gap: 2rem;
 
-  .title {
-    color: #7BF4BC;
-  }
+    .title {
+        color: #7BF4BC;
+    }
 
-  .text {
-    color: #E2180B;
-  }
+    .text {
+        color: #E2180B;
+    }
 }
+
+/* _userInfo.scss */

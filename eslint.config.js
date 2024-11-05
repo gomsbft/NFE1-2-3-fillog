@@ -14,4 +14,4 @@ export default [
         },
         ignorePatterns: ["build", "dist", "public"]
     }
-];
+]

@@ -13,10 +13,10 @@ export default defineConfig({
         })
     ],
     proxy: {
-      '/posts': {
-        target: 'http://localhost:3000', 
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/posts/, '/posts'), 
-      },
+        '/posts': {
+            target: 'http://localhost:3000',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/posts/, '/posts'),
+        },
     },
 });
