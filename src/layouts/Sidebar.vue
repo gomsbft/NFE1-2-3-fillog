@@ -35,7 +35,7 @@
                 <span>글쓴이 정보</span>
             </button>
 
-            <button type="button" class="buttons-blog-control" v-if="isAdmin === true && log.logins === true" @click="router.push('/posts/write')">
+            <button type="button" class="buttons-blog-control" v-if="isAdminBtn && log.logins === true" @click="router.push('/posts/write')">
                 <svg class="remix">
                     <use xlink:href="/miscs/remixicon.symbol.svg#ri-quill-pen-fill"></use>
                 </svg>
@@ -97,7 +97,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, onMounted, watch } from 'vue';
+    import { ref, onMounted, watch, computed } from 'vue';
     import { useRouter, RouterLink } from 'vue-router';
     import axios from 'axios';
     import { getAdminInfo, getTotalPosts, movieCategories, getArticleRepliesAll } from '../utilities/dataQueries';
@@ -161,6 +161,11 @@
             console.error(error);
         }
     };
+
+    const isAdminBtn = computed(() => {
+        return isAdmin.value && log.logins === true;
+    });
+
 
     onMounted(() => {
         getUserProfile();
