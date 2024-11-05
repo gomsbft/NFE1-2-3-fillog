@@ -2525,6 +2525,25 @@ a, a:visited {
   filter: drop-shadow(0 0 0.4rem rgb(0, 0, 0));
 }
 
+#writePostControls {
+  display: flex;
+  gap: 0.4rem;
+}
+#writePostControls > button {
+  justify-content: center;
+  padding-block: 0.8rem;
+  height: auto;
+  font-size: var(--fnt-lg);
+}
+
+#btnUploadPost {
+  flex: 1;
+  justify-content: center;
+  padding-block: 0.8rem;
+  height: auto;
+  font-size: var(--fnt-lg);
+}
+
 /* _postWrite.scss */
 /* _filmList.scss */
 #filmItemList {

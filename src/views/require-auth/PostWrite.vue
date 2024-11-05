@@ -13,7 +13,7 @@
 
             <div class="row-section-container">
                 <select name="category" id="slctCategory" class="exclude write-form-inputs" v-model="postFormData.category">
-                    <option value="" disabled>카테고리 선택</option>
+                    <option value="0" disabled>카테고리 선택</option>
 
                     <option v-for="(category, value) in articleCategory" :key="value" :value="value">
                         {{ category }}
@@ -95,12 +95,18 @@
                 <span>영화 선택</span>
             </div>
 
-            <MovieFinder class="row-section-container" />
+            <MovieFinder class="row-section-container" @send-movie-object="getMovieData" />
         </section>
 
-        <ButtonWithIcon element-id="btnUploadPost" icon-position="front" icon-name="upload-line" tool-tip="포스트 업로드" @click="submitPost">
-            작성 완료
-        </ButtonWithIcon>
+        <div id="writePostControls">
+            <ButtonWithIcon element-id="btnCancelWrite" icon-position="front" icon-name="close-line" tool-tip="작성 취소" style="--button-surface-color: transparent; --button-outline-color: var(--clr-alert); --button-text-color: var(--clr-alert);" @click="router.go(-1)">
+                작성 취소
+            </ButtonWithIcon>
+
+            <ButtonWithIcon element-id="btnUploadPost" icon-position="front" icon-name="upload-line" tool-tip="포스트 작성 완료" @click="submitPost">
+                포스트 작성 완료
+            </ButtonWithIcon>
+        </div>
     </div> <!-- #frmPostWrite -->
 </template> <!-- Template Ends -->
 
@@ -154,5 +160,13 @@
             console.error('Error post:', error);
             alert('게시글 등록에 실패했습니다.');
         }
-    };
+    }
+
+    const getMovieData = (data) => {
+        console.log(data);
+
+        postFormData.value.movieID = data.id;
+
+        console.log(postFormData.value);
+    }
 </script> <!-- Logic Ends -->
