@@ -48,10 +48,10 @@
         border: 1px solid currentColor;
         border-radius: .2rem;
         font-size: var(--fnt-sm);
-        font-weight: 900;
+        font-weight: 700;
         opacity: .5;
         z-index: 1;
-        content: '최근 글';
+        content: attr(data-article-date);
     }
 
     &:has(:hover) {

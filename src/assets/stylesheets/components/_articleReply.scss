@@ -5,10 +5,6 @@
     border: 1px solid transparent;
     border-radius: .4rem;
 
-    & + & {
-        margin-block-start: .4rem;
-    }
-
     &:hover {
         border-color: rgb(var(--clr-tint-100) / .25);
         background-color: rgb(var(--clr-min));
@@ -102,11 +98,27 @@
 }
 
 .reply-reply-container {
-    margin-block-start: .4rem;
+    margin-block-start: .6rem;
+
+    > .reply-item {
+        &:hover {
+            background-color: rgb(var(--clr-tint-100) / .25);
+        }
+    }
 }
 
 .reply-controls {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
     margin-block-start: .6rem;
+    padding-block-start: .6rem;
+    border-block-start: 1px solid rgb(var(--clr-max) / .15);
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
 }
 
 /* _articleReply.scss */

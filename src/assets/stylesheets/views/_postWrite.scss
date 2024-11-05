@@ -125,4 +125,24 @@
     }
 }
 
+#writePostControls {
+    display: flex;
+    gap: .4rem;
+
+    > button {
+        justify-content: center;
+        padding-block: .8rem;
+        height: auto;
+        font-size: var(--fnt-lg);
+    }
+}
+
+#btnUploadPost {
+    flex: 1;
+    justify-content: center;
+    padding-block: .8rem;
+    height: auto;
+    font-size: var(--fnt-lg);
+}
+
 /* _postWrite.scss */

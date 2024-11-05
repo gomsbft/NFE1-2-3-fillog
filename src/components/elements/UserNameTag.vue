@@ -19,4 +19,5 @@
 
     const props = defineProps([ 'userId' ]); // prop으로 받은 user ID를 가지고 사용자 정보 fetch, 프로파일 이미지와 이름 정보를 가지고 온다
     const thisUser = await getUserInfo(props.userId);
+    console.log(thisUser)
 </script> <!-- Logic Ends -->

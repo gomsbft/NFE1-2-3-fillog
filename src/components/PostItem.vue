@@ -2,7 +2,7 @@
     <li class="article-item">
         <div class="article-item-image-container">
             <RouterLink :to="`/posts/${ thisArticle._id }`">
-                <img class="article-item-thumbnail" v-if="thisArticle.images.length > 0" :src="thisArticle.images.find(item => item.index === thisArticle.thumbIndex)?.imageURL" alt="이미지 미리보기">
+                <img class="article-item-thumbnail" v-if="thisArticle.images.length > 0" :src="thisArticle.images.find((item, index) => index === thisArticle.thumbIndex)?.imageURL" alt="이미지 미리보기">
             </RouterLink>
 
             <svg class="remix">
