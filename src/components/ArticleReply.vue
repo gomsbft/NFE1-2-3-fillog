@@ -22,7 +22,6 @@
 
                 {{ hourFormat(thisReply.createdAt) }}
             </p>
-            <button>X</button>
         </div>
 
         <div class="reply-outer-container">
