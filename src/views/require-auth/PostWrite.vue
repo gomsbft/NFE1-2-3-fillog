@@ -13,7 +13,7 @@
 
             <div class="row-section-container">
                 <select name="category" id="slctCategory" class="exclude write-form-inputs" v-model="postFormData.category">
-                    <option value="" disabled>카테고리 선택</option>
+                    <option value="0" disabled>카테고리 선택</option>
 
                     <option v-for="(category, value) in articleCategory" :key="value" :value="value">
                         {{ category }}
@@ -71,8 +71,8 @@
                 </div>
 
                 <div class="write-file-preview-container">
-                    <div class="write-preview-image-container" v-for="(img, index) in postFormData.images" :key="index">
-                        <img class="write-preview-image" :src="img" />
+                    <div class="write-preview-image-container" v-for="(imageObject, index) in postFormData.images" :key="index">
+                        <img class="write-preview-image" :src="imageObject.imageURL" />
 
                         <div class="write-preview-image-overlay">
                             <button type="button" class="button-remove-preview-item" title="이 이미지 제거" @click="console.log(index + '번 이미지')">
@@ -95,12 +95,18 @@
                 <span>영화 선택</span>
             </div>
 
-            <MovieFinder class="row-section-container" />
+            <MovieFinder class="row-section-container" @send-movie-object="getMovieData" />
         </section>
 
-        <ButtonWithIcon element-id="btnUploadPost" icon-position="front" icon-name="upload-line" tool-tip="포스트 업로드" @click="submitPost">
-            작성 완료
-        </ButtonWithIcon>
+        <div id="writePostControls">
+            <ButtonWithIcon element-id="btnCancelWrite" icon-position="front" icon-name="close-line" tool-tip="작성 취소" style="--button-surface-color: transparent; --button-outline-color: var(--clr-alert); --button-text-color: var(--clr-alert);" @click="router.go(-1)">
+                작성 취소
+            </ButtonWithIcon>
+
+            <ButtonWithIcon element-id="btnUploadPost" icon-position="front" icon-name="upload-line" tool-tip="포스트 작성 완료" @click="submitPost">
+                포스트 작성 완료
+            </ButtonWithIcon>
+        </div>
     </div> <!-- #frmPostWrite -->
 </template> <!-- Template Ends -->
 
@@ -108,18 +114,22 @@
     import { ref, useTemplateRef } from 'vue';
     import { useRouter } from 'vue-router';
     import axios from 'axios';
+    import { getAdminInfo } from '../../utilities/dataQueries';
     import MovieFinder from '../../components/commons/MovieFinder.vue';
     import articleCategory from '../../datas/articleCategory.json';
 
     const router = useRouter();
+    const blogAdmin = await getAdminInfo();
+    console.log(blogAdmin);
     const fileUploader = useTemplateRef('file-uploader'); // input:file 이벤트 추가를 위한 템플릿 레퍼런스
     const postFormData = ref({
         title: '',
         category: 0,
         movieID: null,
+        movieGenres: null,
         text: '',
         images: [],
-        author: '671ae48150f0899c1d43f17c'
+        author: blogAdmin.adminID
     });
 
     const changeImage = (e) => {
@@ -138,13 +148,17 @@
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            postFormData.value.images.push(e.target.result);
+            postFormData.value.images.push(
+                { imageURL: e.target.result, alt: '' }
+            );
         }
 
         reader.readAsDataURL(file);
     }
 
     const submitPost = async () => {
+        console.log(postFormData.value);
+
         try {
             const response = await axios.post('http://localhost:3000/post', postFormData.value);
 
@@ -154,5 +168,10 @@
             console.error('Error post:', error);
             alert('게시글 등록에 실패했습니다.');
         }
-    };
+    }
+
+    const getMovieData = (data) => {
+        postFormData.value.movieID = data.id;
+        postFormData.value.movieGenres = data.genre_ids;
+    }
 </script> <!-- Logic Ends -->

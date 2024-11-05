@@ -1382,6 +1382,10 @@ a, a:visited {
 #floatButtonContainer:focus-within .floating-opener > .remix {
   rotate: 360deg 0 0;
 }
+#floatButtonContainer:focus-within .floating-button > span {
+  inset-inline-end: calc(100% + 0.4rem);
+  opacity: 1;
+}
 #floatButtonContainer:focus-within > .floating-button:nth-of-type(1) {
   inset-block-end: calc(100% + 0.4rem);
   scale: 1;
@@ -1456,11 +1460,38 @@ a, a:visited {
   inset-block-end: 0;
   width: 3.6rem;
   height: 3.6rem;
+  border: 1px solid rgb(var(--clr-max)/0.15);
   border-radius: 25rem;
   background-color: rgb(var(--clr-surface-20));
   scale: 0.5;
   transition: 0.25s;
   z-index: -1;
+}
+.floating-button > .remix {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1.6rem;
+}
+.floating-button > span {
+  display: block;
+  position: absolute;
+  inset-block: 0;
+  margin-block: auto;
+  inset-inline-end: 0;
+  padding: 0.4rem 0.8rem;
+  width: -moz-max-content;
+  width: max-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  border-radius: 0.2rem;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-size: var(--fnt-sm);
+  opacity: 0;
+  transition: opacity 0.5s, inset-inline-end 0.25s;
+  transition-delay: 0.25s;
+  pointer-events: none;
 }
 
 /* 반응형 쿼리 */
@@ -1532,37 +1563,136 @@ a, a:visited {
   text-align: center;
 }
 
-.container {
+/* _login.scss */
+#frmLogin {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  margin-top: 10%;
-}
-.container .loginForm {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.container div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.container .loginBtn {
-  color: #E3170A;
-}
-.container .loginBtn:active {
-  color: #244838;
-}
-.container .success, .container .error {
-  text-align: center;
-}
-.container .joinBtn {
-  color: #7BF4BC;
+  flex-flow: column nowrap;
 }
 
+.login-form-logo-container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-inline: auto;
+}
+.login-form-logo-container > p {
+  opacity: 0.5;
+}
+
+#loginInputContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 3.6rem;
+  margin: 2.4rem auto;
+  width: min(100% - 1.6rem, 16rem);
+}
+#loginInputContainer:focus-within label {
+  inset-block: -0.8rem 0;
+  inset-inline: 0;
+  margin-inline-end: auto;
+  margin-block: 0 auto;
+  opacity: 1;
+}
+#loginInputContainer:focus-within input::-moz-placeholder {
+  color: rgb(var(--clr-text)/0.5);
+}
+#loginInputContainer:focus-within input::placeholder {
+  color: rgb(var(--clr-text)/0.5);
+}
+
+.login-form-input-wrapper {
+  flex: 1;
+  position: relative;
+  border-block-end: 0.1rem solid rgb(var(--clr-text)/0.5);
+}
+.login-form-input-wrapper:focus-within {
+  border-color: rgb(var(--clr-text));
+}
+.login-form-input-wrapper > label {
+  position: absolute;
+  inset-block: -0.8rem 0;
+  inset-inline: 0;
+  margin-inline-end: auto;
+  margin-block: 0 auto;
+  height: -moz-fit-content;
+  height: fit-content;
+  font-size: var(--fnt-sm);
+  opacity: 1;
+  transition: inset 0.25s ease-out;
+}
+.login-form-input-wrapper > label:has(+ :-moz-placeholder-shown) {
+  inset-block: 0;
+  inset-inline: 0.4rem 0;
+  margin-block: auto;
+  opacity: 0.5;
+}
+.login-form-input-wrapper > label:has(+ :placeholder-shown) {
+  inset-block: 0;
+  inset-inline: 0.4rem 0;
+  margin-block: auto;
+  opacity: 0.5;
+}
+.login-form-input-wrapper > input {
+  padding-inline: 0.4rem;
+  width: 100%;
+  height: 2.4rem;
+  background-color: transparent;
+  color: inherit;
+}
+.login-form-input-wrapper > input::-moz-placeholder {
+  color: transparent;
+  -moz-transition: color 0.15s;
+  transition: color 0.15s;
+}
+.login-form-input-wrapper > input::placeholder {
+  color: transparent;
+  transition: color 0.15s;
+}
+
+#labelLoginResult {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  padding-block: 1.2rem;
+  border-radius: 0.8rem;
+  font-size: var(--fnt-sm);
+  font-weight: 700;
+}
+#labelLoginResult.success {
+  background-color: rgb(var(--clr-clear)/0.15);
+  color: rgb(var(--clr-clear));
+}
+#labelLoginResult.failed {
+  background-color: rgb(var(--clr-alert)/0.15);
+  color: rgb(var(--clr-alert));
+}
+
+#loginButtonContainer {
+  display: flex;
+  gap: 0.4rem;
+}
+#loginButtonContainer > button {
+  flex: 1;
+  padding-block: 0.8rem;
+  border: 1px solid transparent;
+  border-radius: 0.2rem;
+  background-color: red;
+  font-weight: 900;
+}
+#loginButtonContainer > button#btnSubmitLogin {
+  background-color: rgb(var(--clr-theme));
+  color: rgb(var(--clr-text-on-tint));
+}
+#loginButtonContainer > button#btnGoToJoin {
+  border-color: currentColor;
+  background-color: transparent;
+  color: rgb(var(--clr-tint-0));
+}
+
+/* _login.scss */
 .section-title-bar {
   margin-top: 2.5rem;
 }
@@ -1797,10 +1927,10 @@ a, a:visited {
   border: 1px solid currentColor;
   border-radius: 0.2rem;
   font-size: var(--fnt-sm);
-  font-weight: 900;
+  font-weight: 700;
   opacity: 0.5;
   z-index: 1;
-  content: "최근 글";
+  content: attr(data-article-date);
 }
 .hero-slide:has(:hover) .latest-article-title {
   color: rgb(var(--clr-theme));
@@ -1927,6 +2057,7 @@ a, a:visited {
 #postImageSlider:hover > .slider-pagination {
   opacity: 1;
   transition: 0.25s;
+  z-index: 3;
 }
 #postImageSlider.no-images {
   background-color: #dbe5df;
@@ -1951,6 +2082,8 @@ a, a:visited {
 }
 
 .article-image {
+  width: 100%;
+  height: 100%;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
@@ -2238,6 +2371,19 @@ a, a:visited {
   resize: vertical;
 }
 
+#postNavigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin-block-start: 2.4rem;
+}
+
+#btnBackToList {
+  display: flex;
+  align-items: center;
+}
+
 /* 반응형 쿼리 */
 @container main-container (max-width: 640px) {
   .slider-prev-el,
@@ -2379,6 +2525,25 @@ a, a:visited {
 .button-remove-preview-item > .remix {
   width: 1.8rem;
   filter: drop-shadow(0 0 0.4rem rgb(0, 0, 0));
+}
+
+#writePostControls {
+  display: flex;
+  gap: 0.4rem;
+}
+#writePostControls > button {
+  justify-content: center;
+  padding-block: 0.8rem;
+  height: auto;
+  font-size: var(--fnt-lg);
+}
+
+#btnUploadPost {
+  flex: 1;
+  justify-content: center;
+  padding-block: 0.8rem;
+  height: auto;
+  font-size: var(--fnt-lg);
 }
 
 /* _postWrite.scss */
@@ -2648,17 +2813,20 @@ button {
   color: rgb(var(--clr-text-on-tint));
 }
 
-.button-guestbook-controls {
+.button-guestbook-controls,
+.button-reply-controls {
   display: flex;
   align-items: center;
   gap: 0.2rem;
   font-size: var(--fnt-sm);
 }
-.button-guestbook-controls > .remix {
+.button-guestbook-controls > .remix,
+.button-reply-controls > .remix {
   width: 0.7rem;
   opacity: 0.5;
 }
-.button-guestbook-controls:hover {
+.button-guestbook-controls:hover,
+.button-reply-controls:hover {
   -webkit-text-decoration: 1px solid underline;
           text-decoration: 1px solid underline;
   text-underline-offset: 0.2rem;
@@ -3071,6 +3239,14 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   background-color: rgb(0, 0, 0);
   color: rgb(128, 128, 128);
   font-weight: 900;
+}
+
+.dark #spinloader {
+  mix-blend-mode: screen;
+}
+
+.light #spinloader {
+  mix-blend-mode: overlay;
 }
 
 /* _spinLoader.scss */
@@ -3503,9 +3679,6 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
   border: 1px solid transparent;
   border-radius: 0.4rem;
 }
-.reply-item + .reply-item {
-  margin-block-start: 0.4rem;
-}
 .reply-item:hover {
   border-color: rgb(var(--clr-tint-100)/0.25);
   background-color: rgb(var(--clr-min));
@@ -3592,11 +3765,23 @@ input[type=checkbox]:is([data-checkbox-type=toggle]):focus + label .switch-rail 
 }
 
 .reply-reply-container {
-  margin-block-start: 0.4rem;
+  margin-block-start: 0.6rem;
+}
+.reply-reply-container > .reply-item:hover {
+  background-color: rgb(var(--clr-tint-100)/0.25);
 }
 
 .reply-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   margin-block-start: 0.6rem;
+  padding-block-start: 0.6rem;
+  border-block-start: 1px solid rgb(var(--clr-max)/0.15);
+}
+.reply-controls > span {
+  font-weight: 900;
+  opacity: 0.5;
 }
 
 /* _articleReply.scss */
