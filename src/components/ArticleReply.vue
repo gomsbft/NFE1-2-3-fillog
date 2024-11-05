@@ -1,7 +1,7 @@
 <template>
     <div  v-for="reply in replies" :key="reply._id" class="reply-item">
         <div class="reply-info-container">
-            <UserNameTag v-if="reply.userID" :userId="userStore.state.userName" />
+            <UserNameTag v-if="reply.userID" :userId="reply.userID" />
             <div class="reply-user-tag" v-else>
                 <div class="reply-user-image">
                     <svg class="remix">
@@ -19,7 +19,7 @@
             <p class="reply-date">
                 {{ dateFormat(reply.createdAt) }}
             </p>
-            <button v-if="commentDeleteHandler">X</button>
+            <button>X</button>
         </div>
 
         <div class="reply-outer-container">
@@ -43,7 +43,7 @@
 <script setup>
     import { getArticleReplies, getArticleRepliesAll } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed } from 'vue';
     import { useUserStore } from '../stores/userInfo';
     const userStore = useUserStore();
 
@@ -60,6 +60,7 @@
         });
 
     const replies = ref([]);
+    const repliesCount = computed(()=> replies.value.length)
 
     const fetchReplies = async (postId) => {
         try {
