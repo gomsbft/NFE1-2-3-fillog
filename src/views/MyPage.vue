@@ -7,7 +7,8 @@
         </div>
 
         <div class="infoContent imgContainer">
-            <img :src="userInfo.userImage" alt="Uploaded User Image" />
+            <img v-if="imageState" :src="previewImageUrl" alt="설정한 이미지 없음" />
+            <img v-else alt="설정한 이미지 없음" />
         </div>
 
         <div class="infoList">
@@ -28,7 +29,7 @@
                 <form class="editInfoList">
                     <div class="imgContainer">
                         <p class="imgText">프로필 이미지</p>
-                        <label for="userImage" class="imgLabel">이미지 선택</label>
+                        <label for="userImage" class="imgLabel" @click="chooseImg">이미지 선택</label>
                         <input @change="imgUplod" type="file" id="userImage" accept="image/jpeg, image/png, image/webp" class="imgInput">
                         <img v-if="previewImageUrl" :src="previewImageUrl || ''" alt="Profile Image Preview" class="imgView" />
                     </div>
@@ -48,20 +49,13 @@
 
         <hr>
 
-        <div class="section-title-bar">
-            관심있는 포스트
-        </div>
-
-        <PageFilter id="postFilter" label-icon="corner-down-right-line" label-text="포스트" :filter-array="postFilterArray" :origin-value="'all'" />
-
-        <EmptyList />
     </div> <!-- #myPage -->
 </template> <!-- Template Ends -->
 
 <script setup>
 
 import axios from 'axios';
-import {onMounted, reactive, ref } from 'vue';
+import {onMounted, reactive, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userInfo';  // userInfo 스토어 가져오기
 
@@ -87,19 +81,23 @@ const postFilterArray = [ // 임시 필터 리스트 데이터
     });
 
     let modalState = ref(false);
+    let imageState = ref(false);
     const previewImageUrl = ref(null);
 
     onMounted(()=>{
         // 스토어에 값이 존재하지 않을 때
-        if (!userStore.state.account) {
+        if (!userStore.state) {
             console.error('유저 정보가 스토어에 없습니다.');
-            console.log("userStore.state.userID:", userStore.state.account)
         }else {
-            console.log('스토어에 있는 유저정보 사용: ' , userStore.state.account)
+            console.log('스토어에 있는 유저정보 사용: ' , userStore.state)
             Object.assign(userInfo, userStore.state);  // 스토어에 저장된 유저 정보를 사용
         }
     })
  
+    const chooseImg = () => {
+        imageState.value = true;
+    }
+
     // 프로필 관리 버튼 : 클릭시 정보 수정 모달창 열림
     const openModal = () =>{
         Object.assign(editUserInfo, {
@@ -121,6 +119,7 @@ const postFilterArray = [ // 임시 필터 리스트 데이터
             const reader = new FileReader();
             reader.onload = (e) => {
                 previewImageUrl.value = e.target.result;
+                userInfo.userImage = e.target.result;
             }
             reader.readAsDataURL(file);
         }
@@ -129,24 +128,34 @@ const postFilterArray = [ // 임시 필터 리스트 데이터
     // 모달창 - X 버튼
     const closeModal = ()=>{
         modalState.value = false;
+        previewImageUrl = false;
+        imageState.value = false;
     }
 
     // 모달창 - 확인 버튼
-    const saveEditContent = ()=>{
+    const saveEditContent = (e)=>{
+        
         modalState.value = false;
-        console.log('정보 수정 완료:', editUserInfo);
+        console.log('입력값:', editUserInfo);
         changeUserInfo(editUserInfo)
     }
 
     // 입력한 값으로 DB 정보 수정하기
     const changeUserInfo = async ({ userName, account, userImage }) => {
         try {
-            const response = await axios.post(`http://localhost:3000/mypage/edit`, {
-                _id: userInfo._id,
-                userName,
-                account,
-                userImage, 
+            const formData = new FormData();
+            formData.append('_id', userStore.state.userID);
+            formData.append('userName', userName);
+            formData.append('account', account);
+            if (userImage) {
+                formData.append('userImage', userImage);
+            }       
+            const response = await axios.post(`http://localhost:3000/mypage/edit`,formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
             })
+            console.log('응답 데이터: ', response.data);
             Object.assign(userInfo, response.data); // DB 정보 수정
             userStore.setUser(response.data);       // 스토어 정보 수정
             console.log('DB,userInfo store 수정 완료');

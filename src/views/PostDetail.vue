@@ -47,7 +47,7 @@
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
 
-                    <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span>
+                    <span>{{ displayLikes }}</span>
                 </p>
             </div> <!-- #postSummaries -->
         </div>  <!-- #postInformations -->
@@ -111,7 +111,7 @@
                     <span></span>
                 </div>
 
-                <p>댓글 <span>·</span> <span class="replies-counter">{{ totalReplies.length.toLocaleString('ko-KR') }}</span></p>
+                <p>댓글 <span>·</span> <span class="replies-counter">{{ displayComments }}</span></p>
             </div>
 
             <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
@@ -171,7 +171,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, computed, reactive } from 'vue';
+    import { ref, computed, reactive, onMounted } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
     import { getAdminInfo, getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
@@ -193,6 +193,10 @@
         likes: [...thisArticle.likes],
         comments: [...thisArticle.comments],
     });
+
+    const displayLikes = computed(() => { return postData.likes.length.toLocaleString('ko-KR') });
+    const displayComments = computed(() => { return postData.comments.length.toLocaleString('ko-KR') });
+    const commentText = ref('');
 
     const swiperParams = {
         slidesPerView: 1,
@@ -219,6 +223,21 @@
         password: '',
         replyText: '',
         reReplies: []
+    });
+
+    const fetchReplies = async (postId) => {
+        try {
+            const commentIds = await getArticleRepliesAll(postId); 
+            const repliesData = await Promise.all(commentIds.map(async (replyId) => {
+            return await getArticleReplies(replyId); 
+            }));
+            replies.value = repliesData; 
+        } catch (error) {
+            console.error("댓글 로드 중 오류 발생:", error);
+        }
+    };
+    onMounted(() => {
+        fetchReplies(thisArticle._id); 
     });
 
     // 게시물 삭제
@@ -292,7 +311,7 @@
         };
 
         try {
-            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, newComment);
+            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, {newComment});
             // 서버 응답 처리
             if (response.status === 200) {
                 postData.comments.push( response.data._id );
