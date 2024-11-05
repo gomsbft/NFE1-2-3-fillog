@@ -1,41 +1,41 @@
 <template>
-  <div class="container">
-      <h3>sign up</h3>
+    <div class="container">
+        <h3>sign up</h3>
 
-      <form @submit.prevent="register" class="registerForm">
-          <div>
-              <label for="account">account</label>
-              <input v-model="form.account" id="account" type="email" required />
-          </div>
+        <form @submit.prevent="register" class="registerForm">
+            <div>
+                <label for="account">account</label>
+                <input v-model="form.account" id="account" type="email" required />
+            </div>
 
-          <div>
-              <label for="password">password</label>
-              <input v-model="form.password" id="password" type="password" required />
-          </div>
+            <div>
+                <label for="password">password</label>
+                <input v-model="form.password" id="password" type="password" required />
+            </div>
 
-          <div>
-              <label for="verifyPassword">verify-password</label>
-              <input v-model="form.verifyPassword" id="verifyPassword" type="password" required />
-          </div>
+            <div>
+                <label for="verifyPassword">verify-password</label>
+                <input v-model="form.verifyPassword" id="verifyPassword" type="password" required />
+            </div>
 
-          <div>
-              <label for="userName">username</label>
-              <input v-model="form.userName" id="userName" type="text" required />
-          </div>
+            <div>
+                <label for="userName">username</label>
+                <input v-model="form.userName" id="userName" type="text" required />
+            </div>
 
-          <div class="imgContainer">
-              <p class="imgText">userImage</p>
-              <label for="userImage" class="imgLabel"></label>
-              <input @change="imgUplod"  type="file" id="userImage" accept="image/jpeg, image/png, image/webp" class="imgInput">
-              <img v-if="previewImageUrl" :src="previewImageUrl || ''" alt="" class="imgView" />
-          </div>
+            <div class="imgContainer">
+                <p class="imgText">userImage</p>
+                <label for="userImage" class="imgLabel"></label>
+                <input @change="imgUplod"  type="file" id="userImage" accept="image/jpeg, image/png, image/webp" class="imgInput">
+                <img v-if="previewImageUrl" :src="previewImageUrl || ''" alt="" class="imgView" />
+            </div>
 
-          <button type="submit" class="registerBtn">Register</button>
+            <button type="submit" class="registerBtn">Register</button>
 
-          <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-          <div v-if="successMessage" class="success">{{ successMessage }}</div>
-      </form>
-  </div>
+            <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+            <div v-if="successMessage" class="success">{{ successMessage }}</div>
+        </form>
+    </div>
 </template>
 
 <script setup>
