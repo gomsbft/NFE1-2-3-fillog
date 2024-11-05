@@ -16,8 +16,10 @@
             </div>
 
             <span>·</span>
+
             <p class="reply-date">
                 {{ dateFormat(thisReply.createdAt) }}
+
                 <span>·</span>
 
                 {{ hourFormat(thisReply.createdAt) }}
@@ -33,18 +35,23 @@
                 <div class="reply-reply-container" v-if="thisReply.replyTarget.target === 'article'">
                     <slot></slot>
                 </div>
+
                 <div class="reply-controls">
-                    <button type="button" class="button-reply-controls" v-if="thisReply.replyTarget.target === 'article'" @click="console.log('지금 클릭한 댓글 :',thisReply._id)">
+                    <button type="button" class="button-reply-controls" v-if="thisReply.replyTarget.target === 'article'" @click="replyHandler">
                         <svg class="remix">
-                            <use xlink:href="/miscs/remixicon.symbol.svg#ri-chat-3-line"></use>
+                            <use :xlink:href="`/miscs/remixicon.symbol.svg#ri-${ currentTargetIndicator ? 'close-line' : 'chat-3-line' }`"></use>
                         </svg>
-                        <span>대댓글 작성</span>
+
+                        <span>{{ currentTargetIndicator ? '취소' : '대댓글 작성' }}</span>
                     </button>
+
                     <span v-if="thisReply.replyTarget.target === 'article'">·</span>
+
                     <button type="button" class="button-reply-controls" @click="console.log('지금 삭제하려는 댓글 :', thisReply._id)">
                         <svg class="remix">
                             <use xlink:href="/miscs/remixicon.symbol.svg#ri-close-circle-fill"></use>
                         </svg>
+
                         <span>삭제</span>
                     </button>
                 </div>
@@ -54,6 +61,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { ref } from 'vue';
     import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
@@ -62,4 +70,11 @@
     const emits = defineEmits([ 'sendReplyInfo' ]); // 대댓글 작성을 위해 이 댓글의 정보를 돌려보내는 emit
     const thisReply = await getArticleReplies(props.replyId);
     const thisUser = thisReply.userID ? await getUserInfo(thisReply.userID) : { userName: thisReply.userName };
+    const currentTargetIndicator = ref(false);
+
+    const replyHandler = () => {
+        emits('sendReplyInfo', currentTargetIndicator.value ? false : thisReply);
+
+        currentTargetIndicator.value = !currentTargetIndicator.value;
+    }
 </script> <!-- Logic Ends -->
