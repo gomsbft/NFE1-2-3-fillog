@@ -16,7 +16,7 @@
 
             <button id="editBtn" @click="openModal">프로필 관리</button>
         </div>
-
+ 
         <!-- 모달 부분, 프로필 관리 버튼 클릭시 표시 -->
         <div class="modal-wrap" v-show="modalState">
             <div class="modal-container">
