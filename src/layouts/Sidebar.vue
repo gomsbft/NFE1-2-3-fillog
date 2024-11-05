@@ -156,9 +156,12 @@
             : `http://localhost:3000/users/${ blogAdmin.adminID }/unfollow`;
 
         try {
-            await axios.post(url, { followerId: thisUser.value });
+            await axios.post(url, {
+                userID: blogAdmin.adminID,
+                followerID: currentUser.state.userID
+            });
             didIFollowed.value = !didIFollowed.value;
-            console.log(!didIFollowed.value ? '팔로우 성공' : '언팔 성공');
+            console.log(!didIFollowed.value ? '언팔 성공' : '팔로우 성공');
         } catch (err) {
             console.error(err);
         }

@@ -76,11 +76,11 @@ export const getPostInfo = async (articleID) => { // 개별 포스트 가져오�
     }
 }
 
-export const editPost = (postID) => { // 게시물 수정
+export const editPost = (postID) => { // 포스트 수정
     router.push(`/posts/edit/${ postID }`);
 };
 
-export const deletePost = async (postID) => { // 게시물 삭제
+export const deletePost = async (postID) => { // 포스트 삭제
     const confirmDel = confirm('이 게시물을 정말 삭제하시겠습니까?');
 
     if (confirmDel) {
@@ -155,6 +155,36 @@ export const searchMovies = async (searchQuery) => { // 영화 정보 검색
     }
 }
 
+export const writeReply = async (articleID, replyObject) => { // 댓글 작성
+    try {
+        const response = await baseAPI.post(`/reply/${ articleID }`, replyObject);
+        // 서버 응답 처리
+        if (response.status === 200) {
+            console.log(response.data.message);
+
+            return response;
+        } else {
+            console.error(response.data.message);
+        }
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const deleteReply = async (replyID, requestObject) => { // 댓글 삭제
+    try {
+        const response = await baseAPI.delete(`/reply/${ replyID }`, requestObject);
+
+        if (response.status === 200) {
+            console.log(response.data.message);
+
+            return response;
+        }
+    } catch(error) {
+        console.error(error);
+    }
+}
+
 export const getArticleRepliesAll = async (articleID) => { // 포스트에 해당되는 전체 댓글 가져오기
     try {
         const { data: response } = await baseAPI.get(`/replies/post/${ articleID }`);
@@ -167,7 +197,7 @@ export const getArticleRepliesAll = async (articleID) => { // 포스트에 해�
 
 export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓글 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/posts/${replyID}/comments`);
+        const { data: response } = await baseAPI.get(`/replies/${ replyID }`);
 
         return response;
     } catch(error) {

@@ -82,7 +82,7 @@
             </button>
 
             <!-- 이 버튼들은 자기가 쓴 게시물에만 표시 -->
-            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle.id }`)">
+            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="수정" style="--button-icon-color: var(--clr-info)" @click="router.push(`/posts/edit/${ thisArticle._id }`)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
                 </svg>
@@ -90,7 +90,7 @@
                 <span>수정</span>
             </button>
 
-            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deleteArticle(thisArticle.id)">
+            <button type="button" class="button-post-controls" v-if="currentUser.state.userID === blogAdmin.adminID" title="삭제" style="--button-icon-color: var(--clr-alert)" @click="deleteArticle(thisArticle._id)">
                 <svg class="remix"mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
                 </svg>
@@ -123,12 +123,20 @@
             </div> <!-- #repliesContainer - 댓글이 없을 때 -->
 
             <div id="repliesContainer" v-else>
-                <ArticleReply v-for="(replyItem, index) in replyArticlesOnly" :key="index" :reply-id="replyItem._id">
+                <ArticleReply v-for="(replyItem, index) in replyArticlesOnly" :class="commentObject.replyTarget.targetID === replyItem._id ? 'current-target' : null" :key="index" :reply-id="replyItem._id" @send-reply-info="getReplyInfo">
                     <ArticleReply v-for="(reReplyID, index) in replyItem.reReplies" :key="index" :reply-id="reReplyID" />
                 </ArticleReply>
             </div> <!-- #repliesContainer - 댓글이 존재할 때 -->
 
             <div id="replyEditor">
+                <div class="reply-target-indicator" v-if="targetIndicator">
+                    <svg class="remix">
+                        <use xlink:href="/miscs/remixicon.symbol.svg#ri-reply-fill"></use>
+                    </svg>
+
+                    <p>To. <span>{{ targetIndicator.userName }}</span> 님의 댓글</p>
+                </div>
+
                 <div v-if="currentUser.state.userID" id="replyingUser">
                     <UserNameTag :user-id="currentUser.state.userID" />
                 </div> <!-- #replyingUser - 사용자가 로그인 된 상태일 때 -->
@@ -147,7 +155,7 @@
                 <div id="replyingInput">
                     <textarea name="reply-input" id="txtReply" v-model="commentObject.replyText" rows="3" placeholder="댓글은 내 마음을 비추는 거울입니다. 나 자신과 상대방을 위한 배려와 책임을 담아 작성해 주세요."></textarea>
 
-                    <button type="button" id="btnSubmitReply" @click="commentBtnHandler">
+                    <button type="button" id="btnSubmitReply" @click="replyHandler">
                         <svg class="remix">
                             <use xlink:href="/miscs/remixicon.symbol.svg#ri-corner-down-left-line"></use>
                         </svg>
@@ -171,10 +179,10 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, computed, reactive } from 'vue';
+    import { ref, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
-    import { getAdminInfo, getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
+    import { getAdminInfo, getPostInfo, getUserInfo, getArticleRepliesAll, writeReply } from '../utilities/dataQueries';
     import { useUserStore } from '../stores/userInfo';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
@@ -211,15 +219,52 @@
         }
     }
 
-    const commentObject = ref({
-        replyTarget: 'article',
+    const commentObject = ref({ // 댓글 작성 Form Data 객체
+        replyTarget: {
+            target: 'article',
+            targetID: thisArticle._id
+        },
         repliedArticle: thisArticle._id,
-        userID: '',
-        userName: '',
-        password: '',
+        userID: currentUser.state.userID ?? null,
+        userName: null,
+        password: null,
         replyText: '',
         reReplies: []
     });
+
+    const targetIndicator = ref(null); // 현재 댓글 대상 표시기
+
+    const getReplyInfo = async (data) => { // 댓글의 emit 정보를 받아서 대댓글 상태로 전환
+        const targetObj = commentObject.value.replyTarget;
+        const replyUser = data.userID ? await getUserInfo(data.userID) : { userName: data.userName };
+
+        if (data) {
+            targetObj.target = 'reply';
+            targetObj.targetID = data._id;
+            targetIndicator.value = data;
+            targetIndicator.value.userName = replyUser.userName;
+        } else {
+            targetObj.target = 'article';
+            targetObj.targetID = thisArticle._id;
+            targetIndicator.value = null;
+        }
+    }
+
+    const replyHandler = async () => { // 댓글 작성 핸들러
+        if (!!commentObject.value.replyText === false) {
+            return console.warn('댓글 내용이 작성되지 않았습니다.');
+        }
+
+        const response = await writeReply(thisArticle._id, commentObject.value);
+
+        if (response.status === 200) {
+            commentObject.value.replyText = '';
+            commentObject.value.userName = '';
+            commentObject.value.password = '';
+
+            console.log('댓글 작성 완료');
+        }
+    }
 
     // 게시물 삭제
     const deleteArticle = async () => {
@@ -242,7 +287,7 @@
     // 좋아요 버튼 클릭 시 핸들러
     const likeBtnHandler = async () => {
         const postId = thisArticle._id;
-        const userId = currentUser.state.userID;// 로그인한 사용자의 ObjectId
+        const userId = currentUser.state.userID; // 로그인한 사용자의 ObjectId
 
         try {
             const response = await axios.post(`http://localhost:3000/posts/${ postId }/like`, { userId });
@@ -250,7 +295,7 @@
             if (response.data.message === '좋아요 추가 성공') {
                 // 좋아요 추가된 경우
                 if (!postData.likes.includes(userId)) {
-                postData.likes.push(userId);
+                    postData.likes.push(userId);
                 }
             } else if (response.data.message === '좋아요 취소 성공') {
                 // 좋아요 취소된 경우, postData.likes 배열에서 유저 아이디 제거
@@ -262,75 +307,6 @@
             }
         } catch(error) {
             console.error('에러 발생', error.response ? error.response.data : error.message)
-        }
-    }
-
-    // 댓글 등록 버튼 클릭 시 핸들러
-    const commentBtnHandler = async (e) => {
-        e.preventDefault();
-        const postId = thisArticle._id;
-        const userId = currentUser.state.userID;
-
-        if (!commentText.value) {
-            commentText.value = '';
-
-            return console.log('댓글 내용 없음');
-        }
-        const txtReplyingPasswordElem = document.querySelector("#txtReplyingPassword");
-        const txtReplyingNameElem = document.querySelector("#txtReplyingName");
-
-        const txtReplyingPassword = txtReplyingPasswordElem ? String(txtReplyingPasswordElem.value) : '';
-        const txtReplyingName = txtReplyingNameElem ? txtReplyingNameElem.value : '';
-
-        const newComment = {
-            replyTarget: 'article',
-            userID: userId ? userId : null,
-            userName: txtReplyingName ? txtReplyingName : null,
-            password: txtReplyingPassword ? txtReplyingPassword : null,
-            replyText: commentText.value,
-            reReply: [{}]
-        };
-
-        try {
-            const response = await axios.post(`http://localhost:3000/posts/${postId}/comment`, newComment);
-            // 서버 응답 처리
-            if (response.status === 200) {
-                postData.comments.push( response.data._id );
-            } else {
-                console.error(response.data.message);
-            }
-        } catch (error) {
-            console.error('댓글 등록 중 오류 발생:', error);
-        } finally {
-            if (commentText) commentText.value = '';
-            if (txtReplyingPasswordElem) txtReplyingPasswordElem.value = '';
-            if (txtReplyingNameElem) txtReplyingNameElem.value = '';
-        }
-    }
-
-    // 댓글 삭제 버튼 클릭 시 핸들러
-    const commentDeleteHandler = async (commentId) => {
-        const postId = route.params.postId;
-        const password = prompt("삭제를 확인하려면 비밀번호를 입력하세요:");
-
-        if (!password) {
-            alert("댓글 삭제를 위해 비밀번호가 필요합니다.");
-            return;
-        }
-
-        try {
-            const response = await axios.delete(`/posts/${postId}/comment/${commentId}`, { password });
-            const data = response.data;
-
-            if (response.status === 200) {
-                comments.value = comments.value.filter(comment => comment._id !== commentId);
-                alert(data.message);
-            } else {
-                alert(data.message);
-            }
-        } catch (error) {
-            console.error("댓글 삭제 중 오류:", error);
-            alert("댓글 삭제 중 오류가 발생했습니다.");
         }
     }
 </script> <!-- Logic Ends -->

@@ -60,11 +60,11 @@
     const login = async () => {
         try {
             const response = await axios.post('http://localhost:3000/login', loginFormData.value);
-            const token = response.data.token;
+            const { token, user } = response.data;
 
             localStorage.setItem('token', token); // 로그인 토큰을 로컬 스토리지에 저장
             responseMessage.value = { result: true, message: '로그인 성공!' };
-            currentUser.setUser({ userID: response.data.user._id, token: token });
+            currentUser.setUser({ userID: user._id, userName: user.userName, account: user.account, token: token });
             router.push('/');
         } catch(error) {
             // 실패 시 에러 메시지 처리

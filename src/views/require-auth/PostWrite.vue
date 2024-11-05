@@ -120,13 +120,12 @@
 
     const router = useRouter();
     const blogAdmin = await getAdminInfo();
-    console.log(blogAdmin);
     const fileUploader = useTemplateRef('file-uploader'); // input:file 이벤트 추가를 위한 템플릿 레퍼런스
     const postFormData = ref({
         title: '',
         category: 0,
         movieID: null,
-        movieGenres: null,
+        movieGenres: [],
         text: '',
         images: [],
         author: blogAdmin.adminID
