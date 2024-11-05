@@ -2,10 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('currentUser', () => {
-    const state = ref({
-        userID: null,
-        token: null
-    });
+    const state = ref({ userID: null, token: null });
 
     const setUser = (userObject) => {
         state.value = userObject;
@@ -15,7 +12,7 @@ export const useUserStore = defineStore('currentUser', () => {
         state.value = { userID: null, token: null }
     }
 
-    return { state, setUser }
+    return { state, setUser, removeUser }
 });
 
 /**
