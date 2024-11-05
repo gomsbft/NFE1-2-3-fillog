@@ -47,7 +47,7 @@
 
                     <span v-if="thisReply.replyTarget.target === 'article'">·</span>
 
-                    <button type="button" class="button-reply-controls" @click="console.log('지금 삭제하려는 댓글 :', thisReply._id)">
+                    <button type="button" class="button-reply-controls" @click="deleteHandler">
                         <svg class="remix">
                             <use xlink:href="/miscs/remixicon.symbol.svg#ri-close-circle-fill"></use>
                         </svg>
@@ -62,7 +62,7 @@
 
 <script setup>
     import { ref } from 'vue';
-    import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
+    import { getArticleReplies, getUserInfo, deleteReply } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
 
@@ -72,9 +72,16 @@
     const thisUser = thisReply.userID ? await getUserInfo(thisReply.userID) : { userName: thisReply.userName };
     const currentTargetIndicator = ref(false);
 
-    const replyHandler = () => {
+    const replyHandler = () => { // 대댓글 클릭시의 emit
         emits('sendReplyInfo', currentTargetIndicator.value ? false : thisReply);
 
         currentTargetIndicator.value = !currentTargetIndicator.value;
+    }
+
+    const deleteHandler = async () => {
+        const askPassword = prompt('작성시 입력한 비밀번호를 입력하세요.');
+        const response = await deleteReply(thisReply._id, { data: { postID: thisReply.repliedArticle, password: askPassword } });
+
+        console.log(response);
     }
 </script> <!-- Logic Ends -->

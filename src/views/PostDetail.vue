@@ -309,32 +309,4 @@
             console.error('에러 발생', error.response ? error.response.data : error.message)
         }
     }
-
-
-
-    // 댓글 삭제 버튼 클릭 시 핸들러
-    const commentDeleteHandler = async (commentId) => {
-        const postId = route.params.postId;
-        const password = prompt("삭제를 확인하려면 비밀번호를 입력하세요:");
-
-        if (!password) {
-            alert("댓글 삭제를 위해 비밀번호가 필요합니다.");
-            return;
-        }
-
-        try {
-            const response = await axios.delete(`/posts/${postId}/comment/${commentId}`, { password });
-            const data = response.data;
-
-            if (response.status === 200) {
-                comments.value = comments.value.filter(comment => comment._id !== commentId);
-                alert(data.message);
-            } else {
-                alert(data.message);
-            }
-        } catch (error) {
-            console.error("댓글 삭제 중 오류:", error);
-            alert("댓글 삭제 중 오류가 발생했습니다.");
-        }
-    }
 </script> <!-- Logic Ends -->
