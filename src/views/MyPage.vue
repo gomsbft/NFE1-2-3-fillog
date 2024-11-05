@@ -11,8 +11,8 @@
         </div>
 
         <div class="infoList">
-            <p class="infoContent">{{ userInfo?.userName }}</p>
-            <p class="infoContent">{{ userInfo?.account }}</p>
+            <p class="infoContent">{{ userInfo.userName }}</p>
+            <p class="infoContent">{{ userInfo.account }}</p>
 
             <button id="editBtn" @click="openModal">프로필 관리</button>
         </div>
@@ -59,16 +59,19 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { onMounted, reactive, ref } from 'vue';
-    import { useRouter } from 'vue-router';
-    import axios from 'axios';
 
-    const router = useRouter();
-    const postFilterArray = [ // 임시 필터 리스트 데이터
-            { name: '전체', value: 'all' },
-            { name: '좋아요한', value: 'likedArticles' },
-            { name: '댓글을 작성한', value: 'commentedArticles' }
-        ]
+import axios from 'axios';
+import {onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/userInfo';  // userInfo 스토어 가져오기
+
+const userStore = useUserStore();  // userInfo 스토어 사용
+const router = useRouter();
+const postFilterArray = [ // 임시 필터 리스트 데이터
+        { name: '전체', value: 'all' },
+        { name: '좋아요한', value: 'likedArticles' },
+        { name: '댓글을 작성한', value: 'commentedArticles' }
+    ]
 
     let userInfo = reactive({
         userImage: null,
@@ -86,35 +89,17 @@
     let modalState = ref(false);
     const previewImageUrl = ref(null);
 
-    // 토큰에서 로그인한 유저 이메일 추출하기
-    const findUserAccount = () => {
-        const token = window.localStorage.getItem("token");
-        // 토큰에서 payload 부분만 추출
-        const base64Payload = token.split('.')[1];
-        // base64 디코딩하여 JSON 객체로 변환
-        const userAccount = JSON.parse(atob(base64Payload)).account;
-        // tokenPayload.value = userAccount.account;
-        console.log('userAccount :',userAccount);
-        findUserInfo(userAccount);
-    }
-
-    // 추출한 이메일을 기반으로 DB에서 유저 정보 가져오기
-    const findUserInfo = async (userAccount) => {
-        try{
-            const postResponse = await axios.post(`http://localhost:3000/mypage`, { userAccount });
-
-            console.log('응답 데이터:',postResponse.data);
-            Object.assign(userInfo, postResponse.data);
-            console.log('userInfo: ', userInfo)
-        } catch(err) {
-            console.error(err);
-        }
-    }
-
     onMounted(()=>{
-        findUserAccount();
-    });
-
+        // 스토어에 값이 존재하지 않을 때
+        if (!userStore.state.account) {
+            console.error('유저 정보가 스토어에 없습니다.');
+            console.log("userStore.state.userID:", userStore.state.account)
+        }else {
+            console.log('스토어에 있는 유저정보 사용: ' , userStore.state.account)
+            Object.assign(userInfo, userStore.state);  // 스토어에 저장된 유저 정보를 사용
+        }
+    })
+ 
     // 프로필 관리 버튼 : 클릭시 정보 수정 모달창 열림
     const openModal = () =>{
         Object.assign(editUserInfo, {
@@ -141,15 +126,15 @@
         }
     }
 
-    // 모달창 - 닫기 버튼
-    const closeModal = () => {
+    // 모달창 - X 버튼
+    const closeModal = ()=>{
         modalState.value = false;
     }
 
-    // 모달창 - 저장 버튼
-    const saveEditContent = () => {
+    // 모달창 - 확인 버튼
+    const saveEditContent = ()=>{
         modalState.value = false;
-        console.log('Updated info:', editUserInfo);
+        console.log('정보 수정 완료:', editUserInfo);
         changeUserInfo(editUserInfo)
     }
 
@@ -160,12 +145,12 @@
                 _id: userInfo._id,
                 userName,
                 account,
-                userImage,
-            });
-
-            Object.assign(userInfo, response.data);
-            console.log('응답 데이터: ', response);
-        } catch(err) {
+                userImage, 
+            })
+            Object.assign(userInfo, response.data); // DB 정보 수정
+            userStore.setUser(response.data);       // 스토어 정보 수정
+            console.log('DB,userInfo store 수정 완료');
+        }catch(err){
             console.error(err);
         }
     }

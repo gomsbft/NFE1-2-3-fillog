@@ -1,8 +1,7 @@
 <template>
-    <div class="reply-item">
+    <div  v-for="reply in replies" :key="reply._id" class="reply-item">
         <div class="reply-info-container">
-            <UserNameTag v-if="thisReply.userID" :user-id="thisReply.userID" />
-
+            <UserNameTag v-if="reply.userID" :userId="reply.userID" />
             <div class="reply-user-tag" v-else>
                 <div class="reply-user-image">
                     <svg class="remix">
@@ -11,7 +10,7 @@
                 </div>
 
                 <p class="reply-user-name">
-                    <span>{{ thisUser.userName }}</span>
+                    <span>{{ reply?.userName || '익명'}}</span>
                 </p>
             </div>
 
@@ -24,12 +23,13 @@
 
                 {{ hourFormat(thisReply.createdAt) }}
             </p>
+            <button v-if="commentDeleteHandler">X</button>
         </div>
 
         <div class="reply-outer-container">
             <div class="reply-inner-container">
                 <p class="reply-text">
-                    {{ thisReply.replyText }}
+                    {{ reply.replyText }}
                 </p>
 
                 <div class="reply-reply-container" v-if="thisReply.replyTarget.target === 'article'">
@@ -61,11 +61,44 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { getArticleReplies, getUserInfo } from '../utilities/dataQueries';
+    import { ref, onMounted, computed } from 'vue';
+    import { getArticleReplies, getArticleRepliesAll } from '../utilities/dataQueries';
+    import { useUserStore } from '../stores/userInfo';
     import dateFormat from '../utilities/dateFormat';
     import hourFormat from '../utilities/hourFormat';
 
-    const props = defineProps([ 'replyId' ]);
-    const thisReply = await getArticleReplies(props.replyId);
-    const thisUser = await getUserInfo(thisReply.userID);
+    const userStore = useUserStore();
+    const props = defineProps({
+        postId: {
+            type: String,
+            required: true,
+        },
+        replyId: {
+            type: String,
+            required: true,
+        },
+    });
+
+    const replies = ref([]);
+    const repliesCount = computed(()=> replies.value.length)
+
+    const fetchReplies = async (postId) => {
+        try {
+            const commentIds = await getArticleRepliesAll(postId); 
+            
+            const repliesData = await Promise.all(commentIds.map(async (replyId) => {
+                return await getArticleReplies(replyId); 
+            }));
+
+            replies.value = repliesData; 
+            console.log("repliesData", repliesData)
+            console.log("replies", replies)
+        } catch(error) {
+            console.error("Error fetching replies:", error);
+        }
+    };
+
+    onMounted(() => {
+        fetchReplies(props.postId); 
+    });
 </script> <!-- Logic Ends -->

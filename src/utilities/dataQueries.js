@@ -167,7 +167,7 @@ export const getArticleRepliesAll = async (articleID) => { // 포스트에 해�
 
 export const getArticleReplies = async (replyID) => { // 포스트의 개별 댓글 가져오기
     try {
-        const { data: response } = await baseAPI.get(`/replies/${ replyID }`);
+        const { data: response } = await baseAPI.get(`/posts/${replyID}/comments`);
 
         return response;
     } catch(error) {
