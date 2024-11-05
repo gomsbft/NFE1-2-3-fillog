@@ -47,7 +47,7 @@
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
 
-                    <span>{{ displayLikes }}</span>
+                    <span>{{ thisArticle.likes.length.toLocaleString('ko-KR') }}</span>
                 </p>
             </div> <!-- #postSummaries -->
         </div>  <!-- #postInformations -->
@@ -111,7 +111,7 @@
                     <span></span>
                 </div>
 
-                <p>댓글 <span>·</span> <span class="replies-counter">{{ totalReplies.toLocaleString('ko-KR') }}</span></p>
+                <p>댓글 <span>·</span> <span class="replies-counter">{{ totalReplies.length.toLocaleString('ko-KR') }}</span></p>
             </div>
 
             <div id="repliesContainer" class="empty" v-if="thisArticle.comments.length === 0">
@@ -171,7 +171,7 @@
 </template> <!-- Template Ends -->
 
 <script setup>
-    import { ref, computed, reactive, onMounted } from 'vue';
+    import { ref, computed, reactive } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import axios from 'axios';
     import { getAdminInfo, getPostInfo, getArticleRepliesAll } from '../utilities/dataQueries';
@@ -187,17 +187,12 @@
     const currentUser = useUserStore(); // 현재 로그인 사용자 Store
     const thisArticle = await getPostInfo(route.params.postID);
     const totalReplies = await getArticleRepliesAll(thisArticle._id); // 해당 게시물을 target으로 하는 모든 댓글 가져오기
-
-    console.log(totalReplies);
-
     const replyArticlesOnly = totalReplies.filter(reply => reply.replyTarget.target === 'article'); // 해당 게시물 자체에 달린 댓글을 우선 출력하는 배열
 
     const postData = reactive({
         likes: [...thisArticle.likes],
         comments: [...thisArticle.comments],
     });
-
-    const displayLikes = computed(() => { return postData.likes.length.toLocaleString('ko-KR') });
 
     const swiperParams = {
         slidesPerView: 1,
