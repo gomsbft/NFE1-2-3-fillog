@@ -45,7 +45,7 @@
 
             <dd class="article-item-text-summary">
                 <RouterLink :to="`/posts/${ thisArticle._id }`">
-                    {{ thisArticle.text }}
+                    {{ thisArticle.text.replace(/<[^>]*>?/g, ' ') }}
                 </RouterLink>
             </dd>
         </dl>

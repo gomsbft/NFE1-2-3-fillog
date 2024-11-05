@@ -37,6 +37,7 @@
     import { ref, computed } from 'vue';
     import { getTotalPosts } from '../utilities/dataQueries';
     import articleCategory from '../datas/articleCategory.json';
+
     const postData = ref(await getTotalPosts());
     const searchKeyword = ref('');
     const selectedCategory = ref('all');

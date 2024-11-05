@@ -4,16 +4,16 @@
         <h1>게시물 수정</h1>
         <select v-model="cate">
             <option value="all">==카테고리==</option>
-            <option v-for="(category, value) in movieCategory" :key="value" :value="value">
+            <option v-for="(category, value) in articleCategory" :key="value" :value="value">
             {{ category }}
             </option>
         </select>
         </div>
         <input v-model="title" type="text" placeholder="제목을 입력하세요" />
-        <textarea v-model="content" placeholder="내용을 입력하세요"></textarea>
+        <textarea v-model="text" placeholder="내용을 입력하세요"></textarea>
         <div class="bot">
         <div class="image_area" v-for="(image, idx) in images" :key="idx">
-            <img :src="image" />
+            <img :src="image.imageURL" />
             <button class="del_photo" @click="delPhoto(idx)">×</button>
         </div>
         </div>
@@ -34,7 +34,7 @@
     import { ref, onMounted } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import axios from 'axios';
-    import movieCategory from '../datas/movieCategory.json';
+    import articleCategory from '../datas/articleCategory.json';
 
     const route = useRoute();
     const router = useRouter();
@@ -42,7 +42,7 @@
 
     // 게시물 데이터를 저장하는 변수
     const title = ref('');
-    const content = ref('');
+    const text = ref('');
     const cate = ref('');
     const images = ref([]);
 
@@ -50,8 +50,9 @@
     const fetchPostData = async () => {
         try {
             const response = await axios.get(`http://localhost:3000/posts/${postID}`);
+            console.log(response.data)
             title.value = response.data.title;
-            content.value = response.data.content;
+            text.value = response.data.text;
             cate.value = response.data.category;
             images.value = response.data.images;
         } catch (err) {
@@ -78,7 +79,7 @@
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            images.value.push(e.target.result);
+            images.value.push({imageURL: e.target.result});
         };
         reader.readAsDataURL(file);
     }
@@ -89,7 +90,7 @@
         try {
             await axios.put(`http://localhost:3000/posts/${postID}`, {
             title: title.value,
-            content: content.value,
+            text: text.value,
             category: cate.value,
             images: images.value
             });
