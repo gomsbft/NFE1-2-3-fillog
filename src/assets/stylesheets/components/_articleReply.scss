@@ -5,10 +5,6 @@
     border: 1px solid transparent;
     border-radius: .4rem;
 
-    & + & {
-        margin-block-start: .4rem;
-    }
-
     &:hover {
         border-color: rgb(var(--clr-tint-100) / .25);
         background-color: rgb(var(--clr-min));
@@ -27,6 +23,45 @@
     > span {
         font-weight: 900;
         opacity: .5;
+    }
+}
+
+.reply-user-tag {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    width: fit-content;
+
+    > .reply-user-image {
+        position: relative;
+        width: 1.2rem;
+        height: 1.2rem;
+        aspect-ratio: 1 / 1;
+        border-radius: 25rem;
+        background-color: rgb(128 128 128);
+        overflow: hidden;
+        user-select: none;
+
+        > .remix {
+            position: absolute;
+            inset: 0;
+            margin-block: auto -.1rem;
+            margin-inline: auto;
+            width: 90%;
+            color: rgb(255 255 255 / .5);
+        }
+    }
+
+    > .reply-user-name {
+        &::after {
+            opacity: .75;
+            content: ' 님';
+        }
+
+        > span {
+            font-weight: 700;
+        }
     }
 }
 
@@ -54,7 +89,7 @@
 }
 
 .reply-inner-container {
-
+    flex: 1;
 }
 
 .reply-text {
@@ -62,8 +97,28 @@
     line-height: 1.8;
 }
 
-.reply-controls {
+.reply-reply-container {
     margin-block-start: .6rem;
+
+    > .reply-item {
+        &:hover {
+            background-color: rgb(var(--clr-tint-100) / .25);
+        }
+    }
+}
+
+.reply-controls {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    margin-block-start: .6rem;
+    padding-block-start: .6rem;
+    border-block-start: 1px solid rgb(var(--clr-max) / .15);
+
+    > span {
+        font-weight: 900;
+        opacity: .5;
+    }
 }
 
 /* _articleReply.scss */

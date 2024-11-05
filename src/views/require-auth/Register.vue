@@ -36,24 +36,24 @@
             <div v-if="successMessage" class="success">{{ successMessage }}</div>
         </form>
     </div>
-</template>
+</template> <!-- Template Ends -->
 
 <script setup>
     import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
     import axios from 'axios';
 
-  
-  // 에러 메시지, 성공 메시지 저장
-  const errorMessage = ref('');
-  const successMessage = ref('');
-  
-  const previewImageUrl = ref(null);
-  
-  // 비밀번호가 8자 이상 12자 이하인지 확인
-  const isValidPasswordLength = (password) => {
+
+    // 에러 메시지, 성공 메시지 저장
+    const errorMessage = ref('');
+    const successMessage = ref('');
+
+    const previewImageUrl = ref(null);
+
+    // 비밀번호가 8자 이상 12자 이하인지 확인
+    const isValidPasswordLength = (password) => {
     return password.length >= 8 && password.length <= 12;
-  };
+    };
     const router = useRouter();
 
     // 상태 관리
@@ -100,18 +100,18 @@
 
     // password 와 verifyPassword 일치하는지 확인
     if (!passwordCheck(form.password, form.verifyPassword)) {
-      errorMessage.value = '비밀번호가 일치하지 않습니다.';
-      successMessage.value = '';                                              
-      return;
+        errorMessage.value = '비밀번호가 일치하지 않습니다.';
+        successMessage.value = '';
+        return;
     }
-  
+
     try {
-      const formData = new FormData();
-      formData.append('type', form.type);
-      formData.append('account', form.account);
-      formData.append('password', form.password);
-      formData.append('userName', form.userName);
-      formData.append('userImage', form.userImage);
+        const formData = new FormData();
+        formData.append('type', form.type);
+        formData.append('account', form.account);
+        formData.append('password', form.password);
+        formData.append('userName', form.userName);
+        formData.append('userImage', form.userImage);
 
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
@@ -135,13 +135,9 @@
 
         } catch (err) {
             // 서버 요청 중 에러 발생 시 처리
-            console.error("Error response:", err.response); 
+            console.error("Error response:", err.response);
             errorMessage.value = err.response?.data?.message || '회원가입 중 오류가 발생했습니다.'; // 에러 메시지를 서버 응답에 따라 설정
             successMessage.value = '';
         }
     }
-</script>
-
-<style lang="scss" scoped>
-    @use "../../assets/stylesheets/views/_register"
-</style>
+</script> <!-- Logic Ends -->

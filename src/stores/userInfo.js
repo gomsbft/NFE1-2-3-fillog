@@ -2,16 +2,17 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('currentUser', () => {
-    const state = ref({
-        userID: null,
-        token: null
-    });
+    const state = ref({ userID: null, token: null });
 
     const setUser = (userObject) => {
         state.value = userObject;
     }
 
-    return { state, setUser }
+    const removeUser = () => {
+        state.value = { userID: null, token: null }
+    }
+
+    return { state, setUser, removeUser }
 });
 
 /**
@@ -25,7 +26,8 @@ export const useUserStore = defineStore('currentUser', () => {
  *
  * ===== 3. 세터 메소드 =====
  *
- * setUser(< userObject >)
+ * setUser(< userObject >) : 로그인 한 사용자 객체를 스토어에 저장
+ * removeUser() : 로그아웃 시 스토어에서 사용자 객체 제거 (초기화)
  *
  * ===== 4. 게터 메소드 =====
  *

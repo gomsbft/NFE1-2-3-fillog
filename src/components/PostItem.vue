@@ -2,7 +2,7 @@
     <li class="article-item">
         <div class="article-item-image-container">
             <RouterLink :to="`/posts/${ thisArticle._id }`">
-                <img class="article-item-thumbnail" v-if="thisArticle.images.length > 0" :src="thisArticle.images.find(item => item.index === thisArticle.thumbIndex)?.imageURL" alt="이미지 미리보기">
+                <img class="article-item-thumbnail" v-if="thisArticle.images.length > 0" :src="thisArticle.images.find((item, index) => index === thisArticle.thumbIndex)?.imageURL" alt="이미지 미리보기">
             </RouterLink>
 
             <svg class="remix">
@@ -18,7 +18,7 @@
                     </RouterLink>
                 </p>
 
-                <span>[{{ thisArticle.comments.length }}]</span>
+                <span>[{{ thisReplies.length }}]</span>
             </dt>
 
             <dd class="article-item-info">
@@ -34,7 +34,7 @@
 
                 <span>·</span>
 
-                <RouterLink class="article-item-info-likes" :class="thisArticle.likes.length > 1 ? 'hot' : null" :to="`/posts/${ thisArticle._id }`">
+                <RouterLink class="article-item-info-likes" :to="`/posts/${ thisArticle._id }`">
                     <svg class="remix">
                         <use xlink:href="/miscs/remixicon.symbol.svg#ri-heart-fill"></use>
                     </svg>
@@ -54,10 +54,11 @@
 
 <script setup>
     import { RouterLink } from 'vue-router';
+    import { getArticleRepliesAll } from '../utilities/dataQueries';
     import dateFormat from '../utilities/dateFormat';
-    import postData from '../datas/postData.json'; // 임시 데이터
     import postCategory from '../datas/articleCategory.json'; // 임시 카테고리
 
     const props = defineProps([ 'postObject' ]);
     const thisArticle = props.postObject;
+    const thisReplies = await getArticleRepliesAll(props.postObject._id);
 </script> <!-- Logic Ends -->

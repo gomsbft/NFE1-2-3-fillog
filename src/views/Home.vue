@@ -7,7 +7,7 @@
 
             <div id="heroSliderContainer">
                 <swiper-container id="heroSlider" v-bind="swiperParams">
-                    <swiper-slide class="hero-slide" v-for="article in latestPosts">
+                    <swiper-slide class="hero-slide" v-for="article in latestPosts" :key="article._id" :data-article-date="dateFormat(article.createdAt)">
                         <RouterLink :to="`posts/${ article._id }`">
                             <img class="latest-article-thumbnail" v-if="article.images.length > 0" :src="article.images[article.thumbIndex].imageURL" alt="포스트 미리보기 이미지">
 
@@ -16,7 +16,7 @@
                             <div class="latest-article-text">
                                 <p class="latest-article-title">{{ article.title }}</p>
 
-                                <UserNameTag :user-id="article.author.userId" />
+                                <UserNameTag :user-id="article.author" />
                             </div>
                         </RouterLink>
                     </swiper-slide>
@@ -39,18 +39,13 @@
 </template> <!-- Template Ends -->
 
 <script setup>
+    import { ref } from 'vue';
     import { getTotalPosts } from '../utilities/dataQueries';
+    import dateFormat from '../utilities/dateFormat';
 
     const postData = await getTotalPosts();
-
-    // if (!log.logins) { // 홈 화면 리디렉션하지 말아주세요... 로그인 해야만 볼 수 있는 블로그는 없잖아요
-    //     router.push('/login');
-    // }
-
-    postData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
     const latestPosts = postData.slice(0, 5); // 가장 최근 글
-    const featuredMovies = postData.map(item => { if (item.movieID !== null) return { movieID: item.movieID, articleID: item._id } }).filter(item => !!item).slice(0, 10);
+    const featuredMovies = ref(postData.filter(item => !!item.movieID).map(item => { return { movieID: item.movieID, genres: item.movieGenres, articleID: item._id } }).slice(0, 12));
     const swiperParams = {
         effect: 'coverflow',
         direction: 'vertical',
