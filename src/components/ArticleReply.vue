@@ -59,6 +59,7 @@
     import hourFormat from '../utilities/hourFormat';
 
     const props = defineProps([ 'replyId' ]);
+    const emits = defineEmits([ 'sendReplyInfo' ]); // 대댓글 작성을 위해 이 댓글의 정보를 돌려보내는 emit
     const thisReply = await getArticleReplies(props.replyId);
     const thisUser = thisReply.userID ? await getUserInfo(thisReply.userID) : { userName: thisReply.userName };
 </script> <!-- Logic Ends -->
